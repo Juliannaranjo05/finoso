@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informacion</title>
+    <link rel="stylesheet" href="css/informacion.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <div class="texto-nombre">
+            <h2>FINOSO</h2>
+        </div>
+        <div class="menu">
+            <div class="texto-inicio">
+                <a href="../index.html">
+                    <h3>INICIO</h3>
+                </a>
+            </div>
+            <div class="texto-catalogo">
+                <a href="../catalogo/catalogo.html">
+                    <h3>CATALOGO</h3>
+                </a>
+            </div>
+            <div class="texto-contacto">
+                <a href="../index.html#contacto">
+                    <h3>CONTACTO</h3>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="contenedor-modal">
+        <div class="cuadro-modal">
+            <div class="titulo-modal">
+                <h1>Rchrd Mll Calavera Blanco Circones Negros-Dorados</h1>
+            </div>
+            <div class="contenedor-img-info">
+                <div class="contenedor-img">
+                    <img src="../img/IMG_0167-Photoroom.png" alt="">
+                </div>
+                <div class="contenedor-info">
+                    <div class="marca">
+                        <p>Marca: </p><h2>Rchrd Mll</h2>
+                    </div>
+                    <div class="detalle">
+                        <p>Detalles: </p><h3>Diseño premium, calavera + circones</h3>
+                    </div>
+                    <div class="precio-modal">
+                        <p>Precio: </p><h3>$120.000</h3>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-whatsapp estilos-boton">Comprar</button>
+        </div>
+    </div>
+    <!--Modal Pago-->
+    <div id="modalPagos" class="modal">
+      <div class="modal-contenido">
+        <span class="cerrar-modal">&times;</span>
+        <h2>Selecciona tu método de pago</h2>
+        <div class="metodos-pago">
+            <div class="metodo-pago">
+                <i class="fab fa-cc-visa"></i>
+                <span>Tarjeta de crédito</span>
+            </div>
+            <div class="metodo-pago">
+                <i class="fab fa-cc-mastercard"></i>
+                <span>Tarjeta de débito</span>
+            </div>
+            <div class="metodo-pago">
+                <i class="fab fa-paypal"></i>
+                <span>PayPal</span>
+            </div>
+            <div class="metodo-pago">
+                <i class="fab fa-google-pay"></i>
+                <span>Google Pay</span>
+            </div>
+            <div class="metodo-pago">
+                <i class="fab fa-apple-pay"></i>
+                <span>Apple Pay</span>
+            </div>
+            <div class="metodo-pago">
+                <i class="fas fa-university"></i>
+                <span>Transferencia bancaria</span>
+            </div>
+        </div>
+            <button class="boton-pagar">Pagar ahora</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Abrir modal al hacer clic en btn-whatsapp
+            const btnWhatsapp = document.querySelector('.btn-whatsapp');
+            const modalPagos = document.getElementById('modalPagos');
+            
+            if(btnWhatsapp && modalPagos) {
+                btnWhatsapp.addEventListener('click', function() {
+                    modalPagos.style.display = 'flex';
+                });
+            }
+            
+            // Cerrar modal al hacer clic en el elemento con clase cerrar-modal
+            const cerrarModal = document.querySelector('.cerrar-modal');
+            
+            if(cerrarModal && modalPagos) {
+                cerrarModal.addEventListener('click', function() {
+                    modalPagos.style.display = 'none';
+                });
+            }
+            
+            // Opcional: Cerrar modal al hacer clic fuera del contenido
+            modalPagos.addEventListener('click', function(e) {
+                if(e.target === modalPagos) {
+                    modalPagos.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script src="js/mostrar-info.js"></script>
+</body>
+</html>

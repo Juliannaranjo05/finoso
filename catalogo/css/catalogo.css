@@ -1,0 +1,451 @@
+* {
+    font-family: 'Playfair-Light.ttf';
+    margin: 0;
+    color: #FFCF66;
+}
+@font-face {
+    font-family: 'Playfair-Light.ttf';
+    src: url(fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'InriaSans-Light.ttf';
+    src: url(fonts/InriaSans/InriaSans-Regular.ttf) format('truetype');
+}
+body {
+    background-color: #090909;
+}
+html {
+    scroll-behavior: smooth;
+}
+a {
+    text-decoration: none;
+}
+h3, .menu {
+    overflow: hidden;
+}
+.login {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #090909;
+    width: 25px;
+    height: 25px;
+    cursor: none;
+}
+nav {
+    width: 100vw;
+    display: flex;
+    background-color: #090909;
+    color: white;
+    padding: 5px 2% 5px 8%;
+    box-sizing: border-box;
+}
+.texto-nombre {
+    width: 35%;
+    text-align: left;
+    font-weight: normal;
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideInLeft 1s forwards;
+}
+@keyframes slideInLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+.texto-nombre h2 {
+    font-size: 2.5rem;
+    font-weight: normal;
+    letter-spacing: 2px;
+    color: #FFCF66;
+}
+.menu {
+    display: flex;
+    width: 35%;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideDownFade 1s ease-out forwards
+}
+@keyframes slideDownFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.iconos-menu {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    min-width: 80px;
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideDownFade 1s ease-out forwards
+}
+@keyframes slideDownFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.icono-login {
+    display: flex;
+    justify-content: flex-end;
+    width: 40%;
+}
+.icono-carrito {
+    display: flex;
+    width: 40%;
+}
+.icono-carrito svg {
+    width: 50px;
+    object-fit: cover;
+}
+.icono-login svg {
+    width: 25px;
+    object-fit: cover;
+}
+.texto-inicio {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.texto-inicio h3 {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #FFFFFF;
+}
+.texto-catalogo {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-right: 10px;
+}
+.texto-catalogo h3 {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #FFFFFF;
+}
+.texto-contacto {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.texto-contacto h3 {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #FFFFFF;
+}
+.texto-inicio h3:hover,
+.texto-catalogo h3:hover,
+.texto-contacto h3:hover {
+  color: #d4af37; /* tono dorado fino */
+}
+
+/* Línea debajo al hacer hover */
+.texto-inicio h3::after,
+.texto-catalogo h3::after,
+.texto-contacto h3::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: #d4af37;
+  bottom: -5px;
+  left: 0;
+  transition: width 0.3s ease;
+}
+.texto-catalogo-finoso {
+    display: grid;
+    justify-items: center;
+    width: 100%;
+    margin: 15px 0;
+    opacity: 0;
+    transform: scale(0.5);
+    animation: zoomIn 1s ease-out forwards;
+}
+
+@keyframes zoomIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.texto-catalogo-finoso h3 {
+    font-size: 3rem;
+    font-weight: normal;
+    padding: 5px 0;
+    white-space: nowrap;
+}
+.texto-catalogo-finoso p {
+    color: #FFFFFF;
+    letter-spacing: 2px;
+}
+.contenedor-general-cards {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 30px;
+    padding: 20px;
+}
+.contenedor-card {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(30px);
+    /* Combinamos ambas animaciones separándolas por coma */
+    animation: fadeUpCard 1s ease-out forwards, shadow-drop-top 0.4s linear both;
+    border-radius: 10px;
+}
+
+@keyframes shadow-drop-top {
+    0% {box-shadow: 0 0 0 0 transparent}
+    100% {box-shadow: 0 -12px 20px -12px #5b553a}
+}
+
+@keyframes fadeUpCard {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación escalonada - ahora necesitamos incluir ambas animaciones con sus delays */
+.contenedor-card:nth-child(1) {
+    animation-delay: 0.2s, 0.6s; /* delay para fadeUpCard y shadow-drop-top */
+}
+.contenedor-card:nth-child(2) {
+    animation-delay: 0.4s, 0.8s;
+}
+.contenedor-card:nth-child(3) {
+    animation-delay: 0.6s, 1s;
+}
+.contenedor-card:nth-child(4) {
+    animation-delay: 0.8s, 1.2s;
+}
+.contenedor-card:nth-child(5) {
+    animation-delay: 1s, 1.4s;
+}
+.contenedor-card:nth-child(6) {
+    animation-delay: 1.2s, 1.6s;
+}
+.contenedor-card:nth-child(7) {
+    animation-delay: 1.4s, 1.8s;
+}
+.contenedor-card:nth-child(8) {
+    animation-delay: 1.6s, 2s;
+}
+.cuadro-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 650px;
+    background: #111110;
+    border-radius: 10px;
+    position: relative;
+    overflow: visible; /* Permite que la lupa se muestre fuera */
+}
+.cuadro-card img {
+    width: 100%;
+    height: 70%;
+    object-fit: cover;
+}
+.zoom-image {
+    display: block;
+    max-width: 100%;
+}
+.lupa {
+    position: absolute;
+    border: 3px solid #FFD700;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    pointer-events: none;
+    display: none;
+    background-repeat: no-repeat;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    z-index: 99;
+}
+.texto-card {
+    display: grid;
+    width: 100%;
+    height: 30%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.texto-card h3 {
+    font-size: 1.5rem;
+    font-weight: normal;
+}
+.texto-card p {
+    font-size: 1.1rem;
+    font-weight: normal;
+    color: #FFFFFF;
+    margin: 2px;
+    margin-bottom: 20px;
+}
+.precio {
+    display: flex;
+}
+.descuento {
+    opacity: 0.6;
+    text-decoration: line-through;
+    color: rgb(255, 48, 89) !important;
+}
+.boton-wh {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+}
+.texto-card button {
+    font-family: 'InriaSans-Light.ttf';
+    background: #090909;
+    border: 2px solid #FFCF66;
+    color: #FFCF66;
+    font-size: 1.3rem;
+    padding: 3%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.texto-card button:hover {
+    background: #FFCF66;
+    color: #090909;
+    box-shadow: 0 0 8px rgba(255, 207, 102, 0.5);
+}
+.cuadrolupa {
+    position: fixed;
+    top: 90vh;
+    right: 1%;
+    width: 30px;
+    height: 30px;
+    border: #FFCF66 solid 2px;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    background: transparent;
+}
+.cuadrolupa.activa {
+    border-color: red;
+}
+.btn-whatsapp {
+    cursor: pointer;
+}
+/* MODAL */
+.cerrar-modal {
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+}  
+.cerrar-modal:hover {
+    color: #FFCF66;
+}
+@media ( width < 1115px) {
+    .marca p{
+        font-size: 1.1rem;
+        font-weight: normal;
+        color: #FFFFFF;
+        margin: 0;
+    }
+    .marca h2 {
+        font-size: 1.5rem;
+        color: #FFCF66;
+        margin: 0;
+    }
+    .detalle p {
+        font-size: 1.1rem;
+        font-weight: normal;
+        color: #FFFFFF;
+        margin: 0;
+    }
+    .detalle h3 {
+        font-size: 1.2rem;
+        color: #FFCF66;
+        margin: 0;
+    }
+    .precio-modal p {
+        font-size: 1.1rem;
+        font-weight: normal;
+        color: #FFFFFF;
+        margin: 0;
+    }
+    .precio-modal h3 {
+        font-size: 1.6rem;
+        color: #FFCF66;
+        margin: 0;
+    }
+}
+@media (width < 768px) {
+    .contenedor-img-info {
+        display: grid;
+        justify-items: center;
+        align-items: center;
+    }
+    .cuadro-modal {
+        height: auto;
+    }
+    .contenedor-img {
+        width: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .titulo-modal {
+        display: flex;
+        width: 100%;
+    }
+    .titulo-modal h1 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+    .estilos-boton {
+        min-height: 0px;
+    }
+}
+@media ( width < 660px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .texto-nombre {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .menu {
+        width: 100%;
+    }
+}
+@media ( width < 500px) {
+    .texto-catalogo-finoso h3 {
+        font-size: 2.5rem;
+    }
+}
+
+@keyframes blur-out-expand {
+  0% {
+    transform: scale(1);
+    filter: blur(0.01px);
+  } 
+  100% {
+    transform: scale(2);
+    filter: blur(12px);
+    opacity: 0;
+  }
+}
+
+.blur-out-expand {
+  animation: blur-out-expand 0.6s linear both;
+}
