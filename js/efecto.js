@@ -6,35 +6,23 @@
     function getKeyframes() {
         const width = window.innerWidth;
 
-        if (width >= 1200) {
-            // Escritorio grande
-            return [
-                { x: 60, y: 55, rotation: 30, scale: 1.5 },
-                { x: 20, y: 12, rotation: 5, scale: 0.8 },
-            ];
-        } else if (width < 1199) {
-            // Tablet
-            return [
-                { x: 70, y: 50, rotation: 20, scale: 1.4 },
-                { x: 15, y: 23, rotation: 5, scale: 0.7 },
-            ];
-        } else if (width >= 820) {
-            // Tablet
-            return [
-                { x: 70, y: 50, rotation: 20, scale: 1.2 },
-                { x: 15, y: 23, rotation: 5, scale: 0.5 },
-            ];
-        } else if (width >= 768) {
-            // Tablet
-            return [
-                { x: 50, y: 50, rotation: 20, scale: 1.2 },
-                { x: 15, y: 20, rotation: 5, scale: 0.7 },
-            ];
-        } else {
+        if (width <= 660) {
             // Móvil
             return [
-                { x: 40, y: 50, rotation: 10, scale: 1 },
-                { x: 10, y: 25, rotation: 2, scale: 0.7 },
+                { x: 70, y: 33, rotation: 15, scale: 0.6 },
+                { x: 20, y: 45, rotation: 5, scale: 0.3 }
+            ];
+        } else if (width <= 1200) {
+            // Tablet
+            return [
+                { x: 65, y: 50, rotation: 20, scale: 1.2 },
+                { x: 20, y: 27, rotation: 5, scale: 0.7 }
+            ];
+        } else {
+            // Escritorio grande
+            return [
+                { x: 60, y: 55, rotation: -10, scale: 1.6 },
+                { x: 20, y: 12, rotation: 5, scale: 0.9 }
             ];
         }
     }
