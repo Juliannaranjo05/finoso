@@ -14,7 +14,6 @@
 }
 body {
     background-color: #090909;
-    overflow: hidden;
 }
 html {
     scroll-behavior: smooth;
@@ -115,243 +114,148 @@ nav {
   left: 0;
   transition: width 0.3s ease;
 }
-.contenedor-modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.contenedor-general {
+    display: grid;
     width: 100vw;
+    background: #000000;
 }
-.cuadro-modal {
+.contenedor-texto-finalizar {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 65%;
-    padding: 20px;
-    background: #090909;
-    box-sizing: border-box;
-    max-height: 700px;
-}
-.titulo-modal {
-    width: 75%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    min-height: 86px;
-}
-.titulo-modal h1 {
-    text-align: center;
-    font-size: 2.3rem;
-    color: #FFCF66;
-    margin: 0;
-}
-.contenedor-img-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    margin-bottom: 15px;
-    min-height: 277px;
-}
-.contenedor-img {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40%;
-}
-.contenedor-img img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
+    justify-content: center;
 }
-.contenedor-info {
+.contenedor-texto-finalizar h2{
+    font-size: 3rem;
+    margin: 25px;
+    letter-spacing: 2px;
+}
+.contenedor-informacion-pago {
+    display: flex;
+    gap: 20px;
+    box-sizing: border-box;
+    padding: 20px;
+}
+.contenedor-general-informacion {
     width: 50%;
     display: grid;
-    justify-items: start;
+    justify-items: center;
     gap: 10px;
 }
-.marca p{
-    font-size: 1.3rem;
-    font-weight: normal;
-    color: #FFFFFF;
-    margin: 0;
-}
-.marca h2 {
-    font-size: 2rem;
-    color: #FFCF66;
-    margin: 0;
-}
-.detalle p {
-    font-size: 1.3rem;
-    font-weight: normal;
-    color: #FFFFFF;
-    margin: 0;
-}
-.detalle h3 {
-    font-size: 1.5rem;
-    color: #FFCF66;
-    margin: 0;
-}
-.precio-modal p {
-    font-size: 1.3rem;
-    font-weight: normal;
-    color: #FFFFFF;
-    margin: 0;
-}
-.precio-modal h3 {
-    font-size: 2rem;
-    color: #FFCF66;
-    margin: 0;
-}
-.estilos-boton {
+.img-informacion {
+    width: 100%;
     display: flex;
     justify-content: center;
-    font-family: 'InriaSans-Light.ttf';
-    height: auto;
-    background: #090909;
-    border: 2px solid #FFCF66;
-    color: #FFCF66;
-    font-size: 1.3rem;
-    padding: 3%;
-    cursor: pointer;
-    transition: all 0.3s ease;
 }
-.estilos-boton:hover {
-    background: #FFCF66;
-    color: #090909;
-    box-shadow: 0 0 8px rgba(255, 207, 102, 0.5);
+.img-informacion img{
+    width: 60%;
 }
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
+.contenedor-img {
     width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.5);
-    justify-content: center;
-    align-items: center;
-}
-  
-.modal-contenido {
-    display: grid;
-    justify-items: center;
-    background-color: #000000;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-}
-.modal-contenido h2 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #FFCF66;
-    text-align: center;
-}
-  
-.metodos-pago {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
-}
-  
-.metodo-pago {
     display: flex;
-    align-items: center;
     justify-content: center;
-    flex-direction: column;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    box-sizing: border-box;
+    gap: 10px;
 }
-  
-.metodo-pago:hover {
-    background-color: #222222;
+.contenedor-img img {
+    width: 100px;
+    height: 100px;
 }
-  
-.metodo-pago i {
-    font-size: 32px;
-    margin-bottom: 10px;
-    color: #ffffff;
+.contenedor-informacion {
+    display: grid;
+    gap: 10px;
+    justify-items: flex-start;
 }
-.cerrar-modal {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #2c3e50;
-}
-  
-.cerrar-modal:hover {
-    color: #FFCF66;
-}
-.metodo-pago span {
-    font-size: 14px;
-    color: #FFCF66;
-    text-align: center;
-}
-.modal-agregar {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
+.contenedor-precio-total {
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+    gap: 180px;
 }
-  
-.modal-contenido-agregar {
-    height: 90vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
+.nombre-informacion h2 {
+    font-size: 3rem;
 }
-  
-.cerrar-modal-agregar {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
+.precio h3 {
+    font-size: 2rem;
+    color: #FFFFFF;
+    font-weight: normal;
+}
+.precio-descuento {
+    gap: 10px;
+    display: flex;
+}
+.precio-descuento p {
+    font-size: 2rem;
+}
+.precio-descuento h4 {
+    font-size: 2rem;
+    opacity: 0.6;
+    text-decoration: line-through;
+    color: rgb(255, 48, 89);
+    font-weight: normal;
+}
+.descripcion-informacion {
+    display: grid;
+    gap: 5px;
+}
+.descripcion-informacion h1 {
+    font-size: 2.1rem;
+    font-weight: normal;
+    color: #FFFFFF;
+}
+.descripcion-informacion h2 {
+    font-weight: normal;
+    font-size: 2rem;
+}
+
+.contenedor-pago {
+    display: grid;
+    width: 50%;
+    gap: 10px;
+}
+.contenedor-metodos-pago {
+    display: grid;
+}
+.texto-metodos-pago {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 5px 0;
+}
+.texto-metodos-pago h3 {
+    font-size: 2.5rem;
+    color: #FFFFFF;
+    font-weight: normal;
+}
+.botones-metodos-pago {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.boton-metodo {
+    width: 20%;
+}
+.boton-metodo img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
     cursor: pointer;
-    color: #FFCF66;
+    transition: 
+    transform 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
 }
-  
-.cerrar-modal-agregar:hover {
-    color: #e74c3c;
+.mercado-pago:hover {
+    box-shadow: 
+    0 0 5px 2px #ffffffd1,
+    0 0 10px 5px #ffffffc8,
+    0 0 15px 10px #ffffff96,
+    0 0 20px 15px rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
 }
-  
-.modal-contenido-agregar h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #FFCF66;
-    text-align: center;
-}
-.boton-pagar {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background: #ff6875;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
+.wompi:hover {
+    box-shadow: 
+    0 0 10px 5px rgba(0, 255, 163, 0.7),
+    0 0 20px 10px rgba(0, 255, 163, 0.4),
+    0 0 30px 15px rgba(0, 255, 163, 0.2);
+    transform: scale(1.1);
 }

@@ -30,93 +30,56 @@
             </div>
         </div>
     </nav>
-    <div class="contenedor-modal">
-        <div class="cuadro-modal">
-            <div class="titulo-modal">
-                <h1>Rchrd Mll Calavera Blanco Circones Negros-Dorados</h1>
-            </div>
-            <div class="contenedor-img-info">
+    <div class="contenedor-general">
+        <div class="contenedor-texto-finalizar">
+            <h2>Finalizar Compra</h2>
+        </div>
+        <div class="contenedor-informacion-pago">
+            <div class="contenedor-general-informacion">
+                <div class="img-informacion">
+                    <img src="../img/ChatGPT_Image_24_abr_2025__19_36_57-removebg-preview.png" alt="">
+                </div>
                 <div class="contenedor-img">
-                    <img src="../img/IMG_0167-Photoroom.png" alt="">
+                    <img src="../img/IMG_0163-Photoroom.png" alt="">
+                    <img src="../img/IMG_0163-Photoroom.png" alt="">
+                    <img src="../img/IMG_0163-Photoroom.png" alt="">
+                    <img src="../img/IMG_0163-Photoroom.png" alt="">
                 </div>
-                <div class="contenedor-info">
-                    <div class="marca">
-                        <p>Marca: </p><h2>Rchrd Mll</h2>
+                <div class="contenedor-informacion">
+                    <div class="nombre-informacion">
+                        <h2>Rchrd Mll Calavera Circones Dorado-Negro</h2>
                     </div>
-                    <div class="detalle">
-                        <p>Detalles: </p><h3>Diseño premium, calavera + circones</h3>
+                    <div class="contenedor-precio-total">
+                        <div class="precio">
+                            <h3>Precio</h3>
+                            <div class="precio-descuento">
+                                <p>$130.000</p>
+                                <h4>$145.000</h4>
+                            </div>
+                        </div>
                     </div>
-                    <div class="precio-modal">
-                        <p>Precio: </p><h3>$120.000</h3>
+                    <div class="descripcion-informacion">
+                        <h1>Detalles:</h1>
+                        <h2>Calavera central con incrustación de circones facetados. Bisel de acero pavonado y corona mecanizada con acabado satinado.</h2>
                     </div>
                 </div>
             </div>
-            <button class="btn-whatsapp estilos-boton">Comprar</button>
+            <div class="contenedor-pago">
+                <div class="contenedor-metodos-pago">
+                    <div class="texto-metodos-pago">
+                        <h3>Metodos de Pago:</h3>
+                    </div>
+                    <div class="botones-metodos-pago">
+                        <div class="boton-metodo">
+                            <img class="mercado-pago" src="img/mercado-pago.jpg" alt="">
+                        </div>
+                        <div class="boton-metodo">
+                            <img class="wompi" src="img/Wompi_ContraccionSecundaria.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <!--Modal Pago-->
-    <div id="modalPagos" class="modal">
-      <div class="modal-contenido">
-        <span class="cerrar-modal">&times;</span>
-        <h2>Selecciona tu método de pago</h2>
-        <div class="metodos-pago">
-            <div class="metodo-pago">
-                <i class="fab fa-cc-visa"></i>
-                <span>Tarjeta de crédito</span>
-            </div>
-            <div class="metodo-pago">
-                <i class="fab fa-cc-mastercard"></i>
-                <span>Tarjeta de débito</span>
-            </div>
-            <div class="metodo-pago">
-                <i class="fab fa-paypal"></i>
-                <span>PayPal</span>
-            </div>
-            <div class="metodo-pago">
-                <i class="fab fa-google-pay"></i>
-                <span>Google Pay</span>
-            </div>
-            <div class="metodo-pago">
-                <i class="fab fa-apple-pay"></i>
-                <span>Apple Pay</span>
-            </div>
-            <div class="metodo-pago">
-                <i class="fas fa-university"></i>
-                <span>Transferencia bancaria</span>
-            </div>
-        </div>
-            <button class="boton-pagar">Pagar ahora</button>
-        </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Abrir modal al hacer clic en btn-whatsapp
-            const btnWhatsapp = document.querySelector('.btn-whatsapp');
-            const modalPagos = document.getElementById('modalPagos');
-            
-            if(btnWhatsapp && modalPagos) {
-                btnWhatsapp.addEventListener('click', function() {
-                    modalPagos.style.display = 'flex';
-                });
-            }
-            
-            // Cerrar modal al hacer clic en el elemento con clase cerrar-modal
-            const cerrarModal = document.querySelector('.cerrar-modal');
-            
-            if(cerrarModal && modalPagos) {
-                cerrarModal.addEventListener('click', function() {
-                    modalPagos.style.display = 'none';
-                });
-            }
-            
-            // Opcional: Cerrar modal al hacer clic fuera del contenido
-            modalPagos.addEventListener('click', function(e) {
-                if(e.target === modalPagos) {
-                    modalPagos.style.display = 'none';
-                }
-            });
-        });
-    </script>
-    <script src="js/mostrar-info.js"></script>
 </body>
 </html>
