@@ -1,6 +1,9 @@
     const mainElement = document.getElementById('mainElement');
     const progressBar = document.getElementById('progressBar');
     const dots = document.querySelectorAll('.dot');
+    const insertarImg = document.getElementById('insertar-img');
+
+    let imagenReemplazada = false;
 
     // Función que devuelve keyframes según el tamaño de pantalla
     function getKeyframes() {
@@ -9,8 +12,8 @@
         if (width <= 660) {
             // Móvil
             return [
-                { x: 70, y: 33, rotation: 15, scale: 0.6 },
-                { x: 20, y: 45, rotation: 5, scale: 0.3 }
+                { x: 73, y: 32, rotation: 15, scale: 0.6 },
+                { x: 20, y: 40, rotation: 5, scale: 0.3 }
             ];
         } else if (width <= 1200) {
             // Tablet
@@ -57,11 +60,10 @@
         // Barra de progreso
         progressBar.style.width = (scrollProgress * 100) + '%';
 
-        // Segmento actual
+        // Interpolación de keyframes
         const totalSegments = keyframes.length - 1;
         const currentSegment = Math.floor(scrollProgress * totalSegments);
         const nextSegment = Math.min(currentSegment + 1, totalSegments);
-
         const segmentProgress = (scrollProgress * totalSegments) - currentSegment;
 
         const transforms = interpolateKeyframes(
@@ -77,6 +79,20 @@
         dots.forEach((dot, index) => {
             dot.classList.toggle('active', index === currentSectionIndex);
         });
+
+        const sectionSize = 1 / (dots.length - 1);
+        const activationOffset = 0; // ✅ Aquí cambias el % que quieras (0.1 = 10%)
+
+        const start = sectionSize * 1 + sectionSize * activationOffset; // sección 2 + 10%
+        const end = sectionSize * 2;
+
+        if (scrollProgress >= start && scrollProgress < end) {
+            if (mainElement) mainElement.style.display = 'none';
+            if (insertarImg) insertarImg.style.display = 'flex';
+        } else {
+            if (mainElement) mainElement.style.display = 'flex';
+            if (insertarImg) insertarImg.style.display = 'none';
+        }
     }
 
     window.addEventListener('scroll', updateOnScroll);
@@ -85,10 +101,7 @@
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
             const targetScroll = (index / (dots.length - 1)) * (document.documentElement.scrollHeight - window.innerHeight);
-            window.scrollTo({
-                top: targetScroll,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: targetScroll, behavior: 'smooth' });
         });
     });
 
