@@ -30,8 +30,25 @@ nav {
     padding: 5px 2% 5px 8%;
     box-sizing: border-box;
 }
+.login {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #090909;
+    width: 25px;
+    height: 25px;
+    cursor: none;
+}
+nav {
+    width: 100vw;
+    display: flex;
+    background-color: #090909;
+    color: white;
+    padding: 5px 2% 5px 8%;
+    box-sizing: border-box;
+}
 .texto-nombre {
-    width: 45%;
+    width: 35%;
     text-align: left;
     font-weight: normal;
     opacity: 0;
@@ -52,7 +69,7 @@ nav {
 }
 .menu {
     display: flex;
-    width: 45%;
+    width: 35%;
     justify-content: center;
     align-items: center;
     opacity: 0;
@@ -64,6 +81,40 @@ nav {
         opacity: 1;
         transform: translateY(0);
     }
+}
+.iconos-menu {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    min-width: 80px;
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideDownFade 1s ease-out forwards
+}
+@keyframes slideDownFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.icono-login {
+    display: flex;
+    justify-content: flex-end;
+    width: 40%;
+}
+.icono-carrito {
+    display: flex;
+    width: 40%;
+}
+.icono-carrito svg {
+    width: 50px;
+    object-fit: cover;
+}
+.icono-login svg {
+    width: 25px;
+    object-fit: cover;
 }
 .texto-inicio {
     display: flex;
@@ -115,10 +166,15 @@ nav {
   left: 0;
   transition: width 0.3s ease;
 }
+
+.texto-inicio h3:hover::after,
+.texto-catalogo h3:hover::after,
+.texto-contacto h3:hover::after {
+  width: 100%;
+}
 .contenedor-general {
     display: grid;
     width: 100vw;
-    background: #000000;
 }
 .contenedor-texto-finalizar {
     display: flex;
@@ -129,8 +185,10 @@ nav {
     font-size: 3rem;
     margin: 25px;
     letter-spacing: 2px;
+    text-align: center;
 }
 .contenedor-informacion-pago {
+    position: relative;
     display: flex;
     gap: 20px;
     box-sizing: border-box;
@@ -149,6 +207,36 @@ nav {
 }
 .img-informacion img{
     width: 60%;
+}
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+    object-fit: cover;
+    opacity: 0.7;
+}
+.thumbnail:hover {
+    opacity: 1;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(224, 190, 0, 0.3);
+}
+
+.thumbnail.active {
+    opacity: 1;
+    border-color: #FFCF66;
+    box-shadow: 0 0 20px rgba(199, 169, 0, 0.423);
+    transform: scale(1.1);
+}
+.fade-transition {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.fade-transition.loaded {
+    opacity: 1;
 }
 .contenedor-img {
     width: 100%;
@@ -229,7 +317,7 @@ nav {
 .botones-metodos-pago {
     display: flex;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     gap: 20px;
 }
 .boton-metodo {
@@ -253,6 +341,10 @@ nav {
     box-shadow: 0 4px 8px rgba(74, 255, 171, 0.2);
     transform: scale(1.1);
 }
+.seleccionado {
+  border: 2px solid #28a745; /* Verde como confirmación */
+  transform: scale(1.2) !important;
+}
 .botones-comprar-anadir {
     width: 100%;
     display: grid;
@@ -269,6 +361,9 @@ nav {
     border-radius: 36px;
     height: 70px;
     margin: 0 auto;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 20px;
 }
 .boton-anadir {
     width: 85%;
@@ -278,6 +373,8 @@ nav {
     background: #FFCF66;
     border-radius: 36px;
     height: 70px;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 .boton-anadir h2{
     color: #ffffff;
@@ -292,13 +389,13 @@ nav {
     background-color: #000000;
     border-color: #ffc957;
     box-shadow: 0 4px 12px rgba(255, 201, 87, 0.4);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.1);
 }
 .boton-anadir:hover {
     background-color: #000000;
     border-color: #ffc957;
     box-shadow: 0 4px 12px rgba(255, 201, 87, 0.4);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.1);
 }
 .form-container {
     display: flex;
@@ -320,6 +417,27 @@ nav {
     font-weight: bold;
     color: #ffff;
 }
+.guardar-info {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.guardar-info input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #28a745; /* verde confirmación */
+  cursor: pointer;
+  margin: 0;
+}
+
+.guardar-info label {
+  cursor: pointer;
+  user-select: none;
+}
 input,
 textarea,
 select {
@@ -333,12 +451,246 @@ select {
     background: #0000;
     
 }
+.envio-total-info {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.envio-total-info .circulo-verde {
+  color: #28a745;
+  font-size: 1.2rem;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.envio-total-info .descuento-texto {
+  color: #e74c3c;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
 .form-section textarea {
     resize: vertical;
     min-height: 80px;
 }
-.form-section {
+.cuadrolupa {
+    position: fixed;
+    top: 90vh;
+    left: 1%;
+    width: 30px;
+    height: 30px;
+    border: #FFCF66 solid 2px;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    background: transparent;
+}
+.cuadrolupa.activa {
+    border-color: red;
+}
+.contenedor-mas-productos {
+    display: grid;
+    justify-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 40px;
+}
+.texto-producto h3 {
+    font-size: 2.5rem;
+    font-weight: normal;
+    letter-spacing: 2px;
+    margin: 15px 0;
+}
+.contenedor-general-cards {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(4, 1fr); /* Siempre 4 columnas */
+    gap: 30px;
+    padding: 20px;
+}
+.contenedor-card {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(30px);
+    /* Combinamos ambas animaciones separándolas por coma */
+    animation: fadeUpCard 1s ease-out forwards, shadow-drop-top 0.4s linear both;
+    min-width: 290px;
+}
+
+@keyframes shadow-drop-top {
+    0% {box-shadow: 0 0 0 0 transparent}
+    100% {box-shadow: 0 -12px 20px -12px #5b553a}
+}
+
+@keyframes fadeUpCard {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación escalonada - ahora necesitamos incluir ambas animaciones con sus delays */
+.contenedor-card:nth-child(1) {
+    animation-delay: 0.2s, 0.6s; /* delay para fadeUpCard y shadow-drop-top */
+}
+.contenedor-card:nth-child(2) {
+    animation-delay: 0.4s, 0.8s;
+}
+.contenedor-card:nth-child(3) {
+    animation-delay: 0.6s, 1s;
+}
+.contenedor-card:nth-child(4) {
+    animation-delay: 0.8s, 1.2s;
+}
+.contenedor-card:nth-child(5) {
+    animation-delay: 1s, 1.4s;
+}
+.contenedor-card:nth-child(6) {
+    animation-delay: 1.2s, 1.6s;
+}
+.contenedor-card:nth-child(7) {
+    animation-delay: 1.4s, 1.8s;
+}
+.contenedor-card:nth-child(8) {
+    animation-delay: 1.6s, 2s;
+}
+.cuadro-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 660px;
+    background: #080808;
+    position: relative;
+    overflow: visible; /* Permite que la lupa se muestre fuera */
+    border-radius: 10px;
+    border: 2px solid #FFCF66;
+    min-width: 290px;
+    
+}
+.cuadro-card img {
+    width: 90%;
+    height: 70%;
+    object-fit: cover;
+    border: 2px solid #FFCF66;
+    margin: 20px 40px 0px 40px;
+    box-sizing: border-box;
+    background-color: #0a0a0a; /* Negro profundo */
+    background-image: radial-gradient(#1a1a1a 1%, transparent 1%);
+    background-size: 5px 5px;
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
+    filter: brightness(0.9) contrast(1.1);
+}
+.zoom-image {
+    display: block;
+    max-width: 100%;
+}
+.lupa {
+    position: absolute;
+    border: 3px solid #FFD700;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    pointer-events: none;
+    display: none;
+    background-repeat: no-repeat;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    z-index: 99;
+}
+.texto-card {
+    display: grid;
+    width: 100%;
+    height: 30%;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.texto-card h3 {
+    font-size: 1.2rem;
+    font-weight: normal;
+}
+.texto-card p {
+    font-size: 1.1rem;
+    font-weight: normal;
+    color: #FFFFFF;
+    margin: 2px;
     margin-bottom: 20px;
+}
+.precio {
+    display: flex;
+}
+.descuento {
+    opacity: 0.6;
+    text-decoration: line-through;
+    color: rgb(255, 48, 89) !important;
+}
+.boton-wh {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    flex-direction: column;
+}
+.ornamento {
+    width: 100%;
+    height: 15px;
+    margin-top: 8px;
+    display: block;
+}
+.texto-card button {
+    font-family: 'InriaSans-Light.ttf';
+    background: #090909;
+    border: 2px solid #FFCF66;
+    color: #FFCF66;
+    font-size: 1.3rem;
+    padding: 3%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.texto-card button:hover {
+    background: #FFCF66;
+    color: #090909;
+    box-shadow: 0 0 8px rgba(255, 207, 102, 0.5);
+}
+.btn-whatsapp {
+    cursor: pointer;
+}
+.contenedor-sobre-nosotros {
+    width: 100%;
+    color: white; /* Texto blanco */
+    padding: 60px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.titulo-sobre-nosotros {
+    max-width: 900px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.titulo-sobre-nosotros h3 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: rgb(255, 255, 255); /* Como los detalles dorados */
+}
+
+.titulo-sobre-nosotros p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.titulo-sobre-nosotros strong {
+    display: block;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.titulo-sobre-nosotros h2 {
+    font-size: 1.3rem;
 }
 @media (width < 900px) {
     .nombre-informacion h2 {
@@ -346,5 +698,53 @@ select {
     }
     .descripcion-informacion h2 {
         font-size: 1.8rem;
+    }
+}
+@media (width < 750px) {
+    .contenedor-informacion-pago {
+        flex-direction: column;
+    }
+    .contenedor-general-informacion {
+        width: 100%;
+    }
+    .contenedor-pago {
+        width: 100%;
+    }
+}
+@media ( width < 660px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .texto-nombre {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .menu {
+        width: 100%;
+    }
+}
+@media ( width < 460px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .texto-nombre {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .menu {
+        width: 100%;
+    }
+    .iconos-menu {
+        width: 100%;
+        gap: 10px;
+    }
+    .contenedor-texto-finalizar h2 {
+        font-size: 2.5rem;
     }
 }
