@@ -105,11 +105,6 @@
         });
     });
 
-    // Botón de catálogo
-    document.getElementById('ver-catalogo').addEventListener('click', () => {
-        alert('Redirigiendo al catálogo...');
-    });
-
     // Teclado
     document.addEventListener('keydown', (e) => {
         const currentScroll = window.pageYOffset;

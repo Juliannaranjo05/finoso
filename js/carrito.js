@@ -1,77 +1,42 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const iconoCarrito = document.getElementById('icono-carrito');
-    const modalCarrito = document.getElementById('modal-carrito');
-    const fondoModal = document.createElement('div');
-    fondoModal.classList.add('fondo-modal');
-    document.body.appendChild(fondoModal);
+document.addEventListener('DOMContentLoaded', () => {
+    const iconoCarrito = document.getElementById('iconoCarrito');
+    const cuadroCarrito = document.getElementById('cuadroCarrito');
+    const cerrarCarrito = document.getElementById('cerrarCarrito');
+    const contadorCarrito = document.getElementById('contadorCarrito');
 
-    console.log('DOM cargado');
-
-    // Verificar sesión al cargar la página para mostrar el contador
-    fetch('http://127.0.0.1/finisimo/php/verificar_sesion.php')
-        .then(res => res.json())
-        .then(data => {
-            console.log('verificar_sesion.php ->', data);
-            if (data.logged_in) {
-                // Obtener los productos del carrito
-                fetch('http://127.0.0.1/finisimo/php/mostrar_carrito.php')
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log('mostrar_carrito.php ->', data);
-                        if (data.success && Array.isArray(data.relojes) && data.relojes.length > 0) {
-                            const cantidad = data.relojes.length;
-
-                            // Verifica si ya existe el contador y lo elimina
-                            let existente = document.querySelector('.cantidad-carrito');
-                            if (existente) existente.remove();
-
-                            // Crea el contador
-                            const cantidadDiv = document.createElement('div');
-                            cantidadDiv.classList.add('cantidad-carrito');
-
-                            const h2 = document.createElement('h2');
-                            h2.textContent = cantidad;
-                            cantidadDiv.appendChild(h2);
-
-                            // Agregar dentro de .icono-carrito (no dentro del <svg>)
-                            const contenedor = document.querySelector('.icono-carrito');
-                            contenedor.appendChild(cantidadDiv);
-                        }
-                    })
-                    .catch(err => console.error('Error al obtener el carrito:', err));
-            }
-        })
-        .catch(err => console.error('Error al verificar sesión:', err));
-
-    // Al hacer clic en el icono del carrito
-    iconoCarrito.addEventListener('click', function (e) {
-        e.stopPropagation();
-
-        fetch('http://127.0.0.1/finisimo/php/verificar_sesion.php')
-            .then(res => res.json())
-            .then(data => {
-                if (data.logged_in) {
-                    modalCarrito.style.display = 'grid';
-                    fondoModal.style.display = 'block';
-                } else {
-                    alert('Para usar el carrito debes iniciar sesión.');
-                    window.location.href = 'http://127.0.0.1/finisimo/login/login.html';
-                }
-            })
-            .catch(err => {
-                console.error('Error verificando la sesión:', err);
-                alert('Ocurrió un error. Intenta nuevamente.');
-            });
+    // Abrir modal
+    iconoCarrito.addEventListener('click', () => {
+        cuadroCarrito.style.display = 'grid';
     });
 
-    document.addEventListener('click', function (e) {
-        if (!modalCarrito.contains(e.target) && e.target !== iconoCarrito) {
-            modalCarrito.style.display = 'none';
-            fondoModal.style.display = 'none';
+    // Cerrar con botón
+    cerrarCarrito.addEventListener('click', () => {
+        cuadroCarrito.style.display = 'none';
+    });
+
+    // Cerrar al hacer clic fuera del modal
+    document.addEventListener('click', (e) => {
+        const modalVisible = getComputedStyle(cuadroCarrito).display === 'grid';
+        const esClickDentroModal = e.target.closest('.cuadro-carrito');
+
+        if (modalVisible && !esClickDentroModal && !e.target.closest('#iconoCarrito')) {
+            cuadroCarrito.style.display = 'none';
         }
     });
 
-    modalCarrito.addEventListener('click', function (e) {
-        e.stopPropagation();
-    });
+    // Función para actualizar contador
+    function actualizarContadorCarrito() {
+        const productos = document.querySelectorAll('.cuadro-info-reloj-carrito');
+        const cantidad = productos.length;
+
+        if (cantidad > 0) {
+            contadorCarrito.textContent = cantidad;
+            contadorCarrito.style.display = 'inline-block';
+        } else {
+            contadorCarrito.style.display = 'none';
+        }
+    }
+
+    // Llamamos la función al cargar
+    actualizarContadorCarrito();
 });
