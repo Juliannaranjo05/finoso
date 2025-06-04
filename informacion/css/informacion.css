@@ -534,6 +534,7 @@ select {
     font-weight: normal;
     letter-spacing: 2px;
     margin: 15px 0;
+    text-align: center;
 }
 .contenedor-general-cards {
     display: grid;

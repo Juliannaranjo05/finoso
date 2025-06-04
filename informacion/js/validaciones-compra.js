@@ -3,39 +3,40 @@ document.addEventListener("DOMContentLoaded", function () {
     const imagenesPago = document.querySelectorAll('.boton-metodo img');
     const errorMetodo = document.getElementById('error-metodo-pago');
     const form = document.getElementById("form-envio");
+
     const ciudadesPorDepartamento = {
-        "Amazonas": ["Leticia", "Puerto Nariño"],
-        "Antioquia": ["Medellín", "Bello", "Itagüí", "Envigado", "Rionegro", "Apartadó", "Turbo", "La Ceja", "Sabaneta", "Copacabana", "Marinilla", "Guarne", "Amagá", "Caucasia"],
-        "Arauca": ["Arauca", "Arauquita", "Saravena", "Tame", "Cravo Norte", "Puerto Rondón", "Fortul"],
-        "Atlántico": ["Barranquilla", "Soledad", "Malambo", "Sabanalarga", "Puerto Colombia", "Galapa", "Baranoa", "Polonuevo", "Sabanagrande", "Campo de la Cruz"],
-        "Bolívar": ["Cartagena", "Magangué", "Turbaco", "Arjona", "El Carmen de Bolívar", "Mompox", "San Juan Nepomuceno", "María la Baja", "Santa Rosa", "Talaigua Nuevo"],
-        "Boyacá": ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Paipa", "Moniquirá", "Villa de Leyva", "Puerto Boyacá", "Nobsa", "Tibasosa", "Samacá"],
-        "Caldas": ["Manizales", "La Dorada", "Chinchiná", "Villamaría", "Riosucio", "Anserma", "Salamina", "Aguadas"],
-        "Caquetá": ["Florencia", "San Vicente del Caguán", "Puerto Rico", "El Doncello", "La Montañita", "Belén de los Andaquíes"],
-        "Casanare": ["Yopal", "Aguazul", "Villanueva", "Tauramena", "Monterrey", "Maní", "Paz de Ariporo", "Trinidad"],
-        "Cauca": ["Popayán", "Santander de Quilichao", "Puerto Tejada", "Patía", "El Tambo", "Guapi", "Timbiquí", "Silvia", "Rosas"],
-        "Cesar": ["Valledupar", "Aguachica", "La Jagua de Ibirico", "Codazzi", "Bosconia", "Chimichagua", "Curumaní", "El Copey"],
-        "Chocó": ["Quibdó", "Istmina", "Tadó", "Condoto", "Bahía Solano", "Acandí", "Nuquí", "Lloró"],
-        "Córdoba": ["Montería", "Lorica", "Sahagún", "Cereté", "Tierralta", "Planeta Rica", "Montelíbano", "Ayapel"],
-        "Cundinamarca": ["Bogotá", "Soacha", "Chía", "Zipaquirá", "Facatativá", "Girardot", "Fusagasugá", "Mosquera", "Cajicá", "La Calera", "Madrid", "Funza", "Sibaté"],
-        "Guainía": ["Inírida", "Barranco Minas", "Cacahual", "Pana Pana"],
-        "Guaviare": ["San José del Guaviare", "Calamar", "Miraflores", "El Retorno"],
-        "Huila": ["Neiva", "Pitalito", "Garzón", "La Plata", "Campoalegre", "Rivera", "Yaguará", "Aipe"],
-        "La Guajira": ["Riohacha", "Maicao", "Uribia", "Fonseca", "San Juan del Cesar", "Manaure", "Dibulla"],
-        "Magdalena": ["Santa Marta", "Ciénaga", "Fundación", "El Banco", "Plato", "Aracataca", "Pivijay", "Zona Bananera"],
-        "Meta": ["Villavicencio", "Acacías", "Granada", "Puerto López", "San Martín", "Cumaral", "Guamal", "Cabuyaro"],
-        "Nariño": ["Pasto", "Tumaco", "Ipiales", "Túquerres", "La Unión", "Sandoná", "El Tambo", "Barbacoas"],
-        "Norte de Santander": ["Cúcuta", "Ocaña", "Pamplona", "Villa del Rosario", "Los Patios", "Chinácota", "Tibú"],
-        "Putumayo": ["Mocoa", "Puerto Asís", "Orito", "Sibundoy", "Valle del Guamuez", "Puerto Caicedo"],
-        "Quindío": ["Armenia", "Calarcá", "Montenegro", "La Tebaida", "Quimbaya", "Circasia", "Filandia"],
-        "Risaralda": ["Pereira", "Dosquebradas", "Santa Rosa de Cabal", "La Virginia", "Belén de Umbría", "Marsella"],
-        "San Andrés y Providencia": ["San Andrés", "Providencia"],
-        "Santander": ["Bucaramanga", "Floridablanca", "Girón", "Piedecuesta", "Barrancabermeja", "San Gil", "Socorro", "Lebrija"],
-        "Sucre": ["Sincelejo", "Corozal", "Sampués", "San Marcos", "Tolú", "San Onofre"],
-        "Tolima": ["Ibagué", "Espinal", "Melgar", "Honda", "Líbano", "Chaparral", "Mariquita", "Guamo"],
-        "Valle del Cauca": ["Cali", "Palmira", "Buenaventura", "Tuluá", "Buga", "Yumbo", "Cartago", "Jamundí", "Candelaria"],
-        "Vaupés": ["Mitú", "Carurú", "Taraira", "Pacoa"],
-        "Vichada": ["Puerto Carreño", "La Primavera", "Santa Rosalía", "Cumaribo"]
+        "AMA": ["Leticia", "Puerto Nariño"],
+        "AN": ["Medellín", "Bello", "Itagüí", "Envigado", "Rionegro", "Apartadó", "Turbo", "La Ceja", "Sabaneta", "Copacabana", "Marinilla", "Guarne", "Amagá", "Caucasia"],
+        "ARA": ["Arauca", "Arauquita", "Saravena", "Tame", "Cravo Norte", "Puerto Rondón", "Fortul"],
+        "ATL": ["Barranquilla", "Soledad", "Malambo", "Sabanalarga", "Puerto Colombia", "Galapa", "Baranoa", "Polonuevo", "Sabanagrande", "Campo de la Cruz"],
+        "BOL": ["Cartagena", "Magangué", "Turbaco", "Arjona", "El Carmen de Bolívar", "Mompox", "San Juan Nepomuceno", "María la Baja", "Santa Rosa", "Talaigua Nuevo"],
+        "BOY": ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Paipa", "Moniquirá", "Villa de Leyva", "Puerto Boyacá", "Nobsa", "Tibasosa", "Samacá"],
+        "CAL": ["Manizales", "La Dorada", "Chinchiná", "Villamaría", "Riosucio", "Anserma", "Salamina", "Aguadas"],
+        "CAQ": ["Florencia", "San Vicente del Caguán", "Puerto Rico", "El Doncello", "La Montañita", "Belén de los Andaquíes"],
+        "CAS": ["Yopal", "Aguazul", "Villanueva", "Tauramena", "Monterrey", "Maní", "Paz de Ariporo", "Trinidad"],
+        "CAU": ["Popayán", "Santander de Quilichao", "Puerto Tejada", "Patía", "El Tambo", "Guapi", "Timbiquí", "Silvia", "Rosas"],
+        "CES": ["Valledupar", "Aguachica", "La Jagua de Ibirico", "Codazzi", "Bosconia", "Chimichagua", "Curumaní", "El Copey"],
+        "CHO": ["Quibdó", "Istmina", "Tadó", "Condoto", "Bahía Solano", "Acandí", "Nuquí", "Lloró"],
+        "COR": ["Montería", "Lorica", "Sahagún", "Cereté", "Tierralta", "Planeta Rica", "Montelíbano", "Ayapel"],
+        "CUN": ["Bogotá", "Soacha", "Chía", "Zipaquirá", "Facatativá", "Girardot", "Fusagasugá", "Mosquera", "Cajicá", "La Calera", "Madrid", "Funza", "Sibaté"],
+        "GUA": ["Inírida", "Barranco Minas", "Cacahual", "Pana Pana"],
+        "GUV": ["San José del Guaviare", "Calamar", "Miraflores", "El Retorno"],
+        "HUI": ["Neiva", "Pitalito", "Garzón", "La Plata", "Campoalegre", "Rivera", "Yaguará", "Aipe"],
+        "LAG": ["Riohacha", "Maicao", "Uribia", "Fonseca", "San Juan del Cesar", "Manaure", "Dibulla"],
+        "MAG": ["Santa Marta", "Ciénaga", "Fundación", "El Banco", "Plato", "Aracataca", "Pivijay", "Zona Bananera"],
+        "MET": ["Villavicencio", "Acacías", "Granada", "Puerto López", "San Martín", "Cumaral", "Guamal", "Cabuyaro"],
+        "NAR": ["Pasto", "Tumaco", "Ipiales", "Túquerres", "La Unión", "Sandoná", "El Tambo", "Barbacoas"],
+        "NSA": ["Cúcuta", "Ocaña", "Pamplona", "Villa del Rosario", "Los Patios", "Chinácota", "Tibú"],
+        "PUT": ["Mocoa", "Puerto Asís", "Orito", "Sibundoy", "Valle del Guamuez", "Puerto Caicedo"],
+        "QUI": ["Armenia", "Calarcá", "Montenegro", "La Tebaida", "Quimbaya", "Circasia", "Filandia"],
+        "RIS": ["Pereira", "Dosquebradas", "Santa Rosa de Cabal", "La Virginia", "Belén de Umbría", "Marsella"],
+        "SAP": ["San Andrés", "Providencia"],
+        "SAN": ["Bucaramanga", "Floridablanca", "Girón", "Piedecuesta", "Barrancabermeja", "San Gil", "Socorro", "Lebrija"],
+        "SUC": ["Sincelejo", "Corozal", "Sampués", "San Marcos", "Tolú", "San Onofre"],
+        "TOL": ["Ibagué", "Espinal", "Melgar", "Honda", "Líbano", "Chaparral", "Mariquita", "Guamo"],
+        "VAC": ["Cali", "Palmira", "Buenaventura", "Tuluá", "Buga", "Yumbo", "Cartago", "Jamundí", "Candelaria"],
+        "VAU": ["Mitú", "Carurú", "Taraira", "Pacoa"],
+        "VID": ["Puerto Carreño", "La Primavera", "Santa Rosalía", "Cumaribo"]
     };
 
     const departamentoSelect = document.getElementById("departamento");
@@ -122,4 +123,129 @@ document.addEventListener("DOMContentLoaded", function () {
             errorMetodo.textContent = '';
         });
     });
+
+    ciudadSelect.addEventListener("change", function () {
+        const destinoDepto = departamentoSelect.value;
+        const destinoCiudad = ciudadSelect.value;
+
+        if (destinoDepto && destinoCiudad) {
+            obtenerCotizacion(destinoDepto, destinoCiudad);
+            obtenerProvincias();
+        }
+    });
+
+
+    function obtenerCotizacion(departamento, ciudad) {
+        const token = "451a74674f2b372e19edffe9d124c92135be3116e3b39670f36126b4f52652a1";
+
+        const payload = {
+            origin: {
+                name: "Tienda Web",
+                company: "finoso",
+                email: "davidpascuas708@gmail.com",
+                phone: "3173897119",
+                street: "Calle 42A",
+                number: "2W - 74",
+                district: "other",
+                city: "NEIVA",
+                state: "HU",
+                country: "CO",
+                postalCode: "410001",
+                reference: "",
+                coordinates: {
+                    latitude: "2.9386",
+                    longitude: "-75.2899"
+                }
+            },
+            destination: {
+                name: "Cliente Final",
+                company: "",
+                email: "cliente@correo.com",
+                phone: "3000000000",
+                street: "Cra 7",
+                number: "12",
+                district: "other",
+                city: ciudad.toUpperCase(),
+                state: departamento.toUpperCase(),
+                country: "CO",
+                postalCode: "050001",
+                reference: "",
+                coordinates: {
+                    latitude: "4.7110",  // Coordenadas genéricas de Colombia
+                    longitude: "-74.0721"
+                }
+            },
+            packages: [
+                {
+                    content: "reloj",
+                    amount: 1,
+                    type: "box",
+                    weight: 1,
+                    insurance: 0,
+                    declaredValue: 50000,
+                    weightUnit: "KG",
+                    lengthUnit: "CM",
+                    dimensions: {
+                        length: 30,
+                        width: 20,
+                        height: 10
+                    }
+                }
+            ],
+            shipment: {
+                carrier: "servientrega",  // Puedes cambiarlo dinámicamente
+                type: 1
+            },
+            settings: {
+                currency: "COP"
+            }
+        };
+
+        console.log("📤 Payload Enviado:", JSON.stringify(payload, null, 2));
+
+        fetch("https://api.envia.com/ship/rate/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(async response => {
+            const text = await response.text();
+            console.log("📥 Respuesta cruda:", text);
+
+            if (text.startsWith("<!DOCTYPE") || text.includes("<html")) {
+                document.getElementById("precio-envio").innerText = "❌ Error interno del servidor (HTML devuelto)";
+                return;
+            }
+
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (err) {
+                console.error("❌ Error al parsear JSON:", err);
+                document.getElementById("precio-envio").innerText = "❌ Respuesta no válida del servidor.";
+                return;
+            }
+
+            const precioEnvioDiv = document.getElementById("precio-envio");
+
+            if (Array.isArray(data)) {
+                let html = "<strong>Opciones de envío:</strong><ul>";
+                data.forEach(opcion => {
+                    html += `<li>${opcion.courier.name}: $${opcion.total.toLocaleString('es-CO')}</li>`;
+                });
+                html += "</ul>";
+                precioEnvioDiv.innerHTML = html;
+            } else {
+                console.warn("⚠️ Respuesta inesperada:", data);
+                precioEnvioDiv.innerText = "❌ No se encontraron opciones de envío.";
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error en la solicitud:", error);
+            document.getElementById("precio-envio").innerText = "❌ Error al obtener precio de envío.";
+        });
+    }
 });
