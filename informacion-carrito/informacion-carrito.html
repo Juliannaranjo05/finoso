@@ -51,77 +51,40 @@
             <h2>Finalizar Compra</h2>
         </div>
         <div class="contenedor-informacion-pago">
-            <div class="slider">
-                <div class="slider-wrapper">
-                    <div class="contenedor-general-informacion">
-                        <div class="img-informacion">
-                            <img id="img-lupa" src="../img/IMG_0168-Photoroom.png" alt="Imagen principal">
-                        </div>
-                        <div class="contenedor-informacion">
-                            <div class="nombre-informacion">
-                                <h2>Rchrd Mll Calavera Circones Dorado-Negro</h2>
-                            </div>
-                            <div class="contenedor-precio-total">
-                                <div class="precio">
-                                    <div class="precio-descuento">
-                                        <p>$130.000</p>
-                                        <h4>$145.000</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="descripcion-informacion">
-                                <h1>Detalles:</h1>
-                                <h2>Calavera central con incrustación de circones facetados. Bisel de acero pavonado y corona mecanizada con acabado satinado.</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contenedor-general-informacion">
-                        <div class="img-informacion">
-                            <img id="img-lupa" src="../img/IMG_0168-Photoroom.png" alt="Imagen principal">
-                        </div>
-                        <div class="contenedor-informacion">
-                            <div class="nombre-informacion">
-                                <h2>Rchrd Mll Calavera Circones Dorado-Negro</h2>
-                            </div>
-                            <div class="contenedor-precio-total">
-                                <div class="precio">
-                                    <div class="precio-descuento">
-                                        <p>$130.000</p>
-                                        <h4>$145.000</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="descripcion-informacion">
-                                <h1>Detalles:</h1>
-                                <h2>Calavera central con incrustación de circones facetados. Bisel de acero pavonado y corona mecanizada con acabado satinado.</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contenedor-general-informacion">
-                        <div class="img-informacion">
-                            <img id="img-lupa" src="../img/IMG_0168-Photoroom.png" alt="Imagen principal">
-                        </div>
-                        <div class="contenedor-informacion">
-                            <div class="nombre-informacion">
-                                <h2>Rchrd Mll Calavera Circones Dorado-Negro</h2>
-                            </div>
-                            <div class="contenedor-precio-total">
-                                <div class="precio">
-                                    <div class="precio-descuento">
-                                        <p>$130.000</p>
-                                        <h4>$145.000</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="descripcion-informacion">
-                                <h1>Detalles:</h1>
-                                <h2>Calavera central con incrustación de circones facetados. Bisel de acero pavonado y corona mecanizada con acabado satinado.</h2>
-                            </div>
-                        </div>
+            <div class="particles" id="particles"></div>
+                <div class="contenedor-general-informacion">
+                    <div class="navigation-controls">
+                <button class="nav-button" id="prevBtn" onclick="changeProduct(-1)">‹</button>
+                <div class="product-counter">
+                    <span id="currentProduct">1</span> / <span id="totalProducts">1</span>
+                </div>
+                <button class="nav-button" id="nextBtn" onclick="changeProduct(1)">›</button>
+            </div>
+                <div class="img-informacion">
+                    <img id="img-lupa" src="../img/IMG_0168-Photoroom.png" alt="Imagen principal">
+                    <!-- AQUI mas imagenes de otro producto -->
+                    <div class="product-thumbnails" id="thumbnails">
+                        <!-- Las miniaturas se generarán aquí -->
                     </div>
                 </div>
-                <button id="prev">⬅</button>
-                <button id="next">➡</button>
+                <div class="contenedor-informacion">
+                    <div class="nombre-informacion">
+                        <h2 id="product-name">Cargando...</h2>
+                    </div>
+                    <div class="contenedor-precio-total">
+                        <div class="precio">
+                            <div class="precio-descuento">
+                                <p id="current-price">$...</p>
+                                <h4 id="original-price">$...</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="descripcion-informacion">
+                        <h1>Detalles:</h1>
+                        <h2 id="product-description">...</h2>
+                    </div>
+                </div>
+                <!-- AQUI otro contenedor-informacion para la informacion del otro producto -->
             </div>
             <div class="contenedor-pago">
                 <div class="contenedor-metodos-pago">
@@ -317,7 +280,7 @@
                 </div>
             </div>
         </div>
-    <script src="js/deslizar.js"></script>
+    <script src="js/productos.js"></script>
     <script src="js/validaciones-compra.js"></script>
     <script src="js/lupa.js"></script>
     <script src="../js/carrito.js"></script>

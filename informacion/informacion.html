@@ -51,14 +51,15 @@
             <h2>Finalizar Compra</h2>
         </div>
         <div class="contenedor-informacion-pago">
+            <div class="particles" id="particles"></div>
             <div class="contenedor-general-informacion">
                 <div class="img-informacion">
                     <img id="img-lupa" src="../img/IMG_0168-Photoroom.png" alt="Imagen principal">
                 </div>
                 <div class="contenedor-img">
                     <img class="thumbnail active" src="../img/IMG_0168-Photoroom.png" alt="Imagen 1" data-full="../img/IMG_0168-Photoroom.png">
-                    <img class="thumbnail" src="../img/ChatGPT_Image_24_abr_2025__19_42_00-removebg-preview.png" alt="Imagen 3" data-full="../img/ChatGPT_Image_24_abr_2025__19_42_00-removebg-preview.png">
-                    <img class="thumbnail" src="../img/IMG_0163-Photoroom.png" alt="Imagen 4" data-full="../img/IMG_0163-Photoroom.png">
+                    <img class="thumbnail" src="../img/IMG_0168-Photoroom.png" alt="Imagen 3" data-full="../img/IMG_0168-Photoroom.png">
+                    <img class="thumbnail" src="../img/IMG_0168-Photoroom.png" alt="Imagen 4" data-full="../img/IMG_0168-Photoroom.png">
                 </div>
                 <div class="contenedor-informacion">
                     <div class="nombre-informacion">
@@ -296,6 +297,22 @@
                 </div>
             </div>
         </div>
+
+    <script>
+        function generateParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        generateParticles();
+    </script>
     <script src="js/validaciones-compra.js"></script>
     <script src="js/cambio-img.js"></script>
     <script src="js/lupa.js"></script>
