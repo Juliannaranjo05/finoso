@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     registroForm.addEventListener("submit", function (e) {
         const nombre = registroForm.querySelector('input[name="nombre"]').value.trim();
         const contrasena = passwordField.value.trim();
-        const email = registroForm.querySelector('input[name="email"]').value.trim();
+        const email = registroForm.querySelector('input[name="correo"]').value.trim();
 
         if (!nombre || !contrasena || !email) {
             e.preventDefault();
@@ -33,6 +33,36 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 400);
         } else {
             mensaje.textContent = "";
+        }
+    });
+
+    const form = document.getElementById('registroForm');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('http://127.0.0.1/finoso/login/registrarse/php/registrarse.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const resultado = await response.text();
+            alert(resultado);
+
+            if (resultado.includes("exitosamente")) {
+                window.location.href = '../login.html';
+            }
+
+        } catch (error) {
+            console.error('Error al registrar:', error);
+            alert('Error en el registro.');
         }
     });
 });

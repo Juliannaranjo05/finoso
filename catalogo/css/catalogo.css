@@ -639,6 +639,50 @@ nav {
 .close:hover::after {
     opacity: 1;
 }
+.user-box {
+    display: none;
+    background: linear-gradient(to bottom right, #2b2b2b, #1a1a1a);
+    border: 1px solid #FFCF66;
+    padding: 10px 15px;
+    border-radius: 12px;
+    position: absolute;
+    top: 0; /* Ajusta según el diseño */
+    right: 0; /* Ajusta según el diseño */
+    color: #fff;
+    font-family: 'Georgia', serif;
+    box-shadow: 0 0 10px #FFCF66;
+    z-index: 1000;
+    width: 130px;
+    text-align: center;
+}
+
+.user-box .username {
+  font-size: 16px;
+  color: #FFCF66;
+  margin: 0 0 10px;
+  font-weight: bold;
+}
+
+.user-box .username {
+  color: #fff;
+  font-style: italic;
+}
+
+.logout-btn {
+  background-color: transparent;
+  color: #FFCF66;
+  border: 1px solid #FFCF66;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background-color: #FFCF66;
+  color: #1a1a1a;
+}
 @media ( width < 1115px) {
     .marca p{
         font-size: 1.1rem;
@@ -672,6 +716,13 @@ nav {
         font-size: 1.6rem;
         color: #FFCF66;
         margin: 0;
+    }
+}
+@media ( width < 1068px) {
+    .user-box {
+    top: 45px; /* Ajusta según el diseño */
+    right: 13%; /* Ajusta según el diseño */
+    width: 130px;
     }
 }
 @media (width < 768px) {
@@ -722,6 +773,11 @@ nav {
         right: 30px;
         padding: 20px;
         overflow-x: hidden;
+    }
+    .user-box {
+        top: 125px; /* Ajusta según el diseño */
+        right: 32%; /* Ajusta según el diseño */
+        width: 120px;
     }
 }
 @media ( width < 500px) {
