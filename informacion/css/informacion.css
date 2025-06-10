@@ -21,6 +21,7 @@ html {
 }
 a {
     text-decoration: none;
+    text-align: center;
 }
 nav {
     width: 100vw;
@@ -1051,6 +1052,11 @@ select {
 .logout-btn:hover {
   background-color: #FFCF66;
   color: #1a1a1a;
+}
+.tachado {
+    opacity: 0.6;
+    text-decoration: line-through;
+    color: rgb(255, 48, 89);
 }
 @media ( width < 1068px) {
     .user-box {

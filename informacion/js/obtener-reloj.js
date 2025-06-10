@@ -164,4 +164,62 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error al cargar datos del reloj:', error);
             document.querySelector('.contenedor-general-informacion').innerHTML = "<p>Error al cargar la información del reloj.</p>";
         });
+
+        fetch(`http://127.0.0.1/finoso/informacion/php/obtener_relacionados.php?id_reloj=${relojId}`)
+            .then(res => res.json())
+            .then(relacionados => {
+                if (!Array.isArray(relacionados) || relacionados.length === 0) {
+                    document.querySelector('.contenedor-general-cards').innerHTML = "<p>No hay productos relacionados.</p>";
+                    return;
+                }
+
+                const relacionadosHTML = relacionados.map(prod => {
+                    const precioOriginal = Number(prod.precio);
+                    const descuento = Number(prod.descuento);
+                    const precioConDescuento = Math.round(precioOriginal - (precioOriginal * descuento));
+                    const disponible = Number(prod.disponible) === 1;
+
+                    // Precio o mensaje de agotado
+                    const precioHTML = disponible
+                        ? (descuento > 0
+                            ? `$${precioConDescuento.toLocaleString('es-CO')}.000 <span class="tachado">$${precioOriginal.toLocaleString('es-CO')}.000</span>`
+                            : `$${precioOriginal.toLocaleString('es-CO')}.000`)
+                        : `<span class="tachado">AGOTADO</span>`;
+
+                    // Botón con estilos si está deshabilitado
+                    const botonExplorar = `
+                        <button class="btn-whatsapp" ${!disponible ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : `onclick="window.location.href='../informacion/informacion.html?id_reloj=${prod.id_reloj}'"`}>
+                            Explorar modelo
+                        </button>
+                    `;
+
+                    return `
+                        <div class="contenedor-card">
+                            <div class="cuadro-card">
+                                <img src="../${prod.img}" class="zoom-img" alt="${prod.nombre}">
+                                <div class="texto-card">
+                                    <h3>${prod.nombre}</h3>
+                                    <p>${precioHTML}</p>
+                                    <div class="boton-wh">
+                                        ${botonExplorar}
+                                        <svg class="ornamento" width="60" height="10" viewBox="0 0 60 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <line x1="0" y1="5" x2="20" y2="5" stroke="#FFCF66" stroke-width="1" opacity="0.3"/>
+                                            <polygon points="27,5 30,0 33,5 30,10" fill="#FFCF66"/>
+                                            <polygon points="20,5 22,2.5 24,5 22,7.5" fill="#FFCF66"/>
+                                            <polygon points="36,5 38,2.5 40,5 38,7.5" fill="#FFCF66"/>
+                                            <line x1="40" y1="5" x2="60" y2="5" stroke="#FFCF66" stroke-width="1" opacity="0.3"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                document.querySelector('.contenedor-general-cards').innerHTML = relacionadosHTML;
+            })
+            .catch(err => {
+                console.error("Error al cargar productos relacionados:", err);
+                document.querySelector('.contenedor-general-cards').innerHTML = "<p>Error al mostrar productos relacionados.</p>";
+        });
 });
