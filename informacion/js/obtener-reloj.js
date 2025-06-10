@@ -169,8 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(relacionados => {
                 if (!Array.isArray(relacionados) || relacionados.length === 0) {
-                    document.querySelector('.contenedor-general-cards').innerHTML = "<p>No hay productos relacionados.</p>";
+                    document.querySelector('.contenedor-general-cards').innerHTML = "<p></p>";
+                    document.getElementById('productoRelacionados').style.display = 'none';
                     return;
+
+                    
                 }
 
                 const relacionadosHTML = relacionados.map(prod => {

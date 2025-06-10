@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const botonCarrito = document.querySelector('.boton-añadir button');
+    const botonCarrito = document.querySelector('.botones-comprar-anadir button');
 
     botonCarrito.addEventListener('click', () => {
         const params = new URLSearchParams(window.location.search);
         const idReloj = params.get('id_reloj');
 
-        fetch('http://127.0.0.1/finisimo/php/verificar_sesion.php')
+        fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php')
             .then(res => res.json())
             .then(data => {
                 if (!data.logged_in) {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                fetch('http://127.0.0.1/finisimo/informacion/php/añadir_al_carrito.php', {
+                fetch('http://127.0.0.1/finoso/informacion/php/añadir_al_carrito.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (data.success) {
                         alert('Producto añadido al carrito.');
                     } else {
-                        alert('Error: ' + data.message);
+                        alert(data.message);
                     }
                 })
                 .catch(err => {

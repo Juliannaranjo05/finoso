@@ -1,39 +1,57 @@
 // Base de datos de productos
-        let products = [
-            {
-                id: 1,
-                name: "Rchrd Mll Calavera Circones Dorado-Negro",
-                currentPrice: "$130.000",
-                originalPrice: "$145.000",
-                description: "Calavera central con incrustación de circones facetados. Bisel de acero pavonado y corona mecanizada con acabado satinado. Un diseño único que combina elegancia y rebeldía.",
-                image: "../img/IMG_0168-Photoroom.png"
-            },
-            {
-                id: 2,
-                name: "Rchrd Mll Sport Edition",
-                currentPrice: "$195.000",
-                originalPrice: "$220.000",
-                description: "Edición deportiva con resistencia al agua IPX8, cronómetro integrado y correa de silicona de alta calidad. Diseñado para aventureros y atletas de élite.",
-                image: "../img/ChatGPT_Image_24_abr_2025__19_42_00-removebg-preview.png"
-            },
-            {
-                id: 3,
-                name: "Rchrd Mll Classic Gold",
-                currentPrice: "$250.000",
-                originalPrice: "$300.000",
-                description: "Elegante diseño clásico con caja de oro rosa y esfera de nácar. Perfecto para ocasiones especiales y ejecutivos distinguidos.",
-                image: "../img/IMG_0163-Photoroom.png"
-            },
-            {
-                id: 3,
-                name: "Rchrd Mll Classic Gold",
-                currentPrice: "$250.000",
-                originalPrice: "$300.000",
-                description: "Elegante diseño clásico con caja de oro rosa y esfera de nácar. Perfecto para ocasiones especiales y ejecutivos distinguidos.",
-                image: "../img/IMG_0163-Photoroom.png"
-            }
-        ];
+        let products = [];
 
+        fetch('http://127.0.0.1/finoso/informacion-carrito/php/obtener_carrito.php')
+            .then(res => res.json())
+            .then(data => {
+                console.log('Productos recibidos:', data); // Verifica los datos recibidos
+                products = data;
+
+                if (products.length === 0) {
+                    console.warn('No se encontraron productos en la respuesta');
+                }
+
+                if (products.length > 0) {
+                    updateProduct(); // Solo actualizar si hay productos
+                }
+
+                const contenedor = document.querySelector('.contenedor-info-relojes-carrito');
+                const totalContainer = document.querySelector('.total-carrito h3');
+
+                contenedor.innerHTML = '';  // Limpiar el contenedor antes de agregar nuevos productos
+
+                data.forEach(reloj => {
+                    // Verifica si el producto tiene un precio original (lo que indica un descuento)
+                    const precioOriginalHTML = reloj.originalPrice ? `<h4 id="original-price">${reloj.originalPrice}</h4>` : '';
+
+                    contenedor.innerHTML += `
+                        <div class="cuadro-info-reloj-carrito">
+                            <div class="img-reloj-carrito">
+                                <img src="${reloj.image}" alt="${reloj.name}">
+                            </div>
+                            <div class="nombre-precio-carrito">
+                                <div class="nombre-carrito">
+                                    <h2>${reloj.name}</h2>
+                                </div>
+                                <div class="precio-carrito">
+                                    ${precioOriginalHTML}  
+                                    <h3>${reloj.currentPrice}</h3>  
+                                </div>
+                            </div>
+                            <div class="boton-eliminar">
+                                <button data-id="${reloj.id}">Eliminar</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // Actualizar el total
+                totalContainer.textContent = `$${data.reduce((acc, reloj) => acc + parseInt(reloj.currentPrice.replace(/\D/g, '')), 0)}.000`;
+
+            })
+            .catch(err => {
+                console.error('Error al obtener el carrito:', err);
+        });
         let currentIndex = 0;
 
         function generateParticles() {
@@ -50,11 +68,25 @@
 
         function updateProduct() {
             const product = products[currentIndex];
-            
+
+            // Verifica si el producto existe antes de acceder a sus propiedades
+            if (!product) {
+                console.error('Producto no encontrado en el índice', currentIndex);
+                return; // Termina la función si no hay un producto válido
+            }
+
             document.getElementById('img-lupa').src = product.image;
             document.getElementById('product-name').textContent = product.name;
             document.getElementById('current-price').textContent = product.currentPrice;
-            document.getElementById('original-price').textContent = product.originalPrice;
+
+            // Si hay descuento, muestra el precio original
+            if (product.originalPrice) {
+                document.getElementById('original-price').textContent = product.originalPrice;
+                document.getElementById('original-price').style.display = 'block';
+            } else {
+                document.getElementById('original-price').style.display = 'none';
+            }
+
             document.getElementById('product-description').textContent = product.description;
             document.getElementById('currentProduct').textContent = currentIndex + 1;
             document.getElementById('totalProducts').textContent = products.length;

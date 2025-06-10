@@ -269,11 +269,9 @@ section {
         opacity: 1;
     }
 }
-
 #insertar-img {
     width: 100%;
     max-width: 500px;
-    display: none; /* Oculto por defecto */
     margin: 0 auto;
 }
 .img img {
