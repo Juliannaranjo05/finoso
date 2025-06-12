@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     if (data.success) {
                         alert('Producto añadido al carrito.');
+                       window.location.reload();
                     } else {
                         alert(data.message);
                     }
