@@ -51,14 +51,14 @@
         </div>
         <div class="contenedor-informacion-pago">
             <div class="particles" id="particles"></div>
-                <div class="contenedor-general-informacion">
-                    <div class="navigation-controls">
-                <button class="nav-button" id="prevBtn" onclick="changeProduct(-1)">‹</button>
-                <div class="product-counter">
-                    <span id="currentProduct">1</span> / <span id="totalProducts">1</span>
+            <div class="contenedor-general-informacion">
+                <div class="navigation-controls">
+                    <button class="nav-button" id="prevBtn" onclick="changeProduct(-1)">‹</button>
+                    <div class="product-counter">
+                        <span id="currentProduct">1</span> / <span id="totalProducts">1</span>
+                    </div>
+                    <button class="nav-button" id="nextBtn" onclick="changeProduct(1)">›</button>
                 </div>
-                <button class="nav-button" id="nextBtn" onclick="changeProduct(1)">›</button>
-            </div>
                 <div class="img-informacion">
                     <img id="img-lupa" src="../img/" alt="Imagen principal">
                     <!-- AQUI mas imagenes de otro producto -->
@@ -77,6 +77,9 @@
                                 <h4 id="original-price">$...</h4>
                             </div>
                         </div>
+                    </div>
+                    <div class="contenedor-total">
+                        <h3>Total:</h3><p id="precio-total">$245.000</p>
                     </div>
                     <div class="descripcion-informacion">
                         <h1>Detalles:</h1>

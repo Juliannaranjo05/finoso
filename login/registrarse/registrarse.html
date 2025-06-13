@@ -132,6 +132,33 @@
                 </div>
             </div>
         </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.querySelector('.input-password input');
+            const eyeOpen = document.getElementById('eye-open');
+            const eyeClosed = document.getElementById('eye-closed');
+
+            if (togglePassword && passwordInput && eyeOpen && eyeClosed) {
+                togglePassword.addEventListener('click', function() {
+                    // Alternar el tipo de input entre password y text
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    
+                    // Alternar la visibilidad de los iconos
+                    if (type === 'password') {
+                        eyeOpen.style.display = 'none';
+                        eyeClosed.style.display = 'block';
+                    } else {
+                        eyeOpen.style.display = 'block';
+                        eyeClosed.style.display = 'none';
+                    }
+                });
+            } else {
+                console.error('No se encontraron todos los elementos necesarios para el toggle de contraseña');
+            }
+        });
+    </script>
     <script src="js/register.js"></script>
     <script src="../../js/carrito.js"></script>
 </body>

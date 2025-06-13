@@ -33,22 +33,23 @@ $result = $stmt->get_result();
 $productos = [];
 
 while ($row = $result->fetch_assoc()) {
-    $precioOriginal = (int) $row['precio'];
+    $precioOriginal = (float) $row['precio']; // Cambiado a float
     $descuento = (float) $row['descuento'];
-    $precioFinal = $descuento > 0 ? round($precioOriginal - ($precioOriginal * $descuento)) : $precioOriginal;
-
+    
     if ($descuento > 0) {
-        $precioFinal = round($precioOriginal * (1 - $descuento)); // precio con descuento
+        $precioFinal = round($precioOriginal * (1 - $descuento), 2); // Mantenemos 2 decimales
+    } else {
+        $precioFinal = $precioOriginal;
     }
 
     $producto = [
         'id' => $row['id'],
         'name' => $row['name'],
-        'currentPrice' => '$' . $precioFinal . '.000', // valor numérico limpio
-        'originalPrice' => $descuento > 0 ?  '$' . $precioOriginal . '.000': null, // solo si hay descuento
+        'currentPrice' => $precioFinal,
+        'originalPrice' => $descuento > 0 ? $precioOriginal : null,
         'description' => $row['description'],
         'image' => '../' . $row['image'],
-        'descuento' => $descuento // opcional si lo quieres usar en JS también
+        'descuento' => $descuento
     ];
 
     $productos[] = $producto;

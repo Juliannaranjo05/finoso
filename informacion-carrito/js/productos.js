@@ -1,35 +1,78 @@
 // Base de datos de productos
         let products = [];
 
+        const formatPrice = price => {
+        let valor = parseFloat(price);
+         valor = Math.round(valor / 1000) * 1000; // Redondea al múltiplo de mil más cercano
+        return '$' + valor.toLocaleString('es-CO');
+        };
+
         fetch('http://127.0.0.1/finoso/informacion-carrito/php/obtener_carrito.php')
-            .then(res => res.json())
+            .then(res => {
+                console.log('Respuesta HTTP recibida, estado:', res.status);
+                return res.json().then(data => {
+                    console.log('Datos JSON parseados:', JSON.stringify(data, null, 2));
+                    return data;
+                });
+            })
             .then(data => {
+                console.log('Datos recibidos en el segundo then:', data);
+                
                 products = data;
+                console.log('Products asignado:', products);
 
                 if (products.length === 0) {
                     console.warn('No se encontraron productos en la respuesta');
                 }
 
                 if (products.length > 0) {
+                    console.log('Llamando a updateProduct()');
                     updateProduct();
                 }
 
                 const contenedor = document.querySelector('.contenedor-info-relojes-carrito');
                 const totalContainer = document.querySelector('.total-carrito h3');
+                const precioTotal = document.getElementById('precio-total');
+
+                console.log('Contenedor seleccionado:', contenedor);
+                console.log('Total container seleccionado:', totalContainer);
+                console.log('Precio total seleccionado:', precioTotal);
 
                 contenedor.innerHTML = '';
+                console.log('Contenedor vaciado');
 
-                data.forEach(reloj => {
-                    const precioFormateado = `$${Number(reloj.currentPrice).toLocaleString('es-CO')}.000`;
-                    const precioOriginalFormateado = reloj.originalPrice
-                        ? `$${Number(reloj.originalPrice).toLocaleString('es-CO')}.000`
-                        : '';
+                data.forEach((reloj, index) => {
+                    console.log(`Procesando producto ${index + 1}:`, reloj);
+                    
+                    // Debug de precios
+                    console.log(`Precio original (crudo) para ${reloj.name}:`, reloj.originalPrice);
+                    console.log(`Precio actual (crudo) para ${reloj.name}:`, reloj.currentPrice);
+                    
+                    const precioFinal = parseFloat(reloj.currentPrice) * 1000;
+                    const precioOriginal = reloj.originalPrice ? parseFloat(reloj.originalPrice) * 1000 : null;
+                    
+                    console.log(`Precio final calculado (x1000) para ${reloj.name}:`, precioFinal);
+                    console.log(`Precio original calculado (x1000) para ${reloj.name}:`, precioOriginal);
 
-                    const precioOriginalHTML = reloj.originalPrice
+                    const formatPrice = price => {
+                    let valor = parseFloat(price) * 1000;
+                    valor = Math.round(valor / 1000) * 1000; // Redondea al múltiplo de mil más cercano
+                    return '$' + valor.toLocaleString('es-CO');
+                    };
+
+                    const precioFormateado = formatPrice(precioFinal); // NO multipliques por 1000 aquí
+                    const precioOriginalFormateado = precioOriginal ? formatPrice(precioOriginal) : '';
+
+                    console.log(`Precio formateado final para ${reloj.name}:`, precioFormateado);
+                    console.log(`Precio original formateado para ${reloj.name}:`, precioOriginalFormateado);
+
+                    const precioOriginalHTML = precioOriginal
                         ? `<h4 id="original-price">${precioOriginalFormateado}</h4>`
                         : '';
 
-                    contenedor.innerHTML += `
+                    console.log(`HTML generado para precios originales:`, precioOriginalHTML);
+
+                    const productoHTML = `
                         <div class="cuadro-info-reloj-carrito">
                             <div class="img-reloj-carrito">
                                 <img src="${reloj.image}" alt="${reloj.name}">
@@ -48,11 +91,29 @@
                             </div>
                         </div>
                     `;
+
+                    console.log(`HTML completo para ${reloj.name}:`, productoHTML);
+                    
+                    contenedor.innerHTML += productoHTML;
                 });
 
-                // Calcular total
-                const total = data.reduce((acc, reloj) => acc + Number(reloj.currentPrice), 0);
-                totalContainer.textContent = `$${total.toLocaleString('es-CO')}.000`;
+                // Debug del cálculo del total
+                console.log('Calculando total...');
+                const totalSinFormato = data.reduce((acc, reloj) => {
+                const precio = parseFloat(reloj.currentPrice) * 1000;
+                return acc + precio;
+                }, 0);
+
+                // Redondea el total al múltiplo de mil más cercano
+                const totalFormateado = formatPrice(totalSinFormato);
+
+                // Mostrar total en dos lugares
+                totalContainer.textContent = totalFormateado;
+                if (precioTotal) {
+                    precioTotal.textContent = totalFormateado;
+                }
+                
+                console.log('Proceso completado. Verifica el DOM ahora.');
             })
             .catch(err => {
                 console.error('Error al obtener el carrito:', err);
@@ -75,18 +136,14 @@
         function updateProduct() {
             const product = products[currentIndex];
 
-            // Verifica si el producto existe antes de acceder a sus propiedades
-            if (!product) {
-                return; // Termina la función si no hay un producto válido
-            }
+            if (!product) return;
 
             document.getElementById('img-lupa').src = product.image;
             document.getElementById('product-name').textContent = product.name;
-            document.getElementById('current-price').textContent = product.currentPrice;
 
-            // Si hay descuento, muestra el precio original
+            document.getElementById('current-price').textContent = formatPrice(product.currentPrice * 1000);
             if (product.originalPrice) {
-                document.getElementById('original-price').textContent = product.originalPrice;
+                document.getElementById('original-price').textContent = formatPrice(product.originalPrice * 1000);
                 document.getElementById('original-price').style.display = 'block';
             } else {
                 document.getElementById('original-price').style.display = 'none';
@@ -98,8 +155,7 @@
 
             document.getElementById('prevBtn').disabled = currentIndex === 0;
             document.getElementById('nextBtn').disabled = currentIndex === products.length - 1;
-            
-            // Actualizar miniaturas
+
             updateThumbnails();
         }
 

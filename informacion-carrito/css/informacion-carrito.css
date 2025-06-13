@@ -318,6 +318,16 @@ nav {
     gap: 10px;
     display: flex;
 }
+.contenedor-total {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.contenedor-total h3 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    font-weight: normal;
+        }
 .precio-descuento p {
     font-size: 2rem;
     text-shadow: 
@@ -1145,6 +1155,11 @@ select {
   background-color: #FFCF66;
   color: #1a1a1a;
 }
+#precio-total {
+    font-size: 1.5rem;
+    color: #FFCF66;
+    font-weight: bold;
+}
 @media ( width < 1068px) {
     .user-box {
     top: 45px; /* Ajusta según el diseño */
@@ -1159,8 +1174,11 @@ select {
     .descripcion-informacion h2 {
         font-size: 1.8rem;
     }
+    .contenedor-informacion-pago {
+        padding: 20px;
+    }
 }
-@media (width < 750px) {
+@media (width < 820px) {
     .contenedor-informacion-pago {
         flex-direction: column;
     }
@@ -1174,6 +1192,7 @@ select {
     .contenedor-general-cards {
         grid-template-columns: auto; /* Cambia a 2 columnas */
     }
+    
 }
 @media ( width < 660px) {
     nav {
@@ -1208,7 +1227,7 @@ select {
 }
 @media ( width < 460px) {
     nav {
-        width: 103vw;
+        width: 120vw;
         flex-direction: column;
         align-items: center;
         margin-bottom: 20px;
