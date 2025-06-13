@@ -1,16 +1,15 @@
 * {
-    font-family: 'Playfair-Light.ttf';
+    font-family: 'Playfair Display', serif;
     margin: 0;
     color: #FFCF66;
-    
 }
 @font-face {
-    font-family: 'Playfair-Light.ttf';
-    src: url(fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf) format('truetype');
+    font-family: 'Playfair Display';
+    src: url('/finoso/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
 }
 @font-face {
-    font-family: 'InriaSans-Light.ttf';
-    src: url(fonts/InriaSans/InriaSans-Regular.ttf) format('truetype');
+    font-family: 'Inria Sans';
+    src: url('/finoso/fonts/Inria_Sans/InriaSans-Regular.ttf') format('truetype');
 }
 body {
     background-color: #090909;
@@ -987,7 +986,6 @@ select {
     color: #FFFF;
     border: 2px solid #FFCF66;
     border-radius: 12px;
-    font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
@@ -1204,9 +1202,13 @@ select {
         right: 32%; /* Ajusta según el diseño */
         width: 120px;
     }
+    .boton-anadir h2 {
+        font-size: 1.5rem;
+    }
 }
 @media ( width < 460px) {
     nav {
+        width: 103vw;
         flex-direction: column;
         align-items: center;
         margin-bottom: 20px;
@@ -1231,5 +1233,10 @@ select {
     }
     .img-informacion {
         padding: 9px 17px;
+    }
+    .boton-finalizar-carrito button {
+        width: 120px;
+        height: 35px;
+        font-size: 12px;
     }
 }

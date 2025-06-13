@@ -40,6 +40,17 @@ function lerp(start, end, factor) {
 }
 
 function interpolateKeyframes(keyframe1, keyframe2, factor) {
+    // Verificar que los keyframes existen y tienen las propiedades necesarias
+    if (!keyframe1 || !keyframe2 || 
+        typeof keyframe1.x === 'undefined' || typeof keyframe2.x === 'undefined') {
+        return {
+            x: 0,
+            y: 0,
+            rotation: 0,
+            scale: 1
+        };
+    }
+    
     return {
         x: lerp(keyframe1.x, keyframe2.x, factor),
         y: lerp(keyframe1.y, keyframe2.y, factor),
@@ -60,13 +71,11 @@ function cargarImagenesDestacadas() {
         .then(res => res.json())
         .then(imagenes => {
             if (!Array.isArray(imagenes) || imagenes.length === 0) {
-                console.error("No se encontraron imágenes destacadas.");
                 return;
             }
 
             const contenedor = document.querySelector('.contenedor-img-coleccion');
             if (!contenedor) {
-                console.error("No se encontró el contenedor de imágenes.");
                 return;
             }
 
@@ -95,10 +104,9 @@ function cargarImagenesDestacadas() {
             });
 
             imagenesDestacadasCargadas = true;
-            console.log("Imágenes destacadas cargadas correctamente");
         })
         .catch(err => {
-            console.error("Error al cargar las imágenes destacadas:", err);
+
         });
 }
 
@@ -112,10 +120,15 @@ function updateOnScroll() {
         progressBar.style.width = (scrollProgress * 100) + '%';
     }
 
+    // Verificar que keyframes existe y tiene elementos antes de procesar
+    if (!keyframes || keyframes.length < 2) {
+        return;
+    }
+
     // Interpolación de keyframes
     const totalSegments = keyframes.length - 1;
-    const currentSegment = Math.floor(scrollProgress * totalSegments);
-    const nextSegment = Math.min(currentSegment + 1, totalSegments);
+    const currentSegment = Math.min(Math.floor(scrollProgress * totalSegments), keyframes.length - 2);
+    const nextSegment = Math.min(currentSegment + 1, keyframes.length - 1);
     const segmentProgress = (scrollProgress * totalSegments) - currentSegment;
 
     const transforms = interpolateKeyframes(
@@ -128,20 +141,16 @@ function updateOnScroll() {
         applyTransforms(transforms);
     }
 
-    // Dots activos
+    // Resto del código original...
     dots.forEach((dot, index) => {
         const currentSectionIndex = Math.round(scrollProgress * (dots.length - 1));
         dot.classList.toggle('active', index === currentSectionIndex);
     });
 
-    // Control de visibilidad de elementos
     const sectionSize = 1 / (dots.length - 1);
-    const activationOffset = 0; // Aquí cambias el % que quieras (0.1 = 10%)
-
-    const start = sectionSize * 1 + sectionSize * activationOffset; // sección 2 + offset
+    const activationOffset = 0;
+    const start = sectionSize * 1 + sectionSize * activationOffset;
     const end = sectionSize * 2;
-
-    // Obtener el elemento insertar-img actualizado (por si se recargó el contenedor)
     const insertarImgElement = document.getElementById('insertar-img');
 
     if (scrollProgress >= start && scrollProgress < end) {
@@ -155,6 +164,9 @@ function updateOnScroll() {
 
 // Inicialización cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
+    // Asegurar que los keyframes estén inicializados
+    keyframes = getKeyframes();
+    
     // Cargar las imágenes destacadas primero
     cargarImagenesDestacadas().then(() => {
         // Una vez cargadas las imágenes, inicializar el scroll

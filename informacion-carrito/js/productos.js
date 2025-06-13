@@ -4,7 +4,6 @@
         fetch('http://127.0.0.1/finoso/informacion-carrito/php/obtener_carrito.php')
             .then(res => res.json())
             .then(data => {
-                console.log('Productos recibidos:', data); // Verifica los datos recibidos
                 products = data;
 
                 if (products.length === 0) {
@@ -12,17 +11,23 @@
                 }
 
                 if (products.length > 0) {
-                    updateProduct(); // Solo actualizar si hay productos
+                    updateProduct();
                 }
 
                 const contenedor = document.querySelector('.contenedor-info-relojes-carrito');
                 const totalContainer = document.querySelector('.total-carrito h3');
 
-                contenedor.innerHTML = '';  // Limpiar el contenedor antes de agregar nuevos productos
+                contenedor.innerHTML = '';
 
                 data.forEach(reloj => {
-                    // Verifica si el producto tiene un precio original (lo que indica un descuento)
-                    const precioOriginalHTML = reloj.originalPrice ? `<h4 id="original-price">${reloj.originalPrice}</h4>` : '';
+                    const precioFormateado = `$${Number(reloj.currentPrice).toLocaleString('es-CO')}.000`;
+                    const precioOriginalFormateado = reloj.originalPrice
+                        ? `$${Number(reloj.originalPrice).toLocaleString('es-CO')}.000`
+                        : '';
+
+                    const precioOriginalHTML = reloj.originalPrice
+                        ? `<h4 id="original-price">${precioOriginalFormateado}</h4>`
+                        : '';
 
                     contenedor.innerHTML += `
                         <div class="cuadro-info-reloj-carrito">
@@ -34,8 +39,8 @@
                                     <h2>${reloj.name}</h2>
                                 </div>
                                 <div class="precio-carrito">
-                                    ${precioOriginalHTML}  
-                                    <h3>${reloj.currentPrice}</h3>  
+                                    ${precioOriginalHTML}
+                                    <h3>${precioFormateado}</h3>
                                 </div>
                             </div>
                             <div class="boton-eliminar">
@@ -45,13 +50,14 @@
                     `;
                 });
 
-                // Actualizar el total
-                totalContainer.textContent = `$${data.reduce((acc, reloj) => acc + parseInt(reloj.currentPrice.replace(/\D/g, '')), 0)}.000`;
-
+                // Calcular total
+                const total = data.reduce((acc, reloj) => acc + Number(reloj.currentPrice), 0);
+                totalContainer.textContent = `$${total.toLocaleString('es-CO')}.000`;
             })
             .catch(err => {
                 console.error('Error al obtener el carrito:', err);
-        });
+            });
+        
         let currentIndex = 0;
 
         function generateParticles() {
@@ -71,7 +77,6 @@
 
             // Verifica si el producto existe antes de acceder a sus propiedades
             if (!product) {
-                console.error('Producto no encontrado en el índice', currentIndex);
                 return; // Termina la función si no hay un producto válido
             }
 

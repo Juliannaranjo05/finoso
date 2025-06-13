@@ -34,34 +34,23 @@ $productos = [];
 
 while ($row = $result->fetch_assoc()) {
     $precioOriginal = (int) $row['precio'];
-    $descuento = (int) $row['descuento'];
-    $precioFinal = $precioOriginal;
+    $descuento = (float) $row['descuento'];
+    $precioFinal = $descuento > 0 ? round($precioOriginal - ($precioOriginal * $descuento)) : $precioOriginal;
 
     if ($descuento > 0) {
-        // Calcular el precio con descuento
-        $precioConDescuento = $precioOriginal * (1 - $descuento);  // Resta el descuento al precio original
-        $precioConDescuento = round($precioConDescuento, 0);  // Redondeamos el precio a la unidad más cercana
-        $precioConDescuento = number_format($precioConDescuento, 0, ',', '.') . '.000';  // Formateamos con .000
-    } else {
-        // Si no hay descuento, el precio es el original
-        $precioConDescuento = number_format($precioOriginal, 0, ',', '.') . '.000';
+        $precioFinal = round($precioOriginal * (1 - $descuento)); // precio con descuento
     }
-
-    // Calcular la diferencia entre el precio original y el precio con descuento
-    $diferenciaPrecio = $precioOriginal - $precioConDescuento;
-    $diferenciaPrecio = number_format($diferenciaPrecio, 0, ',', '.') . '.000'; // Formatear la diferencia
 
     $producto = [
         'id' => $row['id'],
         'name' => $row['name'],
-        'currentPrice' => $precioConDescuento,  // Precio con descuento
-        'originalPrice' => $descuento > 0 ? '$' . number_format($precioOriginal, 0, ',', '.') . '.000' : null,  // Precio original si hay descuento
-        'discountDifference' => $descuento > 0 ? '$' . $diferenciaPrecio : null,  // Diferencia si hay descuento
+        'currentPrice' => '$' . $precioFinal . '.000', // valor numérico limpio
+        'originalPrice' => $descuento > 0 ?  '$' . $precioOriginal . '.000': null, // solo si hay descuento
         'description' => $row['description'],
-        'image' => '../' . $row['image']
+        'image' => '../' . $row['image'],
+        'descuento' => $descuento // opcional si lo quieres usar en JS también
     ];
 
-    // Agregar el producto al array de productos
     $productos[] = $producto;
 }
 
