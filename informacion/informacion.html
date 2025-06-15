@@ -80,22 +80,23 @@
             </div>
             <div class="contenedor-pago">
                 <div class="contenedor-metodos-pago">
-                    <div class="texto-metodos-pago">
-                        <h3>Metodos de Pago:</h3>
-                    </div>
-                    <div class="botones-metodos-pago">
-                        <div class="boton-metodo">
-                            <img class="mercado-pago" src="img/mercado-pago.jpg" alt="Mercado Pago" data-metodo="mercado_pago">
-                        </div>
-                        <div class="boton-metodo">
-                            <img class="wompi" src="img/Wompi_ContraccionSecundaria.jpg" alt="Wompi" data-metodo="wompi">
-                        </div>
-                        <input type="hidden" id="metodo-pago" name="metodo_pago" required>
-                        <span class="error-message" id="error-metodo-pago"></span>
-                    </div>
                     <div class="form-container">
-                        <h2>Datos de Envío:</h2>
                         <form action="#" method="POST" id="form-envio">
+                            <div class="texto-metodos-pago">
+                                <h3>Metodos de Pago:</h3>
+                            </div>
+                            <div class="botones-metodos-pago">
+                                <div class="boton-metodo">
+                                    <img class="mercado-pago" src="img/mercado-pago.jpg" alt="Mercado Pago" data-metodo="mercado_pago">
+                                </div>
+                                <div class="boton-metodo">
+                                    <img class="wompi" src="img/Wompi_ContraccionSecundaria.jpg" alt="Wompi" data-metodo="wompi">
+                                </div>
+                                <input type="hidden" id="metodo-pago" name="metodo_pago" required>
+                                <span class="error-message" id="error-metodo-pago"></span>
+                            </div>
+
+                            <h2>Datos de Envío:</h2>
 
                             <div class="form-section">
                                 <label for="nombre">Nombre completo del destinatario:</label>
