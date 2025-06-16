@@ -10,10 +10,16 @@ header('Content-Type: application/json');
 // Leer el cuerpo del POST
 $input = json_decode(file_get_contents('php://input'), true);
 $id_reloj = intval($input['id_reloj'] ?? 0);
+$costo_envio = intval($input['costo_envio'] ?? 0); // NUEVO: recibir costo de envío
 
 // Validación básica
 if (!$id_reloj) {
     echo json_encode(['error' => 'ID de reloj no proporcionado']);
+    exit;
+}
+
+if ($costo_envio <= 0) {
+    echo json_encode(['error' => 'Costo de envío no válido']);
     exit;
 }
 
@@ -47,12 +53,17 @@ try {
     // --- Paso 4: Para COP no se multiplica por 100, se envía el valor entero ---
     $precio_final = intval($precio_redondeado); // 120000 (SIN multiplicar por 100)
 
+    // --- ENVÍO DINÁMICO: usar el valor recibido del frontend ---
+    $total_con_envio = $precio_final + $costo_envio;
+
     // --- Depuración (registra todos los valores) ---
     error_log("Datos desde BD - Precio: {$reloj['precio']}, Descuento: {$reloj['descuento']}");
     error_log("Precio real (x1000): " . $precio_real);
     error_log("Precio con descuento: " . $precio_con_descuento);
     error_log("Precio redondeado: " . $precio_redondeado);
     error_log("Precio final para MercadoPago: " . $precio_final);
+    error_log("Costo de envío recibido: " . $costo_envio);
+    error_log("Total con envío: " . $total_con_envio);
 
     // --- Validación final ---
     if ($precio_final <= 0) {
@@ -63,7 +74,9 @@ try {
                 'precio_real' => $precio_real,
                 'precio_con_descuento' => $precio_con_descuento,
                 'precio_redondeado' => $precio_redondeado,
-                'precio_final' => $precio_final
+                'precio_final' => $precio_final,
+                'costo_envio' => $costo_envio,
+                'total_con_envio' => $total_con_envio
             ]
         ]);
         exit;
@@ -74,9 +87,13 @@ try {
             [
                 "title" => $reloj['nombre'],
                 "quantity" => 1,
-                "unit_price" => $precio_final, // ENTERO en pesos colombianos (sin centavos)
+                "unit_price" => $precio_final, // Solo el precio del producto
                 "currency_id" => "COP"
             ]
+        ],
+        "shipments" => [
+            "cost" => $costo_envio,
+            "mode" => "not_specified" // modo sin cálculo automático
         ],
         "back_urls" => [
             "success" => "https://finoso.store/feedback.php?status=success",
@@ -92,7 +109,10 @@ try {
     echo json_encode([
         'success' => true,
         'init_point' => $preference->init_point,
-        'preference_id' => $preference->id
+        'preference_id' => $preference->id,
+        'precio_reloj' => $precio_final,
+        'costo_envio' => $costo_envio,
+        'total' => $total_con_envio
     ]);
 
 } catch (\MercadoPago\Exceptions\MPApiException $e) {

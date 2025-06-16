@@ -361,6 +361,21 @@ nav {
     justify-content: flex-start;
     align-items: center;
     gap: 20px;
+    margin: 15px 0px;
+}
+/* Estilos para todos los mensajes de error */
+[id^="error-"] {
+    color: #dc3545; /* Rojo Bootstrap */
+}
+
+/* Alternativa con un rojo más intenso */
+.error-message {
+    color: #e74c3c; /* Rojo más vibrante */
+}
+
+/* Si quieres un estilo más elaborado */
+.error-text {
+    color: #dc3545;
 }
 .boton-metodo {
     width: 20%;
