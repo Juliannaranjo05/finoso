@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="precio">
                             <div class="precio-descuento">
                                 ${descuento > 0
-                                    ? `<p>$${precioConDescuento.toLocaleString('es-CO')}.000</p><h4>$${precioOriginal.toLocaleString('es-CO')}.000</h4>`
-                                    : `<p>$${precioOriginal.toLocaleString('es-CO')}.000</p>`}
+                                    ? `<p class="precio-descuentos">$${precioConDescuento.toLocaleString('es-CO')}.000</p><h4 class="precio-normal">$${precioOriginal.toLocaleString('es-CO')}.000</h4>`
+                                    : `<p class="precio-normal">$${precioOriginal.toLocaleString('es-CO')}.000</p>`}
                             </div>
                         </div>
                     </div>

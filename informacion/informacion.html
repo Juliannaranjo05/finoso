@@ -67,8 +67,8 @@
                     <div class="contenedor-precio-total">
                         <div class="precio">
                             <div class="precio-descuento">
-                                <p>$130.000</p>
-                                <h4>$145.000</h4>
+                                <p class="precio-descuentos">$130.000</p>
+                                <h4 class="precio-normal">$145.000</h4>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                                     <img class="mercado-pago" src="img/mercado-pago.jpg" alt="Mercado Pago" data-metodo="mercado_pago">
                                 </div>
                                 <div class="boton-metodo">
-                                    <img class="wompi" src="img/Wompi_ContraccionSecundaria.jpg" alt="Wompi" data-metodo="wompi">
+                                    <img class="nequi" src="img/nequi-logo-png_seeklogo-404357.png" alt="nequi" data-metodo="nequi">
                                 </div>
                                 <input type="hidden" id="metodo-pago" name="metodo_pago" required>
                                 <span class="error-message" id="error-metodo-pago"></span>
@@ -110,6 +110,12 @@
                                 <label for="celular">Número de celular:</label>
                                 <input type="tel" id="celular" name="celular" required maxlength="10">
                                 <span class="error-message" id="error-celular"></span>
+                            </div>
+
+                            <div class="form-section" id="campo-correo" style="display: none;">
+                                <label for="correo">Correo electrónico:</label>
+                                <input type="email" id="correo" name="correo" maxlength="50">
+                                <span class="error-message" id="error-correo"></span>
                             </div>
 
                             <div class="form-section">
@@ -170,7 +176,7 @@
                                 <span class="error-message" id="error-referencias"></span>
                             </div>
                             <div class="envio-total-info">
-                                <p><span class="circulo-verde">●</span> Envío Total: $<strong id="precio-envio">8000</strong> COP</p>
+                                <p><span class="circulo-verde">●</span> Envío Total: $<strong id="precio-envio">10000</strong> COP</p>
                                 <p class="descuento-texto">🚚 ¡Envío gratis por compras superiores a $200.000 COP!</p>
                             </div>
                             <div class="guardar-info">

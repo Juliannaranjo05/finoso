@@ -7,7 +7,7 @@ use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\Resources\Preference\Item;
 
 // Configura tu token (método actualizado para v3.x)
-MercadoPagoConfig::setAccessToken('APP_USR-8081700083482823-052513-4b51160e6045855a3b6372cc0c14e686-2456154307');
+MercadoPagoConfig::setAccessToken('TEST-5002356726305963-061612-b364cd52334af15fedb1ee9c3bdcf0ac-2456154307');
 
 // Crea un ítem de ejemplo
 $item = new Item();

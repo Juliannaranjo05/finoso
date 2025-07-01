@@ -35,7 +35,7 @@ if (!$resultado || mysqli_num_rows($resultado) === 0) {
 $reloj = mysqli_fetch_assoc($resultado);
 
 try {
-    MercadoPagoConfig::setAccessToken('APP_USR-8081700083482823-052513-4b51160e6045855a3b6372cc0c14e686-2456154307');    
+    MercadoPagoConfig::setAccessToken('APP_USR-8081700083482823-052513-4b51160e6045855a3b6372cc0c14e686-2456154307');
     $client = new PreferenceClient();
 
     $precio_original = floatval($reloj['precio']); // Ejemplo: 135.00 (que representa $135.000 COP)
@@ -82,6 +82,23 @@ try {
         exit;
     }
 
+    // Recibir todos los datos del formulario
+    // MOVIDO después de calcular $precio_final
+    $datos_formulario = [
+        'id_reloj' => $id_reloj,
+        'nombre' => $input['nombre'] ?? '',
+        'cedula' => $input['cedula'] ?? '',
+        'celular' => $input['celular'] ?? '',
+        'departamento' => $input['departamento'] ?? '',
+        'ciudad' => $input['ciudad'] ?? '',
+        'direccion' => $input['direccion'] ?? '',
+        'barrio' => $input['barrio'] ?? '',
+        'referencias' => $input['referencias'] ?? '',
+        'metodo_pago' => $input['metodo-pago'] ?? '',
+        'costo_envio' => $costo_envio,
+        'precio_reloj' => $precio_final
+    ];
+
     $preference_data = [
         "items" => [
             [
@@ -101,7 +118,8 @@ try {
             "pending" => "https://finoso.store/feedback.php?status=pending"
         ],
         "auto_return" => "approved",
-        "external_reference" => "reloj_" . $id_reloj
+        "external_reference" => "reloj_" . $id_reloj,
+        "notification_url" => "https://finoso.store/finoso-zip/finoso/catalogo/php/mercadopago_webhook.php"
     ];
 
     $preference = $client->create($preference_data);
