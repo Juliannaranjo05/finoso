@@ -190,7 +190,7 @@ nav {
 .texto-inicio h3:hover,
 .texto-catalogo h3:hover,
 .texto-contacto h3:hover {
-  color: #d4af37; /* tono dorado fino */
+  color: #FFCF66; /* tono dorado fino */
 }
 
 /* Línea debajo al hacer hover */
@@ -201,7 +201,7 @@ nav {
   position: absolute;
   width: 0;
   height: 2px;
-  background-color: #d4af37;
+  background-color: #FFCF66;
   bottom: -5px;
   left: 0;
   transition: width 0.3s ease;
@@ -408,6 +408,174 @@ nav {
     justify-items: center;
     align-content: center;
     gap: 20px;
+}
+/* Estilos para la sección de código de descuento */
+.discount-section {
+    border-radius: 12px;
+    border: 1px solid #555;
+    padding: 10px 10px;
+    margin: 12px 0px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.discount-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.discount-header h3 {
+    color: #FFCF66;
+    font-size: 16px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.discount-input-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+#codigo-descuento {
+    flex: 1;
+    padding: 12px 16px;
+    background: #0a0a0a;
+    border: 2px solid #555;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+#codigo-descuento:focus {
+    border-color: #FFCF66;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    background: #1a1a1a;
+}
+
+#codigo-descuento::placeholder {
+    color: #999;
+}
+
+.discount-btn {
+    padding: 12px 20px;
+    background: linear-gradient(45deg, #FFCF66, #b8941f);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 80px;
+}
+
+.discount-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+    background: linear-gradient(45deg, #e6c245, #ca9f23);
+}
+
+.discount-btn:active {
+    transform: translateY(0);
+}
+
+.discount-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.discount-success {
+    display: none;
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00cc00;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    animation: slideDown 0.3s ease;
+}
+
+.discount-success.active {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.success-icon {
+    color: #00cc00;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.success-text {
+    color: #00cc00;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+#discount-amount, #discount-percentage {
+    font-weight: bold;
+    color: #00ff00;
+}
+
+/* Animación para el mensaje de éxito */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos para estados de error del código de descuento */
+#error-codigo-descuento {
+    display: block;
+    color: #ff4444;
+    font-size: 12px;
+    margin-top: 5px;
+    transition: opacity 0.3s ease;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .discount-input-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .discount-btn {
+        width: 100%;
+        padding: 14px;
+    }
+    
+    .discount-section {
+        padding: 15px;
+        margin: 20px 0;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 4px 16px rgba(212, 175, 55, 0.6);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 .boton-comprar {
     width: 85%;

@@ -90,22 +90,23 @@
             </div>
             <div class="contenedor-pago">
                 <div class="contenedor-metodos-pago">
-                    <div class="texto-metodos-pago">
-                        <h3>Metodos de Pago:</h3>
-                    </div>
-                    <div class="botones-metodos-pago">
-                        <div class="boton-metodo">
-                            <img class="mercado-pago" src="../informacion/img/mercado-pago.jpg" alt="Mercado Pago" data-metodo="mercado_pago">
-                        </div>
-                        <div class="boton-metodo">
-                            <img class="wompi" src="../informacion/img/Wompi_ContraccionSecundaria.jpg" alt="Wompi" data-metodo="wompi">
-                        </div>
-                        <input type="hidden" id="metodo-pago" name="metodo_pago" required>
-                        <span class="error-message" id="error-metodo-pago"></span>
-                    </div>
                     <div class="form-container">
-                        <h2>Datos de Envío:</h2>
                         <form action="#" method="POST" id="form-envio">
+                            <div class="texto-metodos-pago">
+                                <h3>Metodos de Pago:</h3>
+                            </div>
+                            <div class="botones-metodos-pago">
+                                <div class="boton-metodo">
+                                    <img class="mercado-pago" src="../informacion/img/mercado-pago.jpg" alt="Mercado Pago" data-metodo="mercado_pago">
+                                </div>
+                                <div class="boton-metodo">
+                                    <img class="nequi" src="../informacion/img/nequi-logo-png_seeklogo-404357.png" alt="nequi" data-metodo="nequi">
+                                </div>
+                                <input type="hidden" id="metodo-pago" name="metodo_pago" required>
+                                <span class="error-message" id="error-metodo-pago"></span>
+                            </div>
+
+                            <h2>Datos de Envío:</h2>
 
                             <div class="form-section">
                                 <label for="nombre">Nombre completo del destinatario:</label>
@@ -119,6 +120,12 @@
                                 <label for="celular">Número de celular:</label>
                                 <input type="tel" id="celular" name="celular" required maxlength="10">
                                 <span class="error-message" id="error-celular"></span>
+                            </div>
+
+                            <div class="form-section" id="campo-correo" style="display: none;">
+                                <label for="correo">Correo electrónico:</label>
+                                <input type="email" id="correo" name="correo" maxlength="50">
+                                <span class="error-message" id="error-correo"></span>
                             </div>
 
                             <div class="form-section">
@@ -178,8 +185,22 @@
                                 <textarea id="referencias" name="referencias" placeholder="Color de la casa, cerca a un parque, etc." maxlength="100"></textarea>
                                 <span class="error-message" id="error-referencias"></span>
                             </div>
+                            <div class="discount-section">
+                                <div class="discount-header">
+                                    <h3>Código de descuento</h3>
+                                </div>
+                                <div class="discount-input-container">
+                                    <input type="text" id="codigo-descuento" name="codigo_descuento" placeholder="Ingresa tu código de descuento" maxlength="20">
+                                    <button type="button" class="discount-btn" onclick="aplicarDescuento()">Aplicar</button>
+                                </div>
+                                <div class="discount-success" id="discount-success">
+                                    <span class="success-icon">✓</span>
+                                    <span class="success-text">Descuento aplicado: <span id="discount-amount">-$0</span> (<span id="discount-percentage">0%</span> OFF)</span>
+                                </div>
+                                <span class="error-message" id="error-codigo-descuento"></span>
+                            </div>
                             <div class="envio-total-info">
-                                <p><span class="circulo-verde">●</span> Envío Total: <strong id="precio-envio">$8.000 COP</strong></p>
+                                <p><span class="circulo-verde">●</span> Envío Total: $<strong id="precio-envio">10000</strong> COP</p>
                                 <p class="descuento-texto">🚚 ¡Envío gratis por compras superiores a $200.000 COP!</p>
                             </div>
                             <div class="guardar-info">

@@ -9,24 +9,19 @@
 
         fetch('http://127.0.0.1/finoso/informacion-carrito/php/obtener_carrito.php')
             .then(res => {
-                console.log('Respuesta HTTP recibida, estado:', res.status);
                 return res.json().then(data => {
-                    console.log('Datos JSON parseados:', JSON.stringify(data, null, 2));
                     return data;
                 });
             })
             .then(data => {
-                console.log('Datos recibidos en el segundo then:', data);
                 
                 products = data;
-                console.log('Products asignado:', products);
 
                 if (products.length === 0) {
                     console.warn('No se encontraron productos en la respuesta');
                 }
 
                 if (products.length > 0) {
-                    console.log('Llamando a updateProduct()');
                     updateProduct();
                 }
 
@@ -34,43 +29,23 @@
                 const totalContainer = document.querySelector('.total-carrito h3');
                 const precioTotal = document.getElementById('precio-total');
 
-                console.log('Contenedor seleccionado:', contenedor);
-                console.log('Total container seleccionado:', totalContainer);
-                console.log('Precio total seleccionado:', precioTotal);
 
                 contenedor.innerHTML = '';
-                console.log('Contenedor vaciado');
 
                 data.forEach((reloj, index) => {
-                    console.log(`Procesando producto ${index + 1}:`, reloj);
                     
                     // Debug de precios
-                    console.log(`Precio original (crudo) para ${reloj.name}:`, reloj.originalPrice);
-                    console.log(`Precio actual (crudo) para ${reloj.name}:`, reloj.currentPrice);
                     
-                    const precioFinal = parseFloat(reloj.currentPrice) * 1000;
-                    const precioOriginal = reloj.originalPrice ? parseFloat(reloj.originalPrice) * 1000 : null;
-                    
-                    console.log(`Precio final calculado (x1000) para ${reloj.name}:`, precioFinal);
-                    console.log(`Precio original calculado (x1000) para ${reloj.name}:`, precioOriginal);
-
-                    const formatPrice = price => {
-                    let valor = parseFloat(price) * 1000;
-                    valor = Math.round(valor / 1000) * 1000; // Redondea al múltiplo de mil más cercano
-                    return '$' + valor.toLocaleString('es-CO');
-                    };
-
+                    const precioFinal = parseFloat(reloj.currentPrice);
+                    const precioOriginal = reloj.originalPrice ? parseFloat(reloj.originalPrice) : null;
                     const precioFormateado = formatPrice(precioFinal); // NO multipliques por 1000 aquí
                     const precioOriginalFormateado = precioOriginal ? formatPrice(precioOriginal) : '';
 
-                    console.log(`Precio formateado final para ${reloj.name}:`, precioFormateado);
-                    console.log(`Precio original formateado para ${reloj.name}:`, precioOriginalFormateado);
 
                     const precioOriginalHTML = precioOriginal
                         ? `<h4 id="original-price">${precioOriginalFormateado}</h4>`
                         : '';
 
-                    console.log(`HTML generado para precios originales:`, precioOriginalHTML);
 
                     const productoHTML = `
                         <div class="cuadro-info-reloj-carrito">
@@ -92,28 +67,37 @@
                         </div>
                     `;
 
-                    console.log(`HTML completo para ${reloj.name}:`, productoHTML);
                     
                     contenedor.innerHTML += productoHTML;
                 });
 
-                // Debug del cálculo del total
-                console.log('Calculando total...');
                 const totalSinFormato = data.reduce((acc, reloj) => {
-                const precio = parseFloat(reloj.currentPrice) * 1000;
-                return acc + precio;
+                    let precio = parseFloat(reloj.currentPrice) * 1000;
+
+                    // Redondear cada precio individual al múltiplo de 1000 más cercano
+                    const resto = precio % 1000;
+                    if (resto >= 500) {
+                        precio = Math.ceil(precio / 1000) * 1000;
+                    } else {
+                        precio = Math.floor(precio / 1000) * 1000;
+                    }
+
+                    return acc + precio;
                 }, 0);
 
-                // Redondea el total al múltiplo de mil más cercano
+                // Formatear el total final
                 const totalFormateado = formatPrice(totalSinFormato);
+
 
                 // Mostrar total en dos lugares
                 totalContainer.textContent = totalFormateado;
                 if (precioTotal) {
                     precioTotal.textContent = totalFormateado;
                 }
+
+                localStorage.setItem("carrito", JSON.stringify(data));
+                console.log("Carrito actualizado en localStorage del archivo producto.js:", data);
                 
-                console.log('Proceso completado. Verifica el DOM ahora.');
             })
             .catch(err => {
                 console.error('Error al obtener el carrito:', err);

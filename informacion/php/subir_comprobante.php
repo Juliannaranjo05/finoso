@@ -8,7 +8,13 @@ require '/finoso/vendor/phpmailer/phpmailer/src/PHPMailer.php';
 require '/finoso/vendor/phpmailer/phpmailer/src/SMTP.php';
 require __DIR__ . '/../../vendor/autoload.php';
 
+// Temporal: Verificar qué está llegando por POST
+file_put_contents("debug_post.txt", print_r($_POST, true));
+
+// Si no hay sesión, simula un usuario anónimo usando la IP
 session_start();
+$_SESSION['id_usuario'] = null; // Simulando que no está logueado
+$ip_address = $_SERVER['REMOTE_ADDR'];
 
 // Obtener ID de usuario, primero de la sesión y luego de POST si no está en sesión
 $id_usuario_sesion = $_SESSION['id_usuario'] ?? null;
@@ -16,25 +22,138 @@ $id_usuario_post = $_POST['id_usuario'] ?? null;
 
 $id_usuario = $id_usuario_sesion ? intval($id_usuario_sesion) : ($id_usuario_post ? intval($id_usuario_post) : null);
 
+// VALIDACIONES ANTI-ABUSE PREVIAS
+// 1. Limitar pedidos por IP por hora
+$stmt = $conn->prepare("SELECT COUNT(*) FROM orden WHERE ip_address = ? AND fecha >= DATE_SUB(NOW(), INTERVAL 1 HOUR)");
+$stmt->bind_param("s", $ip_address);
+$stmt->execute();
+$stmt->bind_result($pedidos_recientes_ip);
+$stmt->fetch();
+$stmt->close();
+
+if ($pedidos_recientes_ip >= 3) { // Máximo 3 pedidos por IP por hora
+    echo "<script>alert('Demasiados pedidos desde esta IP. Intente más tarde.'); history.back();</script>";
+    exit;
+}
+
+// 2. Limitar pedidos por correo por día
+$correo_temp = trim($_POST['correo'] ?? '');
+if (!empty($correo_temp)) {
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM orden WHERE correo = ? AND fecha >= DATE_SUB(NOW(), INTERVAL 1 DAY)");
+    $stmt->bind_param("s", $correo_temp);
+    $stmt->execute();
+    $stmt->bind_result($pedidos_recientes_correo);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($pedidos_recientes_correo >= 2) { // Máximo 2 pedidos por correo por día
+        echo "<script>alert('Demasiados pedidos con este correo. Intente mañana.'); history.back();</script>";
+        exit;
+    }
+}
+
+// 3. Limitar pedidos por cédula por día
+$cedula_temp = trim($_POST['cedula'] ?? '');
+if (!empty($cedula_temp)) {
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM orden WHERE cedula = ? AND fecha >= DATE_SUB(NOW(), INTERVAL 1 DAY)");
+    $stmt->bind_param("s", $cedula_temp);
+    $stmt->execute();
+    $stmt->bind_result($pedidos_recientes_cedula);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($pedidos_recientes_cedula >= 2) { // Máximo 2 pedidos por cédula por día
+        echo "<script>alert('Demasiados pedidos con esta cédula. Intente mañana.'); history.back();</script>";
+        exit;
+    }
+}
+
 // Verificar archivo de comprobante
 if (!isset($_FILES['comprobante'])) {
     die("Error: No se seleccionó ningún archivo.");
 }
 
 $archivo = $_FILES['comprobante'];
+
+// Validar que el archivo se subió correctamente ANTES de procesarlo
+if ($archivo['error'] !== UPLOAD_ERR_OK) {
+    switch ($archivo['error']) {
+        case UPLOAD_ERR_INI_SIZE:
+        case UPLOAD_ERR_FORM_SIZE:
+            die("Error: El archivo es demasiado grande.");
+        case UPLOAD_ERR_PARTIAL:
+            die("Error: El archivo se subió parcialmente.");
+        case UPLOAD_ERR_NO_FILE:
+            die("Error: No se seleccionó ningún archivo.");
+        default:
+            die("Error: Error al subir el archivo.");
+    }
+}
+
+// Validar que es realmente un archivo subido
+if (!is_uploaded_file($archivo['tmp_name'])) {
+    die("Error: El archivo no se ha subido correctamente.");
+}
+
 $extensionesValidas = ['jpg', 'jpeg', 'png', 'pdf', 'webp'];
 $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
 
 if (!in_array($extension, $extensionesValidas)) {
-    die("Error: Solo se permiten archivos JPG, PNG, PDF o WebP.");
+    echo "<script>alert('Error: Solo se permiten archivos JPG, PNG, PDF o WebP.'); history.back();</script>";
 }
 
 if ($archivo['size'] > 5 * 1024 * 1024) {
-    die("Error: El archivo es demasiado grande. Máximo 5MB.");
+    echo "<script>alert('El archivo es demasiado grande. Máximo 5MB.'); history.back();</script>";
+}
+
+// Validar que el archivo no esté vacío
+if ($archivo['size'] < 1024) { // Mínimo 1KB
+    echo "<script>alert('El archivo es demasiado pequeño para ser un comprobante válido.'); history.back();</script>";
+}
+
+// Generar hash del archivo ANTES de moverlo
+$hash_archivo = md5_file($archivo['tmp_name']);
+
+// Verificar si ya existe este comprobante
+$stmt = $conn->prepare("SELECT COUNT(*) FROM orden WHERE hash_archivo = ?");
+$stmt->bind_param("s", $hash_archivo);
+$stmt->execute();
+$stmt->bind_result($ya_subido);
+$stmt->fetch();
+$stmt->close();
+
+if ($ya_subido > 0) {
+    echo "<script>alert('Este comprobante ya fue registrado anteriormente.'); history.back();</script>";
+}
+
+// VALIDACIONES ADICIONALES PARA COMPROBANTES
+// Verificar tipo MIME real del archivo
+$finfo = finfo_open(FILEINFO_MIME_TYPE);
+$mime_type = finfo_file($finfo, $archivo['tmp_name']);
+finfo_close($finfo);
+
+$mimes_validos = [
+    'image/jpeg' => ['jpg', 'jpeg'],
+    'image/png' => ['png'],
+    'image/webp' => ['webp'],
+    'application/pdf' => ['pdf']
+];
+
+$mime_valido = false;
+foreach ($mimes_validos as $mime => $extensiones) {
+    if ($mime_type === $mime && in_array($extension, $extensiones)) {
+        $mime_valido = true;
+        break;
+    }
+}
+
+if (!$mime_valido) {
+    die("Error: El tipo de archivo no coincide con su extensión.");
 }
 
 // Procesar datos de la orden
 $datos_orden_raw = $_POST['datos_orden'] ?? '';
+$descuento_porcentaje = isset($_POST['descuento_porcentaje']) ? floatval($_POST['descuento_porcentaje']) : 0;
 $data = json_decode($datos_orden_raw, true) ?: [
     'id_reloj' => $_POST['id_reloj'] ?? '',
     'id_usuario' => $id_usuario,
@@ -54,6 +173,24 @@ $data = json_decode($datos_orden_raw, true) ?: [
 $correo = trim($data['correo'] ?? '');
 if (empty($correo) || !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
     die("Error: Correo inválido.");
+}
+
+// Validar campos obligatorios
+$campos_obligatorios = ['nombre', 'cedula', 'celular', 'departamento', 'ciudad', 'direccion'];
+foreach ($campos_obligatorios as $campo) {
+    if (empty(trim($data[$campo] ?? ''))) {
+        die("Error: El campo $campo es obligatorio.");
+    }
+}
+
+// Validar cédula (solo números, mínimo 7 dígitos)
+if (!preg_match('/^\d{7,10}$/', $data['cedula'])) {
+    die("Error: La cédula debe contener entre 7 y 10 dígitos.");
+}
+
+// Validar celular (formato colombiano)
+if (!preg_match('/^3\d{9}$/', $data['celular'])) {
+    die("Error: El celular debe tener formato colombiano (10 dígitos comenzando por 3).");
 }
 
 // Consultar información del reloj
@@ -95,12 +232,21 @@ if ($resto >= 500) {
 }
 
 $costo_envio = floatval($data['costo_envio'] ?? 0);
+$descuento_valor = isset($_POST['descuento_valor']) ? floatval($_POST['descuento_valor']) : 0;
+$descuento_porcentaje = isset($_POST['descuento_porcentaje']) ? floatval($_POST['descuento_porcentaje']) : 0;
+
+if ($descuento_valor < 0) $descuento_valor = 0;
+if ($descuento_porcentaje < 0) $descuento_porcentaje = 0;
+
 $total = $precio_reloj + $costo_envio;
+$total -= $descuento_valor;
+
+if ($total < 0) $total = 0; // por si acaso
 
 // Guardar archivo comprobante
 $directorioComprobantes = __DIR__ . '/comprobantes/';
 if (!file_exists($directorioComprobantes)) {
-    if (!mkdir($directorioComprobantes, 0777, true)) {
+    if (!mkdir($directorioComprobantes, 0755, true)) {
         die("Error: No se pudo crear el directorio de comprobantes.");
     }
 }
@@ -108,26 +254,34 @@ if (!file_exists($directorioComprobantes)) {
 $nombreArchivo = 'comprobante_' . time() . '_' . uniqid() . '.' . $extension;
 $rutaCompleta = $directorioComprobantes . $nombreArchivo;
 
+// Mover el archivo después de todas las validaciones
 if (!move_uploaded_file($archivo['tmp_name'], $rutaCompleta)) {
     die("Error: No se pudo guardar el comprobante.");
 }
+
+// Establecer permisos del archivo
+chmod($rutaCompleta, 0644);
 
 // Guardar en la base de datos
 try {
     $conn->begin_transaction();
 
+    // Agregar campos adicionales para el seguimiento
     $sql_orden = "INSERT INTO orden (
         id_usuario, fecha, total, estado, metodo_pago, costo_envio,
         nombre, cedula, celular, departamento, ciudad, direccion, barrio, referencias,
-        comprobante_pago, correo
+        comprobante_pago, correo, hash_archivo, ip_address, user_agent
     ) VALUES (
         ?, NOW(), ?, 'pagado', 'nequi', ?,
         ?, ?, ?, ?, ?, ?, ?, ?,
-        ?, ?
+        ?, ?, ?, ?, ?
     )";
+    
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'Desconocido';
+    
     $stmt = $conn->prepare($sql_orden);
     $stmt->bind_param(
-        "iddssssssssss", // 13 parámetros
+        "iddsssssssssssss", // 17 parámetros: i,d,d,s,s,s,s,s,s,s,s,s,s,s,s,s,s
         $id_usuario,
         $total,
         $costo_envio,
@@ -140,8 +294,12 @@ try {
         $data['barrio'],
         $data['referencias'],
         $nombreArchivo,
-        $correo
+        $correo,
+        $hash_archivo,
+        $ip_address,
+        $user_agent
     );
+
     $stmt->execute();
 
     $id_orden = $stmt->insert_id;
@@ -154,7 +312,10 @@ try {
     $conn->commit();
 
     // Formatear valores para mostrar
-    $precio_formateado = number_format($precio_reloj, 0, ',', '.');
+    $precio_con_descuento_mostrar = $precio_reloj - $descuento_valor;
+    if ($precio_con_descuento_mostrar < 0) $precio_con_descuento_mostrar = 0;
+
+    $precio_formateado = number_format($precio_con_descuento_mostrar, 0, ',', '.');
     $costo_envio_formateado = number_format($costo_envio, 0, ',', '.');
     $total_formateado = number_format($total, 0, ',', '.');
 
@@ -166,6 +327,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pago Exitoso - FINOSO</title>
+    <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
     <style>
         * {
             font-family: \'Playfair Display\', serif;

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pagar con Nequi - FINOSO</title>
+  <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -482,9 +483,10 @@
         <input type="hidden" name="referencias" id="referencias_hidden" />
         <input type="hidden" name="costo_envio" id="costo_envio_hidden" />
         <input type="hidden" name="correo" id="correo_hidden" />
-        
-        <!-- JSON como backup -->
         <input type="hidden" name="datos_orden" id="datos_orden" />
+        <input type="hidden" name="descuento_valor" id="descuento_valor_hidden" />
+        <input type="hidden" name="descuento_porcentaje" id="descuento_porcentaje_hidden" />
+
 
         <p style="margin-bottom: 15px; color: #e0e0e0;">Sube tu comprobante de pago</p>
         <input type="file" name="comprobante" accept="image/*,.pdf" required />
@@ -509,6 +511,10 @@
     const precio = corregirPrecio(data.precio);
     const costoEnvio = parseFloat(data.costo_envio || 0);
     const total = precio + costoEnvio;
+    // Leer descuento aplicado (si existe)
+    const descuentoInfo = JSON.parse(localStorage.getItem("descuento_aplicado") || "{}");
+    const descuento = parseFloat(descuentoInfo.valor || 0);
+    const totalConDescuento = total;
 
     // Preparar datos para enviar al formulario
     function prepararDatosOrden() {
@@ -545,6 +551,9 @@
     document.getElementById("costo_envio_hidden").value = datosOrden.costo_envio;
     document.getElementById("correo_hidden").value = datosOrden.correo;
     document.getElementById("datos_orden").value = JSON.stringify(datosOrden);
+    document.getElementById("descuento_valor_hidden").value = data.descuento_valor || 0;
+    document.getElementById("descuento_porcentaje_hidden").value = data.descuento_porcentaje || 0;
+
 
     // Validar datos antes de enviar el formulario
     document.getElementById("form-comprobante").addEventListener("submit", function(e) {
@@ -601,7 +610,7 @@
       document.getElementById("envio").textContent = `$${costoEnvio.toLocaleString("es-CO")}`;
     }
     if (document.getElementById("total-pago")) {
-      document.getElementById("total-pago").textContent = `$${total.toLocaleString("es-CO")}`;
+      document.getElementById("total-pago").textContent = `$${totalConDescuento.toLocaleString("es-CO")}`;
     }
 
     // Animación de entrada escalonada para los elementos
@@ -615,6 +624,8 @@
         el.style.transform = 'translateY(0)';
       }, 200 * (index + 1));
     });
+    document.getElementById("descuento_valor_hidden").value = descuento;
+    document.getElementById("descuento_porcentaje_hidden").value = descuentoInfo.porcentaje || 0;
   </script>
 
 </body>

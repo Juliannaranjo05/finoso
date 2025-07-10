@@ -1,64 +1,111 @@
 document.addEventListener("DOMContentLoaded", function () {
     const metodoPagoInput = document.getElementById('metodo-pago');
-    const imagenesPago = document.querySelectorAll('.boton-metodo img');
     const errorMetodo = document.getElementById('error-metodo-pago');
     const form = document.getElementById("form-envio");
+    const departamentoSelect = document.getElementById("departamento");
+    const ciudadSelect = document.getElementById("ciudad");
+    const checkbox = document.getElementById('guardar-info');
 
     const ciudadesPorDepartamento = {
-        "05": ["Medellín", "Bello", "Itagüí", "Envigado"],
-        "08": ["Barranquilla", "Soledad", "Malambo", "Puerto Colombia"],
-        "11": ["Cartagena", "Turbaco", "Arjona", "Santa Rosa"],
-        "15": ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá"],
-        "18": ["Florencia", "Belén de los Andaquíes", "San Vicente del Caguán", "Puerto Rico"],
-        "19": ["Popayán", "Santander de Quilichao", "Puerto Tejada", "El Tambo"],
-        "20": ["Valledupar", "Aguachica", "Codazzi", "Curumaní"],
-        "23": ["Montería", "Lorica", "Sahagún", "Cereté"],
-        "25": ["Bogotá", "Soacha", "Facatativá", "Zipaquirá"],
-        "27": ["Quibdó", "Istmina", "Tadó", "Condoto"],
-        "41": ["Neiva", "Pitalito", "Garzón", "La Plata"],
-        "44": ["Riohacha", "Maicao", "Uribia", "Fonseca"],
-        "47": ["Santa Marta", "Ciénaga", "Fundación", "El Banco"],
-        "50": ["Villavicencio", "Acacías", "Granada", "Puerto López"],
-        "52": ["Pasto", "Tumaco", "Ipiales", "Túquerres"],
-        "54": ["Cúcuta", "Ocaña", "Pamplona", "Villa del Rosario"],
-        "63": ["Armenia", "Calarcá", "La Tebaida", "Montenegro"],
-        "66": ["Pereira", "Dosquebradas", "Santa Rosa de Cabal", "La Virginia"],
-        "68": ["Bucaramanga", "Floridablanca", "Girón", "Piedecuesta"],
-        "70": ["Sincelejo", "Corozal", "Sampués", "Tolú"],
-        "73": ["Ibagué", "Espinal", "Melgar", "Honda"],
-        "76": ["Cali", "Palmira", "Buenaventura", "Tuluá"],
-        "81": ["Arauca", "Saravena", "Tame", "Arauquita"],
-        "85": ["Yopal", "Aguazul", "Villanueva", "Paz de Ariporo"],
-        "86": ["Mocoa", "Villagarzón", "Puerto Asís", "Orito"],
-        "88": ["San Andrés", "Providencia"],
-        "91": ["Leticia", "Puerto Nariño"],
-        "94": ["Inírida"],
-        "95": ["San José del Guaviare"],
-        "97": ["Mitú"],
-        "99": ["Puerto Carreño"]
+        "AMA": ["Leticia", "Puerto Nariño"],
+        "AN": ["Medellín", "Bello", "Itagüí", "Envigado", "Rionegro", "Apartadó", "Turbo", "La Ceja", "Sabaneta", "Copacabana", "Marinilla", "Guarne", "Amagá", "Caucasia"],
+        "ARA": ["Arauca", "Arauquita", "Saravena", "Tame", "Cravo Norte", "Puerto Rondón", "Fortul"],
+        "ATL": ["Barranquilla", "Soledad", "Malambo", "Sabanalarga", "Puerto Colombia", "Galapa", "Baranoa", "Polonuevo", "Sabanagrande", "Campo de la Cruz"],
+        "BOL": ["Cartagena", "Magangué", "Turbaco", "Arjona", "El Carmen de Bolívar", "Mompox", "San Juan Nepomuceno", "María la Baja", "Santa Rosa", "Talaigua Nuevo"],
+        "BOY": ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Paipa", "Moniquirá", "Villa de Leyva", "Puerto Boyacá", "Nobsa", "Tibasosa", "Samacá"],
+        "CAL": ["Manizales", "La Dorada", "Chinchiná", "Villamaría", "Riosucio", "Anserma", "Salamina", "Aguadas"],
+        "CAQ": ["Florencia", "San Vicente del Caguán", "Puerto Rico", "El Doncello", "La Montañita", "Belén de los Andaquíes"],
+        "CAS": ["Yopal", "Aguazul", "Villanueva", "Tauramena", "Monterrey", "Maní", "Paz de Ariporo", "Trinidad"],
+        "CAU": ["Popayán", "Santander de Quilichao", "Puerto Tejada", "Patía", "El Tambo", "Guapi", "Timbiquí", "Silvia", "Rosas"],
+        "CES": ["Valledupar", "Aguachica", "La Jagua de Ibirico", "Codazzi", "Bosconia", "Chimichagua", "Curumaní", "El Copey"],
+        "CHO": ["Quibdó", "Istmina", "Tadó", "Condoto", "Bahía Solano", "Acandí", "Nuquí", "Lloró"],
+        "COR": ["Montería", "Lorica", "Sahagún", "Cereté", "Tierralta", "Planeta Rica", "Montelíbano", "Ayapel"],
+        "CUN": ["Bogotá", "Soacha", "Chía", "Zipaquirá", "Facatativá", "Girardot", "Fusagasugá", "Mosquera", "Cajicá", "La Calera", "Madrid", "Funza", "Sibaté"],
+        "GUA": ["Inírida", "Barranco Minas", "Cacahual", "Pana Pana"],
+        "GUV": ["San José del Guaviare", "Calamar", "Miraflores", "El Retorno"],
+        "HUI": ["Neiva", "Pitalito", "Garzón", "La Plata", "Campoalegre", "Rivera", "Yaguará", "Aipe"],
+        "LAG": ["Riohacha", "Maicao", "Uribia", "Fonseca", "San Juan del Cesar", "Manaure", "Dibulla"],
+        "MAG": ["Santa Marta", "Ciénaga", "Fundación", "El Banco", "Plato", "Aracataca", "Pivijay", "Zona Bananera"],
+        "MET": ["Villavicencio", "Acacías", "Granada", "Puerto López", "San Martín", "Cumaral", "Guamal", "Cabuyaro"],
+        "NAR": ["Pasto", "Tumaco", "Ipiales", "Túquerres", "La Unión", "Sandoná", "El Tambo", "Barbacoas"],
+        "NSA": ["Cúcuta", "Ocaña", "Pamplona", "Villa del Rosario", "Los Patios", "Chinácota", "Tibú"],
+        "PUT": ["Mocoa", "Puerto Asís", "Orito", "Sibundoy", "Valle del Guamuez", "Puerto Caicedo"],
+        "QUI": ["Armenia", "Calarcá", "Montenegro", "La Tebaida", "Quimbaya", "Circasia", "Filandia"],
+        "RIS": ["Pereira", "Dosquebradas", "Santa Rosa de Cabal", "La Virginia", "Belén de Umbría", "Marsella"],
+        "SAP": ["San Andrés", "Providencia"],
+        "SAN": ["Bucaramanga", "Floridablanca", "Girón", "Piedecuesta", "Barrancabermeja", "San Gil", "Socorro", "Lebrija"],
+        "SUC": ["Sincelejo", "Corozal", "Sampués", "San Marcos", "Tolú", "San Onofre"],
+        "TOL": ["Ibagué", "Espinal", "Melgar", "Honda", "Líbano", "Chaparral", "Mariquita", "Guamo"],
+        "VAC": ["Cali", "Palmira", "Buenaventura", "Tuluá", "Buga", "Yumbo", "Cartago", "Jamundí", "Candelaria"],
+        "VAU": ["Mitú", "Carurú", "Taraira", "Pacoa"],
+        "VID": ["Puerto Carreño", "La Primavera", "Santa Rosalía", "Cumaribo"]
     };
 
-    form.addEventListener("submit", function (e) {
-        const isNombreValid = validateField("nombre", /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/, "Por favor, ingresa un nombre válido.");
-        const isCedulaValid = validateField("cedula", /^\d{6,10}$/, "Por favor, ingresa una cédula válida.");
-        const isCelularValid = validateField("celular", /^\d{10}$/, "Por favor, ingresa un número de celular válido.");
-        const isCiudadValid = validateField("ciudad", /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/, "Por favor, ingresa una ciudad válida.");
-        const isDireccionValid = validateField("direccion", /^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ#\-\s]+$/, "Por favor, ingresa una dirección válida.");
-        const isBarrioValid = validateField("barrio", /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/, "Por favor, ingresa un barrio válido.");
-        const isReferenciasValid = validateOptionalField("referencias", /^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ#\-\s]*$/, "Por favor, ingresa solo letras, números y símbolos válidos (#, -).");
+    // === SISTEMA DE GUARDADO SIMPLE ===
+    const STORAGE_KEY = 'finoso_form_data_carrito';
 
-        if (!isNombreValid || !isCedulaValid || !isCelularValid || !isCiudadValid || !isDireccionValid || !isBarrioValid || !isReferenciasValid) {
-            e.preventDefault();
+    function saveFormData() {
+        if (!checkbox.checked) return;
+
+        const data = {
+            nombre: document.getElementById('nombre').value,
+            cedula: document.getElementById('cedula').value,
+            celular: document.getElementById('celular').value,
+            departamento: departamentoSelect.value,
+            ciudad: ciudadSelect.value,
+            direccion: document.getElementById('direccion').value,
+            barrio: document.getElementById('barrio').value,
+            referencias: document.getElementById('referencias').value,
+            metodo_pago: metodoPagoInput.value
+        };
+
+        // Si el método de pago es Nequi, también guardar el correo
+        if (metodoPagoInput.value === "nequi") {
+            data.correo = document.getElementById('correo').value;
         }
 
-        if (!metodoPagoInput.value) {
-            errorMetodo.textContent = 'Por favor, selecciona un método de pago.';
-            e.preventDefault();
-        } else {
-            errorMetodo.textContent = '';
-        }
-    });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
 
+    function loadFormData() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return;
+        
+        const data = JSON.parse(saved);
+        
+        // Llenar campos de texto
+        Object.keys(data).forEach(key => {
+            if (key !== 'departamento' && key !== 'ciudad' && key !== 'metodo_pago') {
+                const el = document.getElementById(key);
+                if (el && data[key]) el.value = data[key];
+            }
+        });
+        
+        // Departamento y ciudad
+        if (data.departamento) {
+            departamentoSelect.value = data.departamento;
+            departamentoSelect.dispatchEvent(new Event('change'));
+            
+            setTimeout(() => {
+                if (data.ciudad) ciudadSelect.value = data.ciudad;
+            }, 50);
+        }
+        
+        // Método de pago
+        if (data.metodo_pago) {
+            metodoPagoInput.value = data.metodo_pago;
+            document.querySelectorAll('.boton-metodo img').forEach(img => {
+                img.classList.remove('seleccionado');
+                if (img.dataset.metodo === data.metodo_pago) {
+                    img.classList.add('seleccionado');
+                }
+            });
+        }
+        
+        checkbox.checked = true;
+    }
+
+    // === VALIDACIONES ===
     function validateField(id, regex, message) {
         const input = document.getElementById(id);
         const error = document.getElementById("error-" + id);
@@ -83,9 +130,27 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    const departamentoSelect = document.getElementById("departamento");
-    const ciudadSelect = document.getElementById("ciudad");
+    // === EVENTOS ===
+    
+    // Checkbox de guardar
+    checkbox.addEventListener('change', (e) => {
+        if (e.target.checked) {
+            saveFormData();
+        } else {
+            localStorage.removeItem(STORAGE_KEY);
+        }
+    });
 
+    // Guardar automáticamente cuando cambie un campo
+    const fieldsToWatch = ['nombre', 'cedula', 'celular', 'direccion', 'barrio', 'referencias'];
+    fieldsToWatch.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('blur', saveFormData);
+        }
+    });
+
+    // Departamento/Ciudad
     departamentoSelect.addEventListener("change", function () {
         const selectedDepartamento = departamentoSelect.value;
         ciudadSelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
@@ -98,14 +163,264 @@ document.addEventListener("DOMContentLoaded", function () {
                 ciudadSelect.appendChild(option);
             });
         }
+
+        saveFormData(); // Guardar cuando cambie departamento
     });
 
-    imagenesPago.forEach(img => {
-        img.addEventListener('click', () => {
-            imagenesPago.forEach(i => i.classList.remove('seleccionado'));
-            img.classList.add('seleccionado');
+    ciudadSelect.addEventListener('change', saveFormData);
+
+    document.querySelectorAll(".boton-metodo img").forEach(img => {
+        img.addEventListener("click", () => {
+            document.querySelectorAll(".boton-metodo img").forEach(i => i.classList.remove("seleccionado"));
+            img.classList.add("seleccionado");
             metodoPagoInput.value = img.dataset.metodo;
-            errorMetodo.textContent = '';
+            errorMetodo.textContent = "";
+
+            const campoCorreo = document.getElementById("campo-correo");
+            const correoInput = document.getElementById("correo");
+
+            // Si el método es Nequi, verificar si hay sesión
+            if (img.dataset.metodo === "nequi") {
+                fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+                    .then(res => res.json())
+                    .then(respuesta => {
+                        if (respuesta.logged_in) {
+                            // Hay sesión, no mostrar campo correo
+                            campoCorreo.style.display = "none";
+                            correoInput.required = false;
+                            correoInput.value = "";
+                        } else {
+                            // No hay sesión, sí mostrar
+                            campoCorreo.style.display = "block";
+                            correoInput.required = true;
+                        }
+                    });
+            } else {
+                // No es Nequi
+                campoCorreo.style.display = "none";
+                correoInput.required = false;
+                correoInput.value = "";
+            }
+
+            saveFormData();
         });
     });
+
+    // Submit del formulario
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Validaciones
+        const validations = [
+            validateField("nombre", /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/, "Por favor, ingresa un nombre válido."),
+            validateField("cedula", /^\d{6,10}$/, "Por favor, ingresa una cédula válida."),
+            validateField("celular", /^\d{10}$/, "Por favor, ingresa un número de celular válido."),
+            validateField("ciudad", /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/, "Por favor, ingresa una ciudad válida."),
+            validateField("direccion", /^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ#\-\s]+$/, "Por favor, ingresa una dirección válida."),
+            validateField("barrio", /^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/, "Por favor, ingresa un barrio válido."),
+            validateOptionalField("referencias", /^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ#\-\s]*$/, "Por favor, ingresa solo letras, números y símbolos válidos (#, -).")
+        ];
+
+        if (metodoPagoInput.value === "nequi") {
+            const correoValido = validateField("correo", /^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Por favor, ingresa un correo electrónico válido.");
+            validations.push(correoValido);
+        }
+
+        const campoCorreo = document.getElementById("campo-correo");
+        if (metodoPagoInput.value === "nequi" && campoCorreo.style.display !== "none") {
+            const correoValido = validateField("correo", /^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Por favor, ingresa un correo electrónico válido.");
+            validations.push(correoValido);
+        }
+
+        if (!validations.every(v => v)) return;
+
+        if (!metodoPagoInput.value) {
+            errorMetodo.textContent = 'Por favor, selecciona un método de pago.';
+            return;
+        } else {
+            errorMetodo.textContent = '';
+        }
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
+
+        if (carrito.length === 0) {
+            alert("El carrito está vacío.");
+            return;
+        }
+
+        data.productos = carrito;
+        console.log("Datos del formulario:", data);
+        console.log("Productos en el carrito:", carrito);
+
+        if (!data.productos || data.productos.length === 0) {
+            alert("Error: no se encontró el reloj.");
+            return;
+        }
+
+        // Obtener el valor del envío desde el DOM
+        const precioEnvioElement = document.getElementById('precio-envio');
+        const costoEnvio = precioEnvioElement ? parseInt(precioEnvioElement.textContent) : 0;
+
+        // Validar que el costo de envío sea válido
+        if (costoEnvio <= 0) {
+            alert('Error: No se pudo obtener el costo de envío');
+            return;
+        }
+
+        // AGREGAR el costo de envío a la data existente (NO sobrescribir)
+        data.costo_envio = costoEnvio;
+
+        if (metodoPagoInput.value === "mercadopago") {
+            fetch("http://127.0.0.1/finoso/informacion/php/crear_preferencia.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { throw err; });
+                }
+                return res.json();
+            })
+            .then(respuesta => {
+                if (respuesta.error) {
+                    const errorMessage = respuesta.debug ? 
+                        `Error: ${respuesta.error}\nDetalles:\n` +
+                        `- Precio BD: ${(respuesta.debug.precio_bd / 1000).toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}\n` +
+                        `- Precio final: ${(respuesta.debug.precio_redondeado / 1000).toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}\n` +
+                        `- Costo envío: ${respuesta.debug.costo_envio.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}\n` +
+                        `- Total: ${respuesta.debug.total_con_envio.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}` :
+                        respuesta.message;
+                    
+                    alert(errorMessage);
+                    return;
+                }
+                
+                // Opcional: mostrar el desglose antes de redirigir
+                console.log('Desglose del pago:');
+                console.log(`Reloj: ${respuesta.precio_reloj.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
+                console.log(`Envío: ${respuesta.costo_envio.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
+                console.log(`Total: ${respuesta.total.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
+
+                // Nuevo paso antes de redirigir
+                fetch("https://finoso.store/finoso-zip/finoso/catalogo/php/guardar_orden.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        ...data,
+                        precio_reloj: respuesta.precio_reloj,
+                        costo_envio: respuesta.costo_envio
+                    })
+                })
+                .then(res => res.json())
+                .then(guardarRes => {
+                    if (guardarRes.success) {
+                        // Ya se guardó la orden → redirige a MercadoPago
+                        window.location.href = respuesta.init_point;
+                    } else {
+                        alert("No se pudo guardar la orden en la base de datos.");
+                    }
+                })
+                .catch(err => {
+                    alert("Error al guardar la orden antes del pago.");
+                });
+                
+                if (respuesta.init_point) {
+                    window.location.href = respuesta.init_point;
+                }
+            })
+            .catch(err => {
+                console.error("MP API error:", err);
+                alert(`Error: ${err.message}\nDetalles:\n${JSON.stringify(err.response || err)}`);
+            });
+        }  else if (metodoPagoInput.value === "nequi") {
+            console.log("🟣 Iniciando flujo de pago con Nequi...");
+
+            // Verificamos sesión para saber si ya tenemos el correo del usuario
+            fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+                .then(res => {
+                    if (!res.ok) throw new Error("Fallo en la verificación de sesión");
+                    return res.json();
+                })
+                .then(sesion => {
+                    console.log("🔍 Resultado verificación de sesión:", sesion);
+
+                    if (sesion.logged_in && sesion.correo) {
+                        console.log("✅ Sesión activa. Usando correo de sesión:", sesion.correo);
+                        data.correo = sesion.correo;
+                    } else {
+                        const inputCorreo = document.getElementById("correo").value.trim();
+                        console.log("⚠️ No hay sesión activa. Usando correo ingresado:", inputCorreo);
+                        data.correo = inputCorreo;
+                    }
+
+                   function redondearMiles(valor) {
+                        return Math.round(valor) * 1000;
+                    }
+
+                    const subtotal = carrito.reduce((total, producto) => {
+                    const precio = parseFloat(producto.currentPrice); // ya viene en miles
+                    const cantidad = producto.cantidad || 1;
+
+                    return total + (precio * cantidad);
+                }, 0);
+
+                // 🔁 Redondear el subtotal al múltiplo de mil
+                data.subtotal = redondearMiles(subtotal);
+                data.productos = carrito;
+
+                console.log("✅ Subtotal redondeado:", data.subtotal);
+
+
+                    return fetch("http://127.0.0.1/finoso/informacion-carrito/php/crear_pago_nequi.php", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data)
+                    });
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error("Error en la respuesta de crear_pago_nequi.php");
+                    return res.json();
+                })
+                .then(respuestaBD => {
+                    console.log("📥 Respuesta del backend (crear_pago_nequi):", respuestaBD);
+
+                    // Guardamos en localStorage
+                    const datosAGuardar = {
+                        productos: respuestaBD.productos,           // ✅ Del backend
+                        subtotal: respuestaBD.subtotal,            // ✅ Del backend
+                        costo_envio: respuestaBD.costo_envio,      // ✅ Del backend  
+                        total: respuestaBD.total,                  // ✅ Del backend
+                        datos_cliente: {
+                            ...respuestaBD.datos_cliente,
+                            correo: data.correo
+                        }
+                    };
+    
+                    // 🔍 DEBUG: Verificar valores específicos
+                    console.log("🔢 Valores individuales:");
+                    console.log("   Subtotal backend:", respuestaBD.subtotal);
+                    console.log("   Costo envío:", respuestaBD.costo_envio);
+                    console.log("   Total backend:", respuestaBD.total);
+                    console.log("   ¿Total = Subtotal + Envío?", respuestaBD.total === (respuestaBD.subtotal + respuestaBD.costo_envio));
+
+                    console.log("💾 Guardando en localStorage (nequi_datos_pago):", datosAGuardar);
+                    localStorage.setItem("nequi_datos_pago", JSON.stringify(datosAGuardar));
+
+                    console.log("➡️ Redirigiendo a /finoso/pago_nequi.html");
+                    window.location.href = "/finoso/informacion-carrito/pago_nequi-carrito.html";
+                })
+                .catch(err => {
+                    console.error("🛑 Error en el flujo de pago Nequi:", err);
+                    alert("Ocurrió un error durante el proceso de pago con Nequi. Intenta nuevamente.");
+                });
+
+            return;
+        }
+    });
+    // Cargar datos al iniciar
+    loadFormData();
 });

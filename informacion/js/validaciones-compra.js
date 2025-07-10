@@ -245,7 +245,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = Object.fromEntries(formData.entries());
 
         const params = new URLSearchParams(window.location.search);
+        console.log(new URLSearchParams(window.location.search))
         data.id_reloj = params.get("id_reloj");
+        console.log("Datos del formulario:", data);
 
         if (!data.id_reloj) {
             alert("Error: no se encontró el reloj.");
@@ -350,13 +352,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
 
                     // Verificar si el reloj tiene descuento y tomar el precio correcto
-                    const precioNormal = parseFloat(document.querySelector(".precio-normal").textContent.trim().replace('$', '').replace('.', ''));
+                    const precioNormal = parseFloat(document.querySelector(".precio-normal").textContent.trim().replace(/[^\d]/g, ''));
                     let precioConDescuento = precioNormal; // Si no hay descuento, usar el precio normal
 
                     // Verificar si existe el descuento
                     const precioDescuentoElement = document.querySelector(".precio-descuentos");
                     if (precioDescuentoElement) {
-                        precioConDescuento = parseFloat(precioDescuentoElement.textContent.trim().replace('$', '').replace('.', ''));
+                        precioConDescuento = parseFloat(precioDescuentoElement.textContent.trim().replace(/[^\d]/g, ''));
                         console.log("🎉 Precio con descuento encontrado: " + precioConDescuento);
                     } else {
                         console.log("⚠️ No hay precio con descuento, usando el precio normal.");
@@ -381,6 +383,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(respuestaBD => {
                     console.log("📥 Respuesta del backend (crear_pago_nequi):", respuestaBD);
 
+                    const descuentoAplicado = JSON.parse(localStorage.getItem("descuento_aplicado") || "{}");
+
                     // Guardamos en localStorage
                     const datosAGuardar = {
                         id_reloj: data.id_reloj,
@@ -393,7 +397,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         datos_cliente: {
                             ...respuestaBD.datos_cliente,
                             correo: data.correo
-                        }
+                        },
+                        descuento_valor: parseFloat(descuentoAplicado.valor || 0),
+                        descuento_porcentaje: parseFloat(descuentoAplicado.porcentaje || 0)
                     };
 
                     console.log("💾 Guardando en localStorage (nequi_datos_pago):", datosAGuardar);
