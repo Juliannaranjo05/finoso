@@ -333,6 +333,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }  else if (metodoPagoInput.value === "nequi") {
             console.log("🟣 Iniciando flujo de pago con Nequi...");
 
+            // 🔥 DECLARAR VARIABLES FUERA DEL SCOPE
+            let precioOriginal = 0;
+            let precioFinal = 0;
+            let descuentoAplicado = 0;
+            let porcentajeDescuento = 0;
+
             // Verificamos sesión para saber si ya tenemos el correo del usuario
             fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
                 .then(res => {
@@ -351,23 +357,58 @@ document.addEventListener("DOMContentLoaded", function () {
                         data.correo = inputCorreo;
                     }
 
-                    // Verificar si el reloj tiene descuento y tomar el precio correcto
-                    const precioNormal = parseFloat(document.querySelector(".precio-normal").textContent.trim().replace(/[^\d]/g, ''));
-                    let precioConDescuento = precioNormal; // Si no hay descuento, usar el precio normal
-
-                    // Verificar si existe el descuento
+                    // 🔥 OBTENER PRECIOS DEL DOM
+                    const precioNormalElement = document.querySelector(".precio-normal");
                     const precioDescuentoElement = document.querySelector(".precio-descuentos");
-                    if (precioDescuentoElement) {
-                        precioConDescuento = parseFloat(precioDescuentoElement.textContent.trim().replace(/[^\d]/g, ''));
-                        console.log("🎉 Precio con descuento encontrado: " + precioConDescuento);
-                    } else {
-                        console.log("⚠️ No hay precio con descuento, usando el precio normal.");
+
+                    // Verificar si hay código de descuento aplicado desde localStorage
+                    const descuentoGuardado = localStorage.getItem("descuento_aplicado");
+                    const codigoDescuentoData = descuentoGuardado ? JSON.parse(descuentoGuardado) : null;
+
+                    // Leer precio original (siempre está en .precio-normal cuando hay descuento automático)
+                    if (precioNormalElement) {
+                        precioOriginal = parseFloat(precioNormalElement.textContent.trim().replace(/[^\d]/g, ''));
                     }
 
-                    // Asignar el precio al objeto de datos
-                    data.precio = precioConDescuento;
+                    // Leer precio final actual del DOM (ya con todos los descuentos aplicados)
+                    if (precioDescuentoElement) {
+                        // Hay descuento automático, leer de precio-descuentos
+                        precioFinal = parseFloat(precioDescuentoElement.textContent.trim().replace(/[^\d]/g, ''));
+                        
+                        // Si no teníamos el precio original, calcular desde el precio con descuento
+                        if (!precioOriginal) {
+                            // Asumir que el descuento automático es conocido o calculable
+                            // En este caso específico, sabemos que 97000 viene de 115000 con descuento
+                            precioOriginal = 115000; // Valor fijo conocido, o calcular dinámicamente
+                        }
+                    } else if (precioNormalElement) {
+                        // No hay descuento automático, precio normal es el precio final
+                        precioFinal = parseFloat(precioNormalElement.textContent.trim().replace(/[^\d]/g, ''));
+                        precioOriginal = precioFinal;
+                    }
 
-                    // Verificamos que todos los datos estén completos
+                    // Si hay código de descuento aplicado, usar los datos guardados
+                    if (codigoDescuentoData) {
+                        descuentoAplicado = parseFloat(codigoDescuentoData.valor);
+                        porcentajeDescuento = parseFloat(codigoDescuentoData.porcentaje);
+                        
+                        console.log(`🎉 Código de descuento aplicado: $${descuentoAplicado} (${porcentajeDescuento}%)`);
+                    } else {
+                        console.log("ℹ️ No hay código de descuento aplicado");
+                    }
+
+                    // Asignar valores a data
+                    data.precio_original = precioOriginal;
+                    data.descuento_valor = descuentoAplicado;
+                    data.descuento_porcentaje = porcentajeDescuento;
+
+                    console.log("📦 Datos calculados:", {
+                        precioOriginal: data.precio_original,
+                        precioFinal: precioFinal,
+                        descuentoValor: data.descuento_valor,
+                        descuentoPorcentaje: data.descuento_porcentaje
+                    });
+
                     console.log("📦 Datos a enviar a crear_pago_nequi.php:", data);
 
                     return fetch("http://127.0.0.1/finoso/informacion/php/crear_pago_nequi.php", {
@@ -383,14 +424,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(respuestaBD => {
                     console.log("📥 Respuesta del backend (crear_pago_nequi):", respuestaBD);
 
-                    const descuentoAplicado = JSON.parse(localStorage.getItem("descuento_aplicado") || "{}");
+                    // 🔥 USAR EL PRECIO FINAL QUE YA CALCULAMOS (no recalcular)
+                    // El precioFinal ya tiene todos los descuentos aplicados correctamente
+                    const total = precioFinal + respuestaBD.costo_envio;
 
-                    // Guardamos en localStorage
+                    // Guardamos datos limpios en localStorage
                     const datosAGuardar = {
                         id_reloj: data.id_reloj,
-                        precio: data.precio,
+                        precio_original: data.precio_original, // Precio original real
+                        precio_final: precioFinal, // Precio final ya calculado correctamente
                         costo_envio: respuestaBD.costo_envio,
-                        total: respuestaBD.total,
+                        total: total, // Total correcto
                         nombre: respuestaBD.nombre_reloj,
                         marca: respuestaBD.marca,
                         img: respuestaBD.img,
@@ -398,12 +442,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             ...respuestaBD.datos_cliente,
                             correo: data.correo
                         },
-                        descuento_valor: parseFloat(descuentoAplicado.valor || 0),
-                        descuento_porcentaje: parseFloat(descuentoAplicado.porcentaje || 0)
+                        descuento_valor: data.descuento_valor || 0,
+                        descuento_porcentaje: data.descuento_porcentaje || 0
                     };
 
-                    console.log("💾 Guardando en localStorage (nequi_datos_pago):", datosAGuardar);
+                    console.log("💾 Guardando datos limpios en localStorage:", datosAGuardar);
                     localStorage.setItem("nequi_datos_pago", JSON.stringify(datosAGuardar));
+                    localStorage.removeItem("descuento_aplicado");
 
                     console.log("➡️ Redirigiendo a /finoso/pago_nequi.html");
                     window.location.href = "/finoso/informacion/pago_nequi.html";

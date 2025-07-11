@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pagar con Nequi - FINOSO</title>
+  <title>Pagar con Nequi</title>
   <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -489,6 +489,7 @@
 
 
         <p style="margin-bottom: 15px; color: #e0e0e0;">Sube tu comprobante de pago</p>
+        <p id="descuento-info" style="color: #00ff88; font-size: 14px; margin-top: 5px;"></p>
         <input type="file" name="comprobante" accept="image/*,.pdf" required />
         <br>
         <button type="submit">Enviar comprobante</button>
@@ -502,37 +503,33 @@
     const data = JSON.parse(localStorage.getItem("nequi_datos_pago") || "{}");
     console.log("📦 Datos cargados desde localStorage:", data);
 
-    // Corregir el precio (si es necesario multiplicar por 1000)
-    function corregirPrecio(precio) {
-      const precioNum = parseFloat(precio || 0);
-      return precioNum < 1000 && precioNum > 0 ? precioNum * 1000 : precioNum;
-    }
-
-    const precio = corregirPrecio(data.precio);
+    // Usar los datos ya calculados
+    const precioFinal = parseFloat(data.precio_final || data.precio || 0);
     const costoEnvio = parseFloat(data.costo_envio || 0);
-    const total = precio + costoEnvio;
-    // Leer descuento aplicado (si existe)
-    const descuentoInfo = JSON.parse(localStorage.getItem("descuento_aplicado") || "{}");
-    const descuento = parseFloat(descuentoInfo.valor || 0);
-    const totalConDescuento = total;
+    const total = parseFloat(data.total || (precioFinal + costoEnvio));
+    const descuento = parseFloat(data.descuento_valor || 0);
+    const descuento_porcentaje = parseFloat(data.descuento_porcentaje || 0);
+
+    console.log("💰 Precios finales:", { precioFinal, costoEnvio, total, descuento });
 
     // Preparar datos para enviar al formulario
     function prepararDatosOrden() {
-      const datosCliente = data.datos_cliente || {};
-      return {
-        id_reloj: data.id_reloj || "",
-        id_usuario: datosCliente.id_usuario || null,
-        nombre: datosCliente.nombre || "",
-        cedula: datosCliente.cedula || "",
-        celular: datosCliente.celular || "",
-        departamento: datosCliente.departamento || "",
-        ciudad: datosCliente.ciudad || "",
-        direccion: datosCliente.direccion || "",
-        barrio: datosCliente.barrio || "",
-        referencias: datosCliente.referencias || "",
-        costo_envio: costoEnvio,
-        correo: datosCliente.correo || ""
-      };
+        const datosCliente = data.datos_cliente || {};
+        return {
+            id_reloj: data.id_reloj || "",
+            id_usuario: datosCliente.id_usuario || null,
+            nombre: datosCliente.nombre || "",
+            cedula: datosCliente.cedula || "",
+            celular: datosCliente.celular || "",
+            departamento: datosCliente.departamento || "",
+            ciudad: datosCliente.ciudad || "",
+            direccion: datosCliente.direccion || "",
+            barrio: datosCliente.barrio || "",
+            referencias: datosCliente.referencias || "",
+            costo_envio: costoEnvio,
+            correo: datosCliente.correo || "",
+            precio_final: precioFinal // Enviar precio ya calculado
+        };
     }
 
     const datosOrden = prepararDatosOrden();
@@ -551,23 +548,28 @@
     document.getElementById("costo_envio_hidden").value = datosOrden.costo_envio;
     document.getElementById("correo_hidden").value = datosOrden.correo;
     document.getElementById("datos_orden").value = JSON.stringify(datosOrden);
-    document.getElementById("descuento_valor_hidden").value = data.descuento_valor || 0;
-    document.getElementById("descuento_porcentaje_hidden").value = data.descuento_porcentaje || 0;
-
+    document.getElementById("descuento_valor_hidden").value = descuento;
+    document.getElementById("descuento_porcentaje_hidden").value = descuento_porcentaje;
 
     // Validar datos antes de enviar el formulario
     document.getElementById("form-comprobante").addEventListener("submit", function(e) {
-      const datosOrdenActual = document.getElementById("datos_orden").value;
+        const datosOrdenActual = document.getElementById("datos_orden").value;
 
-      if (!datosOrdenActual || datosOrdenActual === "{}") {
-        e.preventDefault();
-        console.error("❌ Error: No hay datos de la orden para enviar");
-        alert("Error: No se pudieron cargar los datos de la orden. Por favor, intenta de nuevo.");
-        return false;
-      }
-      
-      console.log("📤 Enviando formulario con datos:", datosOrdenActual);
-      return true;
+        if (!datosOrdenActual || datosOrdenActual === "{}") {
+            e.preventDefault();
+            console.error("❌ Error: No hay datos de la orden para enviar");
+            alert("Error: No se pudieron cargar los datos de la orden. Por favor, intenta de nuevo.");
+            return false;
+        }
+        
+        console.log("📤 Enviando formulario con datos:", datosOrdenActual);
+        
+        // 🔥 LIMPIAR LOCALSTORAGE AL ENVIAR
+        localStorage.removeItem("nequi_datos_pago");
+        localStorage.removeItem("descuento_aplicado");
+        console.log("🧹 LocalStorage limpiado tras envío exitoso");
+        
+        return true;
     });
 
     // Función para copiar número de Nequi
@@ -604,13 +606,21 @@
       document.querySelector(".producto img").src = data.img || "/finoso/default.png";
     }
     if (document.getElementById("precio-reloj")) {
-      document.getElementById("precio-reloj").textContent = `$${precio.toLocaleString("es-CO")}`;
+      document.getElementById("precio-reloj").textContent = `$${precioFinal.toLocaleString("es-CO")}`;
     }
     if (document.getElementById("envio")) {
       document.getElementById("envio").textContent = `$${costoEnvio.toLocaleString("es-CO")}`;
     }
     if (document.getElementById("total-pago")) {
-      document.getElementById("total-pago").textContent = `$${totalConDescuento.toLocaleString("es-CO")}`;
+      document.getElementById("total-pago").textContent = `$${total.toLocaleString("es-CO")}`;
+    }
+
+    if (document.getElementById("descuento-info")) {
+      if (descuento > 0) {
+        document.getElementById("descuento-info").textContent = `Se aplicó un descuento de $${descuento.toLocaleString("es-CO")} (${descuento_porcentaje.toFixed(0)}%)`;
+      } else {
+        document.getElementById("descuento-info").textContent = "";
+      }
     }
 
     // Animación de entrada escalonada para los elementos
@@ -625,7 +635,7 @@
       }, 200 * (index + 1));
     });
     document.getElementById("descuento_valor_hidden").value = descuento;
-    document.getElementById("descuento_porcentaje_hidden").value = descuentoInfo.porcentaje || 0;
+    document.getElementById("descuento_porcentaje_hidden").value = descuento_porcentaje;
   </script>
 
 </body>

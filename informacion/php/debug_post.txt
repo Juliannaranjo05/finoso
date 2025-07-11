@@ -1,6 +1,6 @@
 Array
 (
-    [id_reloj] => 4
+    [id_reloj] => 2
     [id_usuario] => 
     [nombre] => Julian
     [cedula] => 1138274130
@@ -12,7 +12,7 @@ Array
     [referencias] => 
     [costo_envio] => 10000
     [correo] => juliannaranjo58@gmail.com
-    [datos_orden] => {"id_reloj":"4","id_usuario":null,"nombre":"Julian","cedula":"1138274130","celular":"3173897119","departamento":"AN","ciudad":"Medellín","direccion":"Cll 42 a 2w 74","barrio":"El saman","referencias":"","costo_envio":10000,"correo":"juliannaranjo58@gmail.com"}
+    [datos_orden] => {"id_reloj":"2","id_usuario":null,"nombre":"Julian","cedula":"1138274130","celular":"3173897119","departamento":"AN","ciudad":"Medellín","direccion":"Cll 42 a 2w 74","barrio":"El saman","referencias":"","costo_envio":10000,"correo":"juliannaranjo58@gmail.com","precio_final":112500}
     [descuento_valor] => 12500
     [descuento_porcentaje] => 10
 )

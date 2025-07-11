@@ -1,7 +1,7 @@
-<?php 
-require __DIR__ . '/../../vendor/autoload.php'; 
-include 'conexion.php'; 
-header('Content-Type: application/json'); 
+<?php  
+require __DIR__ . '/../../vendor/autoload.php';  
+include 'conexion.php';  
+header('Content-Type: application/json');   
 
 // Leer los datos enviados desde JS
 $input = json_decode(file_get_contents('php://input'), true);
@@ -15,7 +15,7 @@ if ($id_reloj <= 0) {
     exit;
 }
 
-// Obtener precio, descuento y más info desde la BD
+// Obtener información del reloj (SIN aplicar descuento aquí)
 $stmt = $conn->prepare("SELECT nombre, precio, marca, img, descuento FROM reloj WHERE id_reloj = ?");
 $stmt->bind_param("i", $id_reloj);
 $stmt->execute();
@@ -28,51 +28,35 @@ if ($result->num_rows === 0) {
 
 $row = $result->fetch_assoc();
 $nombre_reloj = $row['nombre'];
-$precio_reloj = floatval($row['precio']);
-$descuento = floatval($row['descuento']); // Obtener descuento desde la BD
+$precio_original = floatval($row['precio']);
+$descuento_bd = floatval($row['descuento']);
 
 // Corregir precio si está en formato incorrecto
-if ($precio_reloj < 1000 && $precio_reloj > 0) {
-    $precio_reloj = $precio_reloj * 1000;
+if ($precio_original < 1000 && $precio_original > 0) {
+    $precio_original = $precio_original * 1000;
 }
 
-// Aplicar descuento solo si existe (descuento > 0)
-if ($descuento > 0) {
-    $precio_reloj = $precio_reloj * (1 - $descuento);  // Aplicar descuento
-}
-
-// Redondear el precio al múltiplo de 1000 más cercano
-$resto = $precio_reloj % 1000; // Restante al dividir entre 1000
-
-if ($resto >= 500) {
-    $precio_reloj = ceil($precio_reloj / 1000) * 1000; // Redondeo hacia arriba al siguiente múltiplo de 1000
-} else {
-    $precio_reloj = floor($precio_reloj / 1000) * 1000; // Redondeo hacia abajo al múltiplo anterior de 1000
-}
-
-// Calcular el total con el costo de envío
-$total = $precio_reloj + $costo_envio;
-
+// 🔥 NO APLICAR DESCUENTO AQUÍ - solo enviar precio original
 $marca = $row['marca'];
 $img = 'http://127.0.0.1/finoso/' . ltrim($row['img'], '/');
 
-// Respuesta con todos los datos necesarios
+// Respuesta con precio original
 $response = [
     'success' => true,
-    'precio_reloj' => $precio_reloj, // Este es el precio con descuento si aplica y redondeado
+    'precio_original' => $precio_original,
+    'precio_reloj' => $precio_original, // Para compatibilidad
+    'descuento_bd_disponible' => $descuento_bd,
     'costo_envio' => $costo_envio,
-    'total' => $total,
     'nombre_reloj' => $nombre_reloj,
     'marca' => $marca,
     'img' => $img,
-    // Datos del formulario para usar después
     'datos_cliente' => [
         'metodo_pago' => $input['metodo_pago'],
         'nombre' => $input['nombre'],
         'cedula' => $input['cedula'],
         'celular' => $input['celular'],
         'correo' => $input['correo'] ?? null,
-        'id_usuario' => $id_usuario, // INCLUIR EL ID_USUARIO AQUÍ
+        'id_usuario' => $id_usuario,
         'departamento' => $input['departamento'],
         'ciudad' => $input['ciudad'],
         'direccion' => $input['direccion'],

@@ -209,39 +209,52 @@ if ($result->num_rows === 0) {
 }
 
 $reloj = $result->fetch_assoc();
-$precio_reloj = floatval($reloj['precio']);
-$descuento = floatval($reloj['descuento']); // Obtener descuento desde la BD
+$precio_bd = floatval($reloj['precio']);
+$descuento_bd = floatval($reloj['descuento']); // Obtener descuento desde la BD
 
 // Corregir precio si está en formato incorrecto
-if ($precio_reloj < 1000 && $precio_reloj > 0) {
-    $precio_reloj = $precio_reloj * 1000;
+if ($precio_bd < 1000 && $precio_bd > 0) {
+    $precio_bd = $precio_bd * 1000;
 }
 
-// Aplicar descuento solo si existe (descuento > 0)
-if ($descuento > 0) {
-    $precio_reloj = $precio_reloj * (1 - $descuento);  // Aplicar descuento
-}
-
-// Redondear el precio al múltiplo de 1000 más cercano
-$resto = $precio_reloj % 1000; // Restante al dividir entre 1000
-
-if ($resto >= 500) {
-    $precio_reloj = ceil($precio_reloj / 1000) * 1000; // Redondeo hacia arriba al siguiente múltiplo de 1000
-} else {
-    $precio_reloj = floor($precio_reloj / 1000) * 1000; // Redondeo hacia abajo al múltiplo anterior de 1000
-}
+// 🔥 USAR DIRECTAMENTE LOS DATOS QUE VIENEN DEL FRONTEND
+// Estos datos ya están correctamente calculados
+$precio_final = isset($data['precio_final']) && $data['precio_final'] > 0 
+    ? floatval($data['precio_final']) 
+    : $precio_bd;
 
 $costo_envio = floatval($data['costo_envio'] ?? 0);
 $descuento_valor = isset($_POST['descuento_valor']) ? floatval($_POST['descuento_valor']) : 0;
 $descuento_porcentaje = isset($_POST['descuento_porcentaje']) ? floatval($_POST['descuento_porcentaje']) : 0;
 
+// Validar que los valores no sean negativos
 if ($descuento_valor < 0) $descuento_valor = 0;
 if ($descuento_porcentaje < 0) $descuento_porcentaje = 0;
 
-$total = $precio_reloj + $costo_envio;
-$total -= $descuento_valor;
+// 🔥 CALCULAR TOTAL FINAL SIN DOBLE DESCUENTO
+// El precio_final ya viene con el descuento aplicado
+$total = $precio_final + $costo_envio;
 
-if ($total < 0) $total = 0; // por si acaso
+// Asegurar que el total no sea negativo
+if ($total < 0) $total = 0;
+
+// 🔥 ELIMINAR ESTA SECCIÓN PROBLEMÁTICA:
+/*
+// Redondear el precio al múltiplo de 1000 más cercano
+$resto = $precio_final % 1000;
+if ($resto >= 500) {
+    $precio_final = ceil($precio_final / 1000) * 1000;
+} else {
+    $precio_final = floor($precio_final / 1000) * 1000;
+}
+
+// NO RESTAR EL DESCUENTO DE NUEVO
+$total = $precio_final + $costo_envio;
+$total -= $descuento_valor; // ❌ ESTA LÍNEA ESTÁ CAUSANDO EL PROBLEMA
+*/
+
+// 🔥 PARA MOSTRAR LOS VALORES CORRECTOS:
+$precio_original = isset($data['precio_original']) ? floatval($data['precio_original']) : $precio_bd;
 
 // Guardar archivo comprobante
 $directorioComprobantes = __DIR__ . '/comprobantes/';
@@ -254,19 +267,16 @@ if (!file_exists($directorioComprobantes)) {
 $nombreArchivo = 'comprobante_' . time() . '_' . uniqid() . '.' . $extension;
 $rutaCompleta = $directorioComprobantes . $nombreArchivo;
 
-// Mover el archivo después de todas las validaciones
 if (!move_uploaded_file($archivo['tmp_name'], $rutaCompleta)) {
     die("Error: No se pudo guardar el comprobante.");
 }
 
-// Establecer permisos del archivo
 chmod($rutaCompleta, 0644);
 
 // Guardar en la base de datos
 try {
     $conn->begin_transaction();
 
-    // Agregar campos adicionales para el seguimiento
     $sql_orden = "INSERT INTO orden (
         id_usuario, fecha, total, estado, metodo_pago, costo_envio,
         nombre, cedula, celular, departamento, ciudad, direccion, barrio, referencias,
@@ -281,7 +291,7 @@ try {
     
     $stmt = $conn->prepare($sql_orden);
     $stmt->bind_param(
-        "iddsssssssssssss", // 17 parámetros: i,d,d,s,s,s,s,s,s,s,s,s,s,s,s,s,s
+        "iddsssssssssssss",
         $id_usuario,
         $total,
         $costo_envio,
@@ -301,23 +311,31 @@ try {
     );
 
     $stmt->execute();
-
     $id_orden = $stmt->insert_id;
 
+    // 🔥 GUARDAR EL PRECIO FINAL CORRECTO EN LA BD
     $sql_detalle = "INSERT INTO orden_detalle (id_orden, id_reloj, precio_unitario) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql_detalle);
-    $stmt->bind_param("iid", $id_orden, $id_reloj, $precio_reloj);
+    $stmt->bind_param("iid", $id_orden, $id_reloj, $precio_final);
     $stmt->execute();
 
     $conn->commit();
 
-    // Formatear valores para mostrar
-    $precio_con_descuento_mostrar = $precio_reloj - $descuento_valor;
-    if ($precio_con_descuento_mostrar < 0) $precio_con_descuento_mostrar = 0;
-
-    $precio_formateado = number_format($precio_con_descuento_mostrar, 0, ',', '.');
+    // 🔥 FORMATEAR VALORES PARA MOSTRAR CORRECTAMENTE
+    $precio_formateado = number_format($precio_final, 0, ',', '.');
     $costo_envio_formateado = number_format($costo_envio, 0, ',', '.');
     $total_formateado = number_format($total, 0, ',', '.');
+    
+    // Para mostrar información del descuento si existe
+    $descuento_info = '';
+    if ($descuento_valor > 0) {
+        $precio_original_formateado = number_format($precio_original, 0, ',', '.');
+        $descuento_formateado = number_format($descuento_valor, 0, ',', '.');
+        $descuento_info = "
+            <p><strong>Precio original:</strong> $" . $precio_original_formateado . "</p>
+            <p><strong>Descuento aplicado:</strong> -$" . $descuento_formateado . " ({$descuento_porcentaje}%)</p>
+        ";
+    }
 
     // Página de éxito con el nuevo diseño
     echo '
@@ -326,7 +344,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pago Exitoso - FINOSO</title>
+    <title>Pago Exitoso</title>
     <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
     <style>
         * {
