@@ -1,9 +1,15 @@
 <?php
+// Crear una preferencia de pago con MercadoPago
+session_start();
+
+$id_usuario = $_SESSION['id_usuario'] ?? ($input['id_usuario'] ?? null);
+$correo = $_SESSION['correo'] ?? ($input['correo'] ?? null);
+
 require __DIR__ . '/../../vendor/autoload.php';
 include 'conexion.php';
 
-use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\MercadoPagoConfig;
 
 header('Content-Type: application/json');
 
@@ -82,6 +88,8 @@ try {
         exit;
     }
 
+    $codigo_descuento_aplicado = $input['codigo_descuento'] ?? null;
+
     // Recibir todos los datos del formulario
     // MOVIDO después de calcular $precio_final
     $datos_formulario = [
@@ -104,22 +112,29 @@ try {
             [
                 "title" => $reloj['nombre'],
                 "quantity" => 1,
-                "unit_price" => $precio_final, // Solo el precio del producto
-                "currency_id" => "COP"
+                "unit_price" => $precio_final,
+                "currency_id" => "COP",
+                "picture_url" => "https://finoso.store/finoso/img/" . ltrim($reloj['img'], '/')
             ]
         ],
         "shipments" => [
             "cost" => $costo_envio,
-            "mode" => "not_specified" // modo sin cálculo automático
+            "mode" => "not_specified"
         ],
-        "back_urls" => [
-            "success" => "https://finoso.store/feedback.php?status=success",
-            "failure" => "https://finoso.store/feedback.php?status=failure",
-            "pending" => "https://finoso.store/feedback.php?status=pending"
+        'back_urls' => [
+            'success' => 'https://mail.google.com/mail/u/0/#inbox',
+            'pending' => 'https://finoso.store/finoso/informacion/php/pago_pendiente.php',
         ],
         "auto_return" => "approved",
         "external_reference" => "reloj_" . $id_reloj,
-        "notification_url" => "https://finoso.store/finoso-zip/finoso/catalogo/php/mercadopago_webhook.php"
+        "notification_url" => "https://finoso.store/finoso/informacion/php/mercadopago_webhook.php",
+        "statement_descriptor" => "FINOSO",
+        "metadata" => [
+            "id_usuario" => $id_usuario ? strval($id_usuario) : "null",
+            "correo" => $correo ? strval($correo) : "sin_correo",
+            "codigo_descuento" => isset($codigo_descuento_aplicado) ? strval($codigo_descuento_aplicado) : "sin_codigo"
+        ],
+        "expiration_date_to" => date('c', strtotime('+30 minutes'))
     ];
 
     $preference = $client->create($preference_data);

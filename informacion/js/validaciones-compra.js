@@ -41,6 +41,24 @@ document.addEventListener("DOMContentLoaded", function () {
         "VID": ["Puerto Carreño", "La Primavera", "Santa Rosalía", "Cumaribo"]
     };
 
+    async function calcularEnvio(ciudad, departamento) {
+        const res = await fetch('http://127.0.0.1/finoso/informacion/php/consultar_precio_envio.php?ciudad=' + ciudad + '&departamento=' + departamento);
+        const data = await res.json();
+
+        if (data.status === "ok") {
+            document.getElementById("precioEnvio").textContent = `$${data.precio.toLocaleString()}`;
+            document.getElementById("diasEnvio").textContent = `${data.dias_estimados} días hábiles`;
+        } else {
+            alert("No tenemos cobertura aún para esta ciudad.");
+        }
+    }
+
+    document.getElementById("ciudad").addEventListener("change", () => {
+        const ciudad = document.getElementById("ciudad").value;
+        const departamento = document.getElementById("departamento").value;
+        calcularEnvio(ciudad, departamento);
+    });
+
     // === SISTEMA DE GUARDADO SIMPLE ===
     const STORAGE_KEY = 'finoso_form_data';
 
@@ -66,6 +84,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
+
+    // Aplicar visualmente el método de pago guardado
+    function aplicarMetodoPagoVisualmente() {
+        const metodoGuardado = metodoPagoInput.value;
+
+        // Limpiar selección previa
+        document.querySelectorAll('.boton-metodo').forEach(btn => {
+            btn.classList.remove('activo');
+        });
+
+        // Aplicar clase activa al botón correspondiente
+        const botonActivo = document.querySelector(`.boton-metodo[data-metodo="${metodoGuardado}"]`);
+        if (botonActivo) {
+            botonActivo.classList.add('activo');
+        }
+    }
+
 
     function loadFormData() {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -95,10 +130,23 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.metodo_pago) {
             metodoPagoInput.value = data.metodo_pago;
             document.querySelectorAll('.boton-metodo img').forEach(img => {
-                img.classList.remove('seleccionado');
-                if (img.dataset.metodo === data.metodo_pago) {
-                    img.classList.add('seleccionado');
-                }
+                img.addEventListener('click', function () {
+                    const metodo = this.dataset.metodo;
+                    metodoPagoInput.value = metodo;
+                    console.log("✅ Método de pago seleccionado:", metodo);
+
+                    // Quitar selección previa
+                    document.querySelectorAll('.boton-metodo').forEach(btn => {
+                        btn.classList.remove('activo');
+                    });
+
+                    // Aplicar clase activa al seleccionado
+                    const contenedor = this.closest('.boton-metodo');
+                    if (contenedor) contenedor.classList.add('activo');
+
+                    // Guardar si el checkbox está activo
+                    if (checkbox.checked) saveFormData();
+                });
             });
         }
         
@@ -206,6 +254,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+
+    const btnCancelar = document.getElementById("cancelar-confirmacion");
+        if (btnCancelar) {
+        btnCancelar.onclick = () => {
+            document.getElementById("modal-confirmacion").style.display = "none";
+        };
+    }
+
+
     // Submit del formulario
     form.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -222,8 +279,14 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
 
         if (metodoPagoInput.value === "nequi") {
-            const correoValido = validateField("correo", /^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Por favor, ingresa un correo electrónico válido.");
-            validations.push(correoValido);
+            validations.push(validateField("correo", /^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Por favor, ingresa un correo válido."));
+        }
+
+        if (!validations.every(v => v)) return;
+
+        if (!metodoPagoInput.value) {
+            errorMetodo.textContent = 'Por favor, selecciona un método de pago.';
+            return;
         }
 
         const campoCorreo = document.getElementById("campo-correo");
@@ -232,21 +295,11 @@ document.addEventListener("DOMContentLoaded", function () {
             validations.push(correoValido);
         }
 
-        if (!validations.every(v => v)) return;
-
-        if (!metodoPagoInput.value) {
-            errorMetodo.textContent = 'Por favor, selecciona un método de pago.';
-            return;
-        } else {
-            errorMetodo.textContent = '';
-        }
-
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        const params = new URLSearchParams(window.location.search);
         console.log(new URLSearchParams(window.location.search))
-        data.id_reloj = params.get("id_reloj");
+        data.id_reloj = new URLSearchParams(window.location.search).get("id_reloj");
         console.log("Datos del formulario:", data);
 
         if (!data.id_reloj) {
@@ -255,8 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Obtener el valor del envío desde el DOM
-        const precioEnvioElement = document.getElementById('precio-envio');
-        const costoEnvio = precioEnvioElement ? parseInt(precioEnvioElement.textContent) : 0;
+        const costoEnvio = parseInt(document.getElementById('precio-envio')?.textContent || 0);
 
         // Validar que el costo de envío sea válido
         if (costoEnvio <= 0) {
@@ -266,70 +318,65 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // AGREGAR el costo de envío a la data existente (NO sobrescribir)
         data.costo_envio = costoEnvio;
+        if (!data.precio) {
+            const precioElement = document.querySelector(".precio-normal, .precio-descuentos");
+            if (precioElement) {
+                const precioLimpiado = precioElement.textContent.trim().replace(/[^\d]/g, '');
+                data.precio = parseInt(precioLimpiado);
+            } else {
+                data.precio = 0; // fallback
+            }
+        }
 
-        if (metodoPagoInput.value === "mercadopago") {
-            fetch("http://127.0.0.1/finoso/informacion/php/crear_preferencia.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            })
-            .then(res => {
-                if (!res.ok) {
-                    return res.json().then(err => { throw err; });
-                }
-                return res.json();
-            })
-            .then(respuesta => {
-                if (respuesta.error) {
-                    const errorMessage = respuesta.debug ? 
-                        `Error: ${respuesta.error}\nDetalles:\n` +
-                        `- Precio BD: ${(respuesta.debug.precio_bd / 1000).toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}\n` +
-                        `- Precio final: ${(respuesta.debug.precio_redondeado / 1000).toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}\n` +
-                        `- Costo envío: ${respuesta.debug.costo_envio.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}\n` +
-                        `- Total: ${respuesta.debug.total_con_envio.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}` :
-                        respuesta.message;
-                    
-                    alert(errorMessage);
-                    return;
-                }
-                
-                // Opcional: mostrar el desglose antes de redirigir
-                console.log('Desglose del pago:');
-                console.log(`Reloj: ${respuesta.precio_reloj.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
-                console.log(`Envío: ${respuesta.costo_envio.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
-                console.log(`Total: ${respuesta.total.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
+        const total = parseInt(data.precio) + costoEnvio;
 
-                // Nuevo paso antes de redirigir
-                fetch("https://finoso.store/finoso-zip/finoso/catalogo/php/guardar_orden.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        ...data,
-                        precio_reloj: respuesta.precio_reloj,
-                        costo_envio: respuesta.costo_envio
-                    })
-                })
-                .then(res => res.json())
-                .then(guardarRes => {
-                    if (guardarRes.success) {
-                        // Ya se guardó la orden → redirige a MercadoPago
-                        window.location.href = respuesta.init_point;
-                    } else {
-                        alert("No se pudo guardar la orden en la base de datos.");
-                    }
-                })
-                .catch(err => {
-                    alert("Error al guardar la orden antes del pago.");
-                });
-                
-                if (respuesta.init_point) {
-                    window.location.href = respuesta.init_point;
-                }
-            })
-            .catch(err => {
-                console.error("MP API error:", err);
-                alert(`Error: ${err.message}\nDetalles:\n${JSON.stringify(err.response || err)}`);
-            });
+        // === ACTUALIZAR CAMPOS DEL MODAL VISUAL ===
+        const modalNombre = document.getElementById("modal-nombre");
+        const modalCiudad = document.getElementById("modal-ciudad");
+        const modalDireccion = document.getElementById("modal-direccion");
+        const modalMetodo = document.getElementById("modal-metodo-pago");
+        const modalCostoTotal = document.getElementById("modal-costo-total");
+
+        if (modalNombre) modalNombre.textContent = data.nombre;
+        if (modalCiudad) modalCiudad.textContent = data.ciudad;
+        if (modalDireccion) modalDireccion.textContent = `${data.direccion}, ${data.barrio}`;
+        if (modalMetodo) modalMetodo.textContent = metodoPagoInput.value === "nequi" ? "Nequi" : "Mercado Pago";
+        if (modalCostoTotal) modalCostoTotal.textContent = `$${total.toLocaleString('es-CO')}`;
+
+        console.log("🎯 modal-nombre:", modalNombre);
+        console.log("🎯 modal-ciudad:", modalCiudad);
+
+        const resumen = `
+            <strong>Cédula:</strong> ${data.cedula}<br>
+            <strong>Celular:</strong> ${data.celular}<br>
+            <strong>Método de pago:</strong> ${metodoPagoInput.value === "nequi" ? "Nequi" : "Mercado Pago"}<br>
+            <strong>Precio reloj:</strong> $${parseInt(data.precio).toLocaleString()}<br>
+            <strong>Envío:</strong> $${costoEnvio.toLocaleString()}
+        `;
+
+        if (metodoPagoInput.value === "mercado_pago") {
+            document.getElementById("resumen-compra").innerHTML = resumen;
+            const modal = document.getElementById("modal-confirmacion");
+            modal.style.display = "flex";
+            let segundos = 5;
+            const mensaje = document.getElementById("auto-redir-msg");
+            if (mensaje) {
+                mensaje.textContent = `Redirigiendo automáticamente en ${segundos} segundos...`;
+
+                const countdown = setInterval(() => {
+                    segundos--;
+                    mensaje.textContent = `Redirigiendo automáticamente en ${segundos} segundos...`;
+                    if (segundos <= 0) clearInterval(countdown);
+                }, 1000);
+            }
+
+            setTimeout(() => {
+                cerrarModal();
+                enviarFormulario(data);
+            }, 5000);
+
+            return;
+
         }  else if (metodoPagoInput.value === "nequi") {
             console.log("🟣 Iniciando flujo de pago con Nequi...");
 
@@ -461,6 +508,73 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
     });
+    function enviarFormulario(data) {
+        if (data.metodo_pago === "mercado_pago") {
+            fetch("http://127.0.0.1/finoso/informacion/php/crear_preferencia.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { throw err; });
+                }
+                return res.json();
+            })
+            .then(respuesta => {
+                if (respuesta.error) {
+                    const errorMessage = respuesta.debug ? 
+                        `Error: ${respuesta.error}\nDetalles:\n` +
+                        `- Precio BD: ${(respuesta.debug.precio_bd / 1000).toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}\n` +
+                        `- Precio final: ${(respuesta.debug.precio_redondeado / 1000).toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}\n` +
+                        `- Costo envío: ${respuesta.debug.costo_envio.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}\n` +
+                        `- Total: ${respuesta.debug.total_con_envio.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}` :
+                        respuesta.message;
+
+                    alert(errorMessage);
+                    return;
+                }
+
+                console.log('🧾 Desglose del pago:');
+                console.log(`Reloj: ${respuesta.precio_reloj.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
+                console.log(`Envío: ${respuesta.costo_envio.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
+                console.log(`Total: ${respuesta.total.toLocaleString('es-CO', {style: 'currency', currency: 'COP'})}`);
+
+                // Guardar la orden antes de redirigir a MP
+                fetch("https://finoso.store/finoso/informacion/php/guardar_orden.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        ...data,
+                        precio_reloj: respuesta.precio_reloj,
+                        costo_envio: respuesta.costo_envio
+                    })
+                })
+                .then(res => res.json())
+                .then(guardarRes => {
+                    if (guardarRes.success) {
+                        window.location.href = respuesta.init_point;
+                    } else {
+                        alert("No se pudo guardar la orden en la base de datos.");
+                    }
+                })
+                .catch(err => {
+                    console.error("❌ Error al guardar orden:", err);
+                    alert("Error al guardar la orden antes del pago.");
+                });
+
+            })
+            .catch(err => {
+                console.error("❌ MP API error:", err);
+                alert(`Error: ${err.message}\nDetalles:\n${JSON.stringify(err.response || err)}`);
+            });
+
+        } else {
+            alert("Método de pago no implementado todavía.");
+        }
+    }
+
     // Cargar datos al iniciar
     loadFormData();
+    aplicarMetodoPagoVisualmente();
 });

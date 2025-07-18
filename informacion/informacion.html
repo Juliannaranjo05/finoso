@@ -124,36 +124,36 @@
                                     <option value="">Selecciona un departamento</option>
                                     <option value="AMA">Amazonas</option>
                                     <option value="AN">Antioquia</option>
-                                    <option value="Arauca">Arauca</option>
-                                    <option value="Atlántico">Atlántico</option>
-                                    <option value="Bolívar">Bolívar</option>
-                                    <option value="Boyacá">Boyacá</option>
-                                    <option value="Caldas">Caldas</option>
-                                    <option value="Caquetá">Caquetá</option>
-                                    <option value="Casanare">Casanare</option>
-                                    <option value="Cauca">Cauca</option>
-                                    <option value="Cesar">Cesar</option>
-                                    <option value="Chocó">Chocó</option>
-                                    <option value="Córdoba">Córdoba</option>
-                                    <option value="Cundinamarca">Cundinamarca</option>
-                                    <option value="Guainía">Guainía</option>
-                                    <option value="Guaviare">Guaviare</option>
-                                    <option value="Huila">Huila</option>
-                                    <option value="La Guajira">La Guajira</option>
-                                    <option value="Magdalena">Magdalena</option>
-                                    <option value="Meta">Meta</option>
-                                    <option value="Nariño">Nariño</option>
-                                    <option value="Norte de Santander">Norte de Santander</option>
-                                    <option value="Putumayo">Putumayo</option>
-                                    <option value="Quindío">Quindío</option>
-                                    <option value="Risaralda">Risaralda</option>
-                                    <option value="San Andrés y Providencia">San Andrés y Providencia</option>
-                                    <option value="Santander">Santander</option>
-                                    <option value="Sucre">Sucre</option>
-                                    <option value="Tolima">Tolima</option>
+                                    <option value="ARA">Arauca</option>
+                                    <option value="ATL">Atlántico</option>
+                                    <option value="BOL">Bolívar</option>
+                                    <option value="BOY">Boyacá</option>
+                                    <option value="CAL">Caldas</option>
+                                    <option value="CAQ">Caquetá</option>
+                                    <option value="CAS">Casanare</option>
+                                    <option value="CAU">Cauca</option>
+                                    <option value="CES">Cesar</option>
+                                    <option value="CHO">Chocó</option>
+                                    <option value="COR">Córdoba</option>
+                                    <option value="CUN">Cundinamarca</option>
+                                    <option value="GUA">Guainía</option>
+                                    <option value="GUV">Guaviare</option>
+                                    <option value="HUI">Huila</option>
+                                    <option value="LAG">La Guajira</option>
+                                    <option value="MAG">Magdalena</option>
+                                    <option value="MET">Meta</option>
+                                    <option value="NAR">Nariño</option>
+                                    <option value="NSA">Norte de Santander</option>
+                                    <option value="PUT">Putumayo</option>
+                                    <option value="QUI">Quindío</option>
+                                    <option value="RIS">Risaralda</option>
+                                    <option value="SAP">San Andrés y Providencia</option>
+                                    <option value="SAN">Santander</option>
+                                    <option value="SUC">Sucre</option>
+                                    <option value="TOL">Tolima</option>
                                     <option value="Valle del Cauca">Valle del Cauca</option>
-                                    <option value="Vaupés">Vaupés</option>
-                                    <option value="Vichada">Vichada</option>
+                                    <option value="VAU">Vaupés</option>
+                                    <option value="VID">Vichada</option>
                                 </select>
                                 <span class="error-message" id="error-departamento"></span>
 
@@ -190,7 +190,7 @@
                                 <span class="error-message" id="error-codigo-descuento"></span>
                             </div>
                             <div class="envio-total-info">
-                                <p><span class="circulo-verde">●</span> Envío Total: $<strong id="precio-envio">10000</strong> COP</p>
+                                <p><span class="circulo-verde">●</span> Envío Total: $<strong id="precio-envio">500</strong> COP</p>
                                 <p class="descuento-texto">🚚 ¡Envío gratis por compras superiores a $200.000 COP!</p>
                             </div>
                             <div class="guardar-info">
@@ -289,6 +289,65 @@
             <p class="username" id="nombreUsuario">Juan Perez</p>
             <button class="logout-btn" id="cerrarSesionBtn">Cerrar sesión</button>
         </div>
+
+        <!-- MODAL DE CONFIRMACIÓN -->
+        <div id="modal-confirmacion" class="modal">
+            <div class="modal-contenido">
+                <div class="modal-header">
+                    <button class="close-btn" onclick="cerrarModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h2>
+                        <i class="fas fa-crown"></i>
+                        Confirmar Compra
+                    </h2>
+                </div>
+                <div class="modal-body">
+                    <div class="resumen-section">
+                        <div class="resumen-title">
+                            <i class="fas fa-list-ul"></i>
+                            Resumen de tu pedido
+                        </div>
+                        <div id="resumen-compra">
+                            <div>1x Reloj Nautilus Premium - $2.450.000</div>
+                            <div>1x Caja de Presentación Exclusiva - $150.000</div>
+                            <div>Garantía Extendida 2 años - $200.000</div>
+                        </div>
+                        <div class="total-section">
+                            <div class="total-label">Total a pagar (envío asegurado incluido)</div>
+                            <div class="total-amount" id="modal-costo-total">$2.800.000</div>
+                        </div>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <i class="fas fa-user-tie info-icon"></i>
+                            <div class="info-content">
+                                <div class="info-label">Nombre completo</div>
+                                <div class="info-value" id="modal-nombre">Sr. Carlos Eduardo Mendoza</div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt info-icon"></i>
+                            <div class="info-content">
+                                <div class="info-label">Ciudad</div>
+                                <div class="info-value" id="modal-ciudad">Bogotá</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <i class="fas fa-shipping-fast info-icon"></i>
+                            <div class="info-content">
+                                <div class="info-label">Dirección de envío</div>
+                                <div class="info-value" id="modal-direccion">Carrera 13 #93-45, Chapinero Norte</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spinner"></div>
+                <p id="auto-redir-msg" style="margin-top: 10px; color: #888; font-size: 0.9rem; display: flex; justify-content: center; align-items: center;"></p>
+            </div>
+        </div>
+
     <script>
         function aplicarDescuento() {
             const codigo = document.getElementById("codigo-descuento").value.trim();
@@ -379,6 +438,11 @@
         }
 
         generateParticles();
+
+        function cerrarModal() {
+            const modal = document.getElementById("modal-confirmacion");
+            if (modal) modal.style.display = "none";
+        }
     </script>
     <script src="js/añadir-carrito.js"></script>
     <script src="js/obtener-reloj.js"></script>

@@ -95,10 +95,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.metodo_pago) {
             metodoPagoInput.value = data.metodo_pago;
             document.querySelectorAll('.boton-metodo img').forEach(img => {
-                img.classList.remove('seleccionado');
-                if (img.dataset.metodo === data.metodo_pago) {
-                    img.classList.add('seleccionado');
-                }
+                img.addEventListener('click', function () {
+                    const metodo = this.dataset.metodo;
+                    document.getElementById('metodo-pago').value = metodo;
+                    console.log("✅ Método de pago seleccionado:", metodo);
+                });
             });
         }
         
@@ -273,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // AGREGAR el costo de envío a la data existente (NO sobrescribir)
         data.costo_envio = costoEnvio;
 
-        if (metodoPagoInput.value === "mercadopago") {
+        if (metodoPagoInput.value === "mercado_pago") {
             fetch("http://127.0.0.1/finoso/informacion/php/crear_preferencia.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
