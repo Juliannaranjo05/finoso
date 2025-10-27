@@ -60,39 +60,60 @@ document.addEventListener('DOMContentLoaded', function() {
         // Mostrar mensaje de carga
         mostrarMensaje('Procesando...', 'info');
 
+        // Debug: Mostrar datos que se van a enviar
+        const datosEnvio = `nombre=${encodeURIComponent(nombre)}&contrasena=${encodeURIComponent(contrasena)}&action=login`;
+        console.log("🔍 DATOS A ENVIAR:", {
+            nombre: nombre,
+            contrasena: contrasena,
+            action: 'login',
+            body: datosEnvio
+        });
+
         // Enviar petición fetch con datos JSON
+        console.log("🚀 Enviando petición a:", 'http://127.0.0.1/finoso/login/php/login.php');
         fetch('http://127.0.0.1/finoso/login/php/login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({
-                'nombre': nombre,
-                'contrasena': contrasena,
-                'action': 'login'
-            })
+            body: datosEnvio
         })
         .then(response => {
+            console.log("📡 Respuesta HTTP recibida:", {
+                status: response.status,
+                statusText: response.statusText,
+                ok: response.ok,
+                headers: Object.fromEntries(response.headers.entries())
+            });
+            
             if (!response.ok) {
                 throw new Error('Error en la respuesta del servidor: ' + response.status);
             }
             return response.json();
         })
         .then(data => {
-            console.log("Respuesta recibida:", data); // Para depuración
+            console.log("✅ DATOS JSON RECIBIDOS:", data); // Para depuración
             
             if (data.success) {
+                console.log("🎉 LOGIN EXITOSO!");
+                console.log("🔗 Redirigiendo a:", data.redirect);
+                console.log("👤 Rol del usuario:", data.rol);
                 mostrarMensaje(data.message, 'success');
                 setTimeout(() => {
                     window.location.href = data.redirect;
                 }, 1500);
             } else {
+                console.error("❌ LOGIN FALLIDO:");
+                console.error("📝 Mensaje:", data.message);
+                console.error("🐛 Debug:", data.debug);
                 mostrarMensaje(data.message, 'error');
-                console.log("Error detallado:", data.debug);
             }
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error("💥 ERROR EN LA SOLICITUD:");
+            console.error("🔍 Tipo de error:", error.name);
+            console.error("📝 Mensaje:", error.message);
+            console.error("📚 Stack:", error.stack);
             mostrarMensaje('Ocurrió un error al procesar la solicitud: ' + error.message, 'error');
         });
     });

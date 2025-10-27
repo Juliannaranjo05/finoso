@@ -420,6 +420,156 @@ section {
     box-shadow: 0 0 10px rgba(234, 206, 113, 0.857);
     font-weight: 800;
 }
+
+/* ===== SECCIÓN DE UBICACIÓN Y CONTACTO ===== */
+.contenedor-ubicacion-contacto {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 30px;
+    width: 100%;
+    height: auto;
+    min-height: 35vh;
+    align-items: stretch;
+}
+
+.contenedor-ubicacion {
+    flex: 0 0 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.texto-ubicacion {
+    width: 100%;
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideDownFade 1s ease-out forwards;
+}
+
+.texto-ubicacion h3 {
+    font-family: 'InriaSans-Light.ttf';
+    letter-spacing: 2px;
+    font-size: 3rem;
+    font-weight: normal;
+    color: #090909;
+    margin-bottom: 10px;
+}
+
+.mapa-wrapper {
+    width: 100%;
+    height: 280px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 2px solid #FFCF66;
+    transition: all 0.3s ease;
+    background: #1a1a1a;
+    opacity: 0;
+    animation: fadeInUp 1.2s ease-out 0.2s forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mapa-wrapper:hover {
+    box-shadow: 0 8px 25px rgba(255, 207, 102, 0.3);
+    transform: translateY(-5px);
+}
+
+.mapa-wrapper iframe {
+    filter: grayscale(20%) contrast(1.1);
+    transition: filter 0.3s ease;
+}
+
+.mapa-wrapper:hover iframe {
+    filter: grayscale(0%) contrast(1.2);
+}
+
+.info-contacto-ubicacion {
+    display: flex;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeInUp 1.2s ease-out 0.4s forwards;
+}
+
+.direccion-info,
+.horarios-info,
+.whatsapp-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 3px solid #FFCF66;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.direccion-info:hover,
+.horarios-info:hover,
+.whatsapp-info:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-left: 4px solid #FFD700;
+    transform: translateX(5px);
+    box-shadow: 0 3px 10px rgba(255, 207, 102, 0.3);
+}
+
+.direccion-info svg,
+.horarios-info svg,
+.whatsapp-info svg {
+    flex-shrink: 0;
+    color: #FFCF66;
+    stroke: #FFCF66;
+    fill: #FFCF66;
+    filter: drop-shadow(0 0 5px rgba(255, 207, 102, 0.3));
+}
+
+.direccion-info span,
+.horarios-info div,
+.whatsapp-info a {
+    font-family: 'InriaSans-Light.ttf';
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #FFFFFF;
+}
+
+.horarios-info div strong {
+    color: #FFCF66;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(255, 207, 102, 0.4);
+}
+
+.whatsapp-info a {
+    color: #FFCF66;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-info a:hover {
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 207, 102, 0.5);
+    transform: scale(1.05);
+}
+
+.contenedor-contacto {
+    flex: 0 0 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 0;
+}
+
 .texto-contacto-footer {
     margin-bottom: 10px;
     opacity: 0;
@@ -526,12 +676,6 @@ li:hover:after {
     opacity: 1;
     animation: rotating 10s linear infinite;
 }
-.contenedor-contacto {
-    display: grid;
-    justify-content: start;
-    align-items: center;
-    height: 30vh;
-}
 
 .cuadro-carrito {
     position: absolute;
@@ -574,93 +718,77 @@ li:hover:after {
     position: relative;
     z-index: 1;
 }
-.contenedor-info-relojes-carrito:has(.cuadro-info-reloj-carrito:hover) .cuadro-info-reloj-carrito:not(:hover) {
-    backdrop-filter: blur(25px);
-    opacity: 0.6;
-}
-.cuadro-info-reloj-carrito {
-    width: 100%;
+.contenedor-info-relojes-carrito {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-    backdrop-filter: blur(20px);
-    overflow: hidden;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.cuadro-info-reloj-carrito {
+    display: flex;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 207, 102, 0.2);
+    transition: all 0.3s ease;
     cursor: pointer;
-    transform-style: preserve-3d;
-}
-.cuadro-info-reloj-carrito::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transform: rotate(45deg) translateX(-100%);
-    transition: transform 0.8s;
-    z-index: 0;
-}
-.cuadro-info-reloj-carrito:hover::before {
-    transform: rotate(45deg) translateX(100%);
 }
 
 .cuadro-info-reloj-carrito:hover {
-    transform: translateY(-15px) rotateX(5deg) rotateY(5deg) scale(1.01);
-    box-shadow: 0px 0px 5px #FFCF66;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #FFCF66;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 207, 102, 0.3);
 }
 
-.cuadro-info-reloj-carrito > * {
-    position: relative;
-    z-index: 1;
-}
 .img-reloj-carrito {
-    display: flex;
-    width: 30%;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
 }
+
 .img-reloj-carrito img {
-    width: 110px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
 }
+
 .nombre-precio-carrito {
-    width: 80%;
-    display: grid;
-    gap: 15px;
-    padding: 10px;
-    box-sizing: border-box;
-    justify-content: start;
-    justify-items: flex-start;
-}
-.nombre-carrito {
-    width: 100%;
+    flex: 1;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
 }
+
 .nombre-carrito h2 {
-    font-size: 20px;
-    font-weight: normal;
-    color: rgb(255, 255, 255);
+    font-size: 14px;
+    color: #fff;
     margin: 0;
+    line-height: 1.3;
 }
+
 .precio-carrito {
-    width: 100%;
     display: flex;
-    gap: 5px;
-    justify-content: start;
+    gap: 8px;
     align-items: center;
 }
+
 .precio-carrito h3 {
-    font-size: 20px;
-    font-weight: normal;
-}
-.precio-carrito h4 {
-    opacity: 0.6;
-    font-size: 20px;
-    font-weight: normal;
-    color: rgb(255, 48, 89);
-    text-decoration: line-through;
+    font-size: 15px;
+    color: #FFCF66;
     margin: 0;
+    font-weight: 700;
+}
+
+.precio-carrito h4 {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    text-decoration: line-through;
 }
 .contenedor-total-finalizar-carrito {
     width: 100%;
@@ -678,13 +806,22 @@ li:hover:after {
     padding: 5px;
     background: #090909;
     border: 2px solid #ffffff;
-    color: #ffff;
+    border-radius: 6px;
+    color: #ffffff;
     cursor: pointer;
+    font-size: 11px;
+    transition: all 0.3s ease;
 }
+
 .boton-eliminar button:hover {
     background: #FFCF66;
-    box-shadow: 0px 0px 10px rgba(255, 216, 131, 0.5);
+    border-color: #FFCF66;
     color: #090909;
+}
+
+.boton-eliminar button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 .total-carrito h3 {
     font-size: 20px;
@@ -836,6 +973,39 @@ li:hover:after {
     width: 130px;
     }
 }
+
+/* Responsive para tablets (768px) */
+@media ( width < 768px) {
+    .contenedor-ubicacion-contacto {
+        flex-direction: column;
+        gap: 30px;
+        margin-top: 20px;
+    }
+    
+    .contenedor-ubicacion,
+    .contenedor-contacto {
+        flex: 1;
+        width: 100%;
+    }
+    
+    .contenedor-contacto {
+        margin-top: 30px;
+    }
+    
+    .mapa-wrapper {
+        height: 280px;
+    }
+    
+    .texto-ubicacion h3 {
+        font-size: 2.5rem;
+    }
+    
+    .direccion-info,
+    .horarios-info {
+        padding: 10px 12px;
+    }
+}
+
 @media ( width < 660px) {
     nav {
         flex-direction: column;
@@ -869,18 +1039,94 @@ li:hover:after {
     .boton-catalogo button {
         font-size: 1.5rem;
     }
-    .contenedor-contacto {
-        display: grid;
-        justify-content: center;
-        align-items: center;
-        height: 25vh;
+    .contenedor-ubicacion-contacto {
+        flex-direction: column !important;
+        gap: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        min-height: auto !important;
     }
+    
+    .contenedor-ubicacion,
+    .contenedor-contacto {
+        flex: 1 !important;
+        width: 100% !important;
+    }
+    
+    .contenedor-contacto {
+        margin-top: 25px !important;
+    }
+    
+    .contenedor-ubicacion {
+        gap: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .texto-ubicacion {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .texto-ubicacion h3 {
+        font-size: 1.1rem !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1 !important;
+    }
+    
+    .mapa-wrapper {
+        height: 85px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .info-contacto-ubicacion {
+        gap: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .direccion-info,
+    .horarios-info {
+        padding: 1px 2px !important;
+        font-size: 0.5rem !important;
+        gap: 2px !important;
+        margin: 0 !important;
+        border-radius: 2px !important;
+    }
+    
+    .direccion-info svg,
+    .horarios-info svg {
+        width: 8px !important;
+        height: 8px !important;
+        min-width: 8px !important;
+    }
+    
+    .direccion-info span,
+    .horarios-info div {
+        font-size: 0.5rem !important;
+        line-height: 0.95 !important;
+    }
+    
+    .horarios-info div strong {
+        font-size: 0.55rem !important;
+        margin: 0 !important;
+        display: block !important;
+    }
+    
+    .horarios-info div br {
+        line-height: 0.8 !important;
+        margin: 0 !important;
+    }
+    
     .iconos-menu {
         width: 100%;
         gap: 15px;
     }
     section {
-        height: 105vh;
+        height: auto;
+        min-height: 100vh;
     }
     .contenedor-texto-img {
         height: 20vh;
@@ -954,4 +1200,98 @@ li:hover:after {
         height: 35px;
         font-size: 12px;
     }
+
+    /* Responsive de ubicación en móvil */
+    .contenedor-ubicacion-contacto {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        gap: 3px !important;
+        padding: 0 !important;
+        min-height: auto !important;
+    }
+    
+    .contenedor-contacto {
+        margin-top: 20px !important;
+    }
+    
+    .contenedor-ubicacion {
+        gap: 3px !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .texto-ubicacion {
+        margin-bottom: 0 !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .texto-ubicacion h3 {
+        font-size: 1.5rem !important;
+        margin-bottom: 2px !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .mapa-wrapper {
+        height: 130px !important;
+        margin-bottom: 2px !important;
+        margin-top: 0 !important;
+    }
+    
+    .info-contacto-ubicacion {
+        gap: 3px !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .direccion-info,
+    .horarios-info {
+        padding: 3px 6px !important;
+        font-size: 0.7rem !important;
+        gap: 5px !important;
+        border-radius: 5px !important;
+        margin: 0 !important;
+    }
+    
+    .direccion-info svg,
+    .horarios-info svg {
+        width: 12px !important;
+        height: 12px !important;
+        flex-shrink: 0 !important;
+        min-width: 12px !important;
+    }
+    
+    .direccion-info span,
+    .horarios-info div {
+        font-size: 0.7rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    .horarios-info div strong {
+        font-size: 0.75rem !important;
+        display: block !important;
+        margin-bottom: 1px !important;
+        margin-top: 0 !important;
+    }
+    
+    .horarios-info div br {
+        margin: 0 !important;
+        line-height: 1.1 !important;
+    }
+}
+
+/* Estilos para mensaje de carrito vacío */
+#texto-informativo {
+    display: none;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    margin: 20px 0;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, rgba(255, 207, 102, 0.1), rgba(255, 184, 77, 0.1));
+    border: 2px solid rgba(255, 207, 102, 0.3);
+    border-radius: 15px;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(255, 207, 102, 0.2);
+    transition: all 0.3s ease;
 }

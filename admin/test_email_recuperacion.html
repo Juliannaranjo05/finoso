@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Email Recuperación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        .preview-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .email-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .email-preview {
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .email-preview h2 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #FFCF66;
+            padding-bottom: 10px;
+        }
+        .label {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .label.con-recuperacion {
+            background: #4CAF50;
+            color: white;
+        }
+        .label.sin-recuperacion {
+            background: #F44336;
+            color: white;
+        }
+        @media (max-width: 968px) {
+            .email-comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .success-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <h1>📧 Preview: Correos de Orden Rechazada</h1>
+        
+        <div class="info-box">
+            <strong>ℹ️ Información:</strong><br>
+            Estos son los dos tipos de correos que se envían cuando se rechaza una orden:
+            <ul>
+                <li><strong>CON recuperación:</strong> Cuando el admin ingresa el monto pagado (problema de monto)</li>
+                <li><strong>SIN recuperación:</strong> Cuando es otro tipo de rechazo (comprobante ilegible, etc.)</li>
+            </ul>
+        </div>
+
+        <div class="email-comparison">
+            <!-- EMAIL CON RECUPERACIÓN -->
+            <div class="email-preview">
+                <span class="label con-recuperacion">✅ CON RECUPERACIÓN</span>
+                <h2>Orden #7 - Problema de Monto</h2>
+                
+                <!-- CONTENIDO DEL EMAIL -->
+                <div style="font-family: Arial, sans-serif; color:#222; max-width: 600px; margin: 0 auto;">
+                    <div style="background: linear-gradient(135deg, #FFCF66 0%, #FFB84D 100%); padding: 20px; border-radius: 12px 12px 0 0;">
+                        <h2 style="color: #000; margin: 0; text-align: center;">❌ Orden Rechazada</h2>
+                    </div>
+                    <div style="background: #fff; padding: 30px; border: 2px solid #FFCF66; border-top: none; border-radius: 0 0 12px 12px;">
+                        <p style="font-size: 16px;">Hola <strong>Julian</strong>,</p>
+                        <p>Tu comprobante de pago <strong>no fue aprobado</strong> por el siguiente motivo:</p>
+                        <div style="background:#fff3cd; border-left: 4px solid #FFA500; padding: 15px; margin: 20px 0; border-radius: 6px;">
+                            <strong>📋 El monto del comprobante no coincide</strong>
+                        </div>
+                        
+                        <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%); border: 2px solid #4CAF50; padding: 20px; margin: 25px 0; border-radius: 12px; text-align: center;">
+                            <h3 style="color: #4CAF50; margin-top: 0;">💡 ¡PUEDES SALVAR TU ORDEN!</h3>
+                            <table style="width: 100%; margin: 15px 0; border-collapse: collapse;">
+                                <tr style="border-bottom: 1px solid #ddd;">
+                                    <td style="padding: 10px; text-align: left;">Total del pedido:</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">$119.000</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #ddd; color: #4CAF50;">
+                                    <td style="padding: 10px; text-align: left;">✅ Ya pagaste:</td>
+                                    <td style="padding: 10px; text-align: right; font-weight: bold;">$5.000</td>
+                                </tr>
+                                <tr style="color: #F44336;">
+                                    <td style="padding: 15px 10px; text-align: left; font-size: 18px; font-weight: bold;">❌ Falta pagar:</td>
+                                    <td style="padding: 15px 10px; text-align: right; font-size: 22px; font-weight: bold;">$114.000</td>
+                                </tr>
+                            </table>
+                            <a href="http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden=7" style="display: inline-block; background: linear-gradient(135deg, #FFCF66 0%, #FFB84D 100%); color: #000; padding: 15px 40px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; margin: 20px 0; box-shadow: 0 4px 15px rgba(255, 207, 102, 0.4);">🎯 COMPLETAR MI PAGO AHORA</a>
+                            <p style="font-size: 14px; color: #666; margin-top: 15px;">📱 Paga solo la diferencia y recupera tu orden<br>⏰ Link válido por 48 horas</p>
+                        </div>
+                        
+                        <p style="margin-top: 30px;"><strong>💬 ¿Necesitas ayuda?</strong></p>
+                        <p>Responde este correo y te asistiremos. Incluye tu <strong>token</strong>: 6ea4ef52fc9ea508…</p>
+                        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                        <p style="font-size: 12px; color: #999; text-align: center;">FINOSO - Relojes de Lujo<br>Si tienes problemas con el botón, copia este enlace:<br><a href="http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden=7" style="color: #FFCF66; word-break: break-all;">http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden=7</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EMAIL SIN RECUPERACIÓN -->
+            <div class="email-preview">
+                <span class="label sin-recuperacion">❌ SIN RECUPERACIÓN</span>
+                <h2>Orden #8 - Otro Motivo</h2>
+                
+                <!-- CONTENIDO DEL EMAIL -->
+                <div style="font-family: Arial, sans-serif; color:#222;">
+                    <p>Hola Julian,</p>
+                    <p>Tu comprobante de pago <strong>no fue aprobado</strong> por el siguiente motivo:</p>
+                    <p style="background:#fff3cd; border:1px solid #ffeeba; padding:12px; border-radius:6px;"><strong>El comprobante está muy borroso y no se puede verificar la información</strong></p>
+                    <p><strong>¿Qué puedes hacer?</strong></p>
+                    <ul>
+                        <li>Revisa que el <strong>monto</strong> y los <strong>datos</strong> coincidan exactamente con tu pedido.</li>
+                        <li>Envía un nuevo comprobante <strong>legible</strong> y con la información completa.</li>
+                        <li>Responde este correo si necesitas ayuda. Incluye tu <strong>token</strong>: 6ea4ef52fc9ea508….</li>
+                    </ul>
+                    <p>Estamos para ayudarte.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="success-box">
+            <h3 style="margin-top: 0;">✅ Cambios Implementados</h3>
+            <ul>
+                <li><strong>Detección automática:</strong> El sistema detecta si hay <code>monto_pagado > 0</code></li>
+                <li><strong>Email personalizado:</strong> Muestra desglose de pagos y botón de acción</li>
+                <li><strong>WhatsApp sincronizado:</strong> Mismo mensaje y enlace en ambos canales</li>
+                <li><strong>Diseño responsive:</strong> Se ve bien en móvil y escritorio</li>
+                <li><strong>Enlace alternativo:</strong> Si el botón no funciona, hay un link de texto</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <h3 style="margin-top: 0;">🧪 Cómo Probar</h3>
+            <ol>
+                <li>Ve al <a href="http://127.0.0.1/finoso/admin/panel.php">Panel de Admin</a></li>
+                <li>Rechaza una orden con monto pagado (ej: orden #7)</li>
+                <li>Verifica tu correo (el que usaste en la orden)</li>
+                <li>Deberías recibir el email CON el botón de recuperación</li>
+                <li>Click en "🎯 COMPLETAR MI PAGO AHORA"</li>
+                <li>Completa el pago de la diferencia</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
+

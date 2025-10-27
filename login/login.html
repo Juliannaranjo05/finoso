@@ -94,6 +94,7 @@
                     </svg> 
                 </div>
             </div>
+            <h1 id="texto-informativo">No hay productos en el carrito</h1>
             <div class="contenedor-info-relojes-carrito">
                 <div class="cuadro-info-reloj-carrito">
                 
@@ -177,6 +178,12 @@
 </script>
 <script src="js/olvidar-contrasena.js"></script>
     <script src="../js/carrito.js"></script>
-    <script src="js/login.js"></script>
+    <script src="js/login.js?v=202501100400"></script>
+    
+    <!-- Protección: no debe haber sesión -->
+    <script src="../js/proteccion_rutas.js"></script>
+    <script>
+        protegerRutaSinSesion();
+    </script>
 </body>
 </html>

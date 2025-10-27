@@ -1,3 +1,7 @@
+<?php
+// Verificar sesión de usuario antes de mostrar la página
+require_once 'check_session.php';
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -481,7 +485,7 @@
 
         <p style="margin-bottom: 15px; color: #e0e0e0;">Sube tu comprobante de pago</p>
         <input type="file" name="comprobante" accept="image/*,.pdf" required />
-        <br>
+        
         <button type="submit">Enviar comprobante</button>
     </form>
     <div class="success-message" id="success-message">Comprobante enviado exitosamente.</div>
@@ -493,6 +497,14 @@
     // Cargar datos desde localStorage
     const data = JSON.parse(localStorage.getItem("nequi_datos_pago") || "{}");
     console.log("📦 Datos cargados desde localStorage:", data);
+    
+    // Verificar que los datos existen y tienen la estructura correcta
+    if (!data || !data.productos || !Array.isArray(data.productos)) {
+        console.error("❌ Error: Datos del carrito no encontrados o estructura incorrecta");
+        console.log("📦 Datos disponibles:", data);
+        alert("Error: No se encontraron los datos del carrito. Por favor, regresa y vuelve a intentar.");
+        // No continuar con el resto del código
+    } else {
   
     // Extraer todos los id_reloj
     const idsRelojes = data.productos.map(producto => producto.id);
@@ -511,7 +523,7 @@
     }
 
     const precio = corregirPrecio(data.precio);
-    const costoEnvio = parseFloat(data.costo_envio || 0);
+    const costoEnvio = parseFloat(data.costo_envio || data.envio || 0);
 
     // Preparar datos para enviar al formulario
     function prepararDatosOrden() {
@@ -600,27 +612,40 @@
       const item = document.createElement("div");
       item.className = "producto";
       item.innerHTML = `
-        <img src="${producto.img}" alt="${producto.nombre}">
+        <img src="http://127.0.0.1/finoso/${producto.imagen}" alt="${producto.nombre}">
         <div class="producto-info">
           <h2>${producto.nombre}</h2>
-          <p>Precio: <span>$${Number(producto.precio).toLocaleString("es-CO")}</span></p>
+          <p>Precio: <span>$${Number(producto.precio).toLocaleString('es-CO')}</span></p>
         </div>
       `;
       contenedor.appendChild(item);
     });
 
     if (document.getElementById("precio-reloj")) {
-      document.getElementById("precio-reloj").textContent = `$${precio.toLocaleString("es-CO")}`;
+      document.getElementById("precio-reloj").textContent = `$${Number(precio).toLocaleString('es-CO')}`;
     }
 
-    const subtotal = productos.reduce((acc, p) => acc + Math.round(p.precio / 1000) * 1000, 0);
+    console.log("🔍 DEBUG pago_nequi-carrito.html - Productos:", productos);
+    productos.forEach(p => {
+        console.log("🔍 DEBUG pago_nequi-carrito.html - Producto:", p.nombre, "Precio:", p.precio);
+    });
+    
+    const subtotal = productos.reduce((acc, p) => {
+        console.log("🔍 DEBUG pago_nequi-carrito.html - Sumando:", p.precio, "para", p.nombre);
+        return acc + p.precio;
+    }, 0);
+    
+    console.log("🔍 DEBUG pago_nequi-carrito.html - Subtotal:", subtotal);
+    console.log("🔍 DEBUG pago_nequi-carrito.html - Costo envío:", costoEnvio);
+    
     const total = subtotal + costoEnvio;
+    console.log("🔍 DEBUG pago_nequi-carrito.html - Total:", total);
 
     if (document.getElementById("envio")) {
-      document.getElementById("envio").textContent = `$${costoEnvio.toLocaleString("es-CO")}`;
+      document.getElementById("envio").textContent = `$${Number(costoEnvio).toLocaleString('es-CO')}`;
     }
     if (document.getElementById("total-pago")) {
-      document.getElementById("total-pago").textContent = `$${total.toLocaleString("es-CO")}`;
+      document.getElementById("total-pago").textContent = `$${Number(total).toLocaleString('es-CO')}`;
     }
 
     // Animación de entrada escalonada para los elementos
@@ -634,6 +659,17 @@
         el.style.transform = 'translateY(0)';
       }, 200 * (index + 1));
     });
+    
+    } // Cerrar el bloque else
+  </script>
+
+</body>
+</html>
+        el.style.transform = 'translateY(0)';
+      }, 200 * (index + 1));
+    });
+    
+    } // Cerrar el bloque else
   </script>
 
 </body>

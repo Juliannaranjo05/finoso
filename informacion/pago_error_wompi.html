@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error en el Pago - Finoso</title>
+    <link rel="icon" href="../img/finoso_logo.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #573720 0%, #FFCF66 50%, #46310d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .error-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .error-icon {
+            font-size: 80px;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .error-message {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .error-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #dc3545;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #FFCF66;
+            color: #333;
+        }
+
+        .btn-primary:hover {
+            background: #e6b952;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .error-container {
+                padding: 30px 20px;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-icon">❌</div>
+        <h1 class="error-title">Error en el Pago</h1>
+        <p class="error-message">
+            Lo sentimos, hubo un problema al procesar tu pago con Wompi.<br>
+            Por favor, intenta nuevamente o contacta con soporte.
+        </p>
+
+        <div class="error-details">
+            <h3>Posibles causas:</h3>
+            <ul style="text-align: left; margin-top: 10px; color: #666;">
+                <li>Tarjeta declinada por el banco</li>
+                <li>Fondos insuficientes</li>
+                <li>Datos de la tarjeta incorrectos</li>
+                <li>Problema temporal con Wompi</li>
+            </ul>
+        </div>
+
+        <div class="btn-container">
+            <a href="javascript:history.back()" class="btn btn-primary">Intentar Nuevamente</a>
+            <a href="../index.html" class="btn btn-secondary">Volver al Inicio</a>
+        </div>
+    </div>
+
+    <script>
+        // Obtener parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+        const reason = urlParams.get('reason');
+        
+        if (status) {
+            console.log('Estado del pago:', status);
+            
+            // Mostrar mensaje específico según el error
+            const errorDetails = document.querySelector('.error-details');
+            if (errorDetails && reason) {
+                errorDetails.innerHTML = `
+                    <h3>Detalles del error:</h3>
+                    <p><strong>Estado:</strong> ${status}</p>
+                    <p><strong>Motivo:</strong> ${reason}</p>
+                    <ul style="text-align: left; margin-top: 10px; color: #666;">
+                        <li>Tarjeta declinada por el banco</li>
+                        <li>Fondos insuficientes</li>
+                        <li>Datos de la tarjeta incorrectos</li>
+                        <li>Problema temporal con Wompi</li>
+                    </ul>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+

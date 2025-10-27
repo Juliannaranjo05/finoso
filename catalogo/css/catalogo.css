@@ -236,11 +236,6 @@ nav {
     animation: fadeUpCard 1s ease-out forwards, shadow-drop-top 0.4s linear both;
 }
 
-@keyframes shadow-drop-top {
-    0% {box-shadow: 0 0 0 0 transparent}
-    100% {box-shadow: 0 -12px 20px -12px #5b553a}
-}
-
 @keyframes fadeUpCard {
     to {
         opacity: 1;
@@ -278,20 +273,26 @@ nav {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 660px;
+    height: 600px; /* Más grande */
     background: #080808;
     border-radius: 10px;
     position: relative;
-    overflow: visible; /* Permite que la lupa se muestre fuera */
+    overflow: hidden; /* Para el efecto hover */
     border-radius: 10px;
     border: 2px solid #FFCF66;
+    max-width: 350px; /* Más ancho */
+    margin: 0 auto;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    justify-content: space-between; /* Distribuir el contenido */
 }
 .cuadro-card img {
     width: 90%;
-    height: 70%;
+    height: 75%; /* Más espacio para la imagen */
     object-fit: cover;
     border: 2px solid #FFCF66;
-    margin: 20px 40px 0px 40px;
+    border-radius: 8px;
+    margin: 20px auto 10px auto;
     box-sizing: border-box;
     background-color: #0a0a0a; /* Negro profundo */
     background-image: radial-gradient(#1a1a1a 1%, transparent 1%);
@@ -316,25 +317,42 @@ nav {
     z-index: 99;
 }
 .texto-card {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 30%;
     padding: 15px;
     box-sizing: border-box;
+    justify-content: center; /* Centrar el contenido */
+    align-items: center; /* Centrar horizontalmente */
+    flex: 1; /* Usar todo el espacio disponible */
+    min-height: 80px; /* Altura mínima para el nombre */
 }
 .texto-card h3 {
     font-size: 1.2rem;
-    font-weight: normal;
+    font-weight: bold;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 10px 15px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-shadow: 0 0 8px rgba(255, 207, 102, 0.5);
 }
 .texto-card p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: normal;
     color: #FFFFFF;
-    margin: 2px;
-    margin-bottom: 20px;
+    margin: 0;
+    text-align: center;
 }
 .precio {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
 }
 .descuento {
     opacity: 0.6;
@@ -343,9 +361,10 @@ nav {
 }
 .boton-wh {
     display: flex;
-    justify-content: center;
-    margin-top: auto;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 .ornamento {
     width: 100%;
@@ -362,11 +381,155 @@ nav {
     padding: 3%;
     cursor: pointer;
     transition: all 0.3s ease;
+    margin-top: auto; /* Empujar el botón hacia abajo */
 }
 .texto-card button:hover {
     background: #FFCF66;
     color: #090909;
     box-shadow: 0 0 8px rgba(255, 207, 102, 0.5);
+}
+
+/* Efectos Hover para las tarjetas */
+/* Hover Premium - Elevación + Oscurecer + Glow */
+.cuadro-card:hover {
+    transform: translateY(-12px) scale(1.02); /* Elevar más + escalar ligeramente */
+    box-shadow: 0 20px 40px rgba(255, 207, 102, 0.4), 
+                0 0 30px rgba(255, 207, 102, 0.2); /* Doble sombra para efecto glow */
+    border-color: #FFD700;
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a); /* Fondo más oscuro */
+}
+
+.cuadro-card:hover .hover-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+.cuadro-card:hover img {
+    transform: scale(1.08); /* Zoom más pronunciado */
+    filter: brightness(1.15) contrast(1.05); /* Más brillo y contraste */
+}
+
+/* Overlay de hover */
+.hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 0.95) 0%, 
+        rgba(255, 207, 102, 0.05) 50%, 
+        rgba(0, 0, 0, 0.95) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    z-index: 10;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    pointer-events: none; /* No bloquear clics en elementos superiores */
+}
+
+.hover-content {
+    text-align: center;
+    padding: 20px;
+    color: white;
+    max-width: 90%;
+    border: none;
+    width: 100%;
+    pointer-events: auto; /* Permitir interacción con el contenido */
+}
+
+.hover-title {
+    font-size: 1.5rem; /* Más grande */
+    font-weight: bold;
+    color: #FFCF66;
+    margin-bottom: 18px; /* Más espacio */
+    text-shadow: 0 0 8px rgba(255, 207, 102, 0.5);
+    line-height: 1.3;
+}
+
+.hover-details {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    color: #FFFFFF;
+    width: 100%;
+}
+
+.hover-details .detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px; /* Más espacio */
+    padding: 8px 0; /* Más padding */
+    border-bottom: 1px solid rgba(255, 207, 102, 0.15);
+}
+
+.hover-details .detail-label {
+    color: #FFCF66;
+    font-weight: bold;
+    font-size: 0.95rem; /* Más grande */
+}
+
+.hover-details .detail-value {
+    color: #FFFFFF;
+    font-size: 0.95rem; /* Más grande */
+}
+
+.hover-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto; /* Permitir clics en los botones */
+}
+
+/* Botón secundario (Añadir al Carrito) - Estilo más sutil */
+.btn-hover {
+    padding: 10px 18px; /* Menos padding que el primario */
+    border: 1.5px solid rgba(255, 207, 102, 0.6);
+    background: transparent; /* Fondo transparente */
+    color: #FFCF66;
+    font-size: 0.9rem; /* Ligeramente más pequeño */
+    font-weight: 500; /* Menos bold */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.btn-hover:hover {
+    background: rgba(255, 207, 102, 0.1); /* Fondo sutil en hover */
+    border-color: #FFCF66;
+    color: #FFCF66;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 207, 102, 0.3);
+}
+
+/* Botón primario (Ver Detalles) - Más prominente */
+/* Lleva al usuario a la página del producto donde puede ver toda la información */
+.btn-carrito {
+    padding: 12px 20px; /* Más padding */
+    background: linear-gradient(135deg, #FFCF66, #FFD700);
+    color: #000;
+    border: 2px solid #FFD700;
+    font-size: 1rem;
+    font-weight: bold; /* Más bold */
+}
+
+.btn-carrito:hover {
+    background: linear-gradient(135deg, #FFD700, #FFCF66);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6); /* Sombra más fuerte */
+    transform: translateY(-2px); /* Eleva más */
 }
 .btn-whatsapp {
     cursor: pointer;
@@ -408,6 +571,7 @@ nav {
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 12px;
 }
 .texto-carrito {
     width: 50%;
@@ -427,93 +591,77 @@ nav {
     position: relative;
     z-index: 1;
 }
-.contenedor-info-relojes-carrito:has(.cuadro-info-reloj-carrito:hover) .cuadro-info-reloj-carrito:not(:hover) {
-    backdrop-filter: blur(25px);
-    opacity: 0.6;
-}
-.cuadro-info-reloj-carrito {
-    width: 100%;
+.contenedor-info-relojes-carrito {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-    backdrop-filter: blur(20px);
-    overflow: hidden;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.cuadro-info-reloj-carrito {
+    display: flex;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 207, 102, 0.2);
+    transition: all 0.3s ease;
     cursor: pointer;
-    transform-style: preserve-3d;
-}
-.cuadro-info-reloj-carrito::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transform: rotate(45deg) translateX(-100%);
-    transition: transform 0.8s;
-    z-index: 0;
-}
-.cuadro-info-reloj-carrito:hover::before {
-    transform: rotate(45deg) translateX(100%);
 }
 
 .cuadro-info-reloj-carrito:hover {
-    transform: translateY(-15px) rotateX(5deg) rotateY(5deg) scale(1.01);
-    box-shadow: 0px 0px 5px #FFCF66;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #FFCF66;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 207, 102, 0.3);
 }
 
-.cuadro-info-reloj-carrito > * {
-    position: relative;
-    z-index: 1;
-}
 .img-reloj-carrito {
-    display: flex;
-    width: 30%;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
 }
+
 .img-reloj-carrito img {
-    width: 110px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
 }
+
 .nombre-precio-carrito {
-    width: 80%;
-    display: grid;
-    gap: 15px;
-    padding: 10px;
-    box-sizing: border-box;
-    justify-content: start;
-    justify-items: flex-start;
-}
-.nombre-carrito {
-    width: 100%;
+    flex: 1;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
 }
+
 .nombre-carrito h2 {
-    font-size: 20px;
-    font-weight: normal;
-    color: rgb(255, 255, 255);
+    font-size: 14px;
+    color: #fff;
     margin: 0;
+    line-height: 1.3;
 }
+
 .precio-carrito {
-    width: 100%;
     display: flex;
-    gap: 5px;
-    justify-content: start;
+    gap: 8px;
     align-items: center;
 }
+
 .precio-carrito h3 {
-    font-size: 20px;
-    font-weight: normal;
-}
-.precio-carrito h4 {
-    opacity: 0.6;
-    font-size: 20px;
-    font-weight: normal;
-    color: rgb(255, 48, 89);
-    text-decoration: line-through;
+    font-size: 15px;
+    color: #FFCF66;
     margin: 0;
+    font-weight: 700;
+}
+
+.precio-carrito h4 {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+    text-decoration: line-through;
 }
 .contenedor-total-finalizar-carrito {
     width: 100%;
@@ -531,13 +679,22 @@ nav {
     padding: 5px;
     background: #090909;
     border: 2px solid #ffffff;
-    color: #ffff;
+    border-radius: 6px;
+    color: #ffffff;
     cursor: pointer;
+    font-size: 11px;
+    transition: all 0.3s ease;
 }
+
 .boton-eliminar button:hover {
     background: #FFCF66;
-    box-shadow: 0px 0px 10px rgba(255, 216, 131, 0.5);
+    border-color: #FFCF66;
     color: #090909;
+}
+
+.boton-eliminar button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 .total-carrito h3 {
     font-size: 20px;
@@ -805,4 +962,597 @@ nav {
 
 .blur-out-expand {
   animation: blur-out-expand 0.6s linear both;
+}
+
+/* ===== BADGES Y INDICADORES SOCIALES ===== */
+
+/* Badge de descuento (arriba de la imagen) */
+.badge-descuento {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(255, 68, 68, 0.3);
+    animation: pulse-badge 2s infinite;
+    max-width: 80px; /* Limitar ancho para no afectar el layout */
+}
+
+
+@keyframes pulse-badge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Badge de exclusividad */
+.badge-exclusivo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, #FFCF66, #FFB800);
+    color: #090909;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(255, 207, 102, 0.3);
+}
+
+
+/* Efecto hover para las tarjetas */
+.cuadro-card:hover .badge-descuento {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.cuadro-card:hover .badge-exclusivo {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+/* Estilos para Filtros Inteligentes */
+.filtros-container {
+    margin: 0px auto;
+    padding: 0 20px;
+}
+
+.filtros-section {
+    margin-left: 15px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.filtros-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.filtro-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 180px;
+}
+
+.filtro-select {
+    background: rgba(0, 0, 0, 0.6);
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 207, 102, 0.5);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 160px;
+}
+
+.filtro-select:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: #FFCF66;
+    box-shadow: 0 0 5px rgba(255, 207, 102, 0.2);
+}
+
+.filtro-select:focus {
+    outline: none;
+    border-color: #FFCF66;
+    box-shadow: 0 0 8px rgba(255, 207, 102, 0.3);
+}
+
+
+/* Mensaje sin resultados */
+.mensaje-sin-resultados {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    width: 100%;
+    grid-column: 1 / -1; /* Ocupa todas las columnas del grid */
+    justify-self: center; /* Centra el elemento en el grid */
+}
+
+.mensaje-contenido {
+    text-align: center;
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    border: 2px solid #FFCF66;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 4px 15px rgba(255, 207, 102, 0.2);
+}
+
+.mensaje-contenido h3 {
+    color: #FFCF66;
+    font-size: 1.5rem;
+    margin: 0 0 15px 0;
+    text-shadow: 0 0 10px rgba(255, 207, 102, 0.5);
+}
+
+.mensaje-contenido p {
+    color: #FFFFFF;
+    font-size: 1rem;
+    margin: 0 0 20px 0;
+}
+
+
+/* Responsive para filtros */
+@media (max-width: 768px) {
+    .filtros-row {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .filtro-group {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .filtro-select {
+        width: 100%;
+    }
+    
+    .mensaje-contenido {
+        padding: 30px 20px;
+    }
+    
+    .mensaje-contenido h3 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Layout responsivo para pocos relojes */
+.contenedor-general-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px; /* Gap moderado para mejor balance visual */
+    padding: 30px 40px; /* Más padding lateral, menos vacío */
+    min-height: 400px;
+    margin: 0 auto;
+    max-width: 1600px; /* Limitar ancho máximo para pantallas grandes */
+    justify-content: center;
+    justify-items: center; /* Centrar elementos */
+}
+
+/* Cuando hay pocos relojes, alinearlos a la izquierda */
+.contenedor-general-cards.pocos-relojes {
+    justify-items: start;
+    align-content: start;
+    min-height: 60vh;
+}
+
+.contenedor-general-cards.un-reloj {
+    grid-template-columns: repeat(4, 1fr); /* Mantener 4 columnas */
+    justify-items: start;
+    min-height: 70vh;
+}
+
+.contenedor-general-cards.dos-relojes {
+    grid-template-columns: repeat(4, 1fr); /* Mantener 4 columnas */
+    justify-items: start;
+    min-height: 60vh;
+}
+
+/* Media queries para diferentes tamaños de pantalla */
+@media (min-width: 1200px) {
+    .contenedor-general-cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+    .contenedor-general-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+    .contenedor-general-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Responsive para el contenedor principal */
+@media (max-width: 768px) {
+    .contenedor-general-cards {
+        grid-template-columns: 1fr;
+        padding: 10px;
+        gap: 15px;
+        max-width: 100%;
+    }
+    
+    .contenedor-general-cards.dos-relojes {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mejorar la visibilidad de los precios con descuento */
+.precio {
+    margin: 25px 0;
+    text-align: left; /* Alineado a la izquierda como pediste */
+}
+
+.precio p:first-child {
+    font-weight: bold;
+    color: #FFCF66; /* Dorado como estaba antes */
+    font-size: 16px;
+    margin: 4px 0;
+}
+
+.precio .descuento {
+    text-decoration: line-through;
+    opacity: 0.6;
+    font-size: 13px;
+    margin: 2px 0;
+    color: #FFFFFF; /* Blanco como estaba antes */
+}
+
+/* ===== EFECTOS HOVER SIMPLES ===== */
+
+/* Mejorar el efecto hover de la tarjeta completa */
+.cuadro-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cuadro-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 207, 102, 0.2);
+}
+
+/* Estilos para relojes vendidos */
+.cuadro-card.vendido {
+    opacity: 0.7;
+    filter: grayscale(0.3);
+    cursor: not-allowed;
+}
+
+.cuadro-card.vendido:hover {
+    opacity: 1; /* Full visibility on hover */
+    filter: grayscale(0); /* Remove grayscale for clarity */
+    transform: translateY(-5px); /* Subtle lift effect */
+    box-shadow: 0 10px 25px rgba(255, 207, 102, 0.3); /* Add glow */
+    border-color: #FFCF66; /* Highlight border */
+}
+
+.cuadro-card.vendido:hover .hover-overlay {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.75); /* Más transparente para ver el reloj de fondo */
+    backdrop-filter: blur(8px); /* Efecto de desenfoque para mejor legibilidad */
+}
+
+.cuadro-card.vendido:hover img {
+    transform: scale(1.02);
+    filter: grayscale(0);
+}
+
+/* Badge VENDIDO */
+.badge-vendido {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 10;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);
+    border: 1px solid #dc3545;
+}
+
+/* Mensaje de vendido en hover */
+.vendido-message {
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 0;
+    border: 1px solid #dc3545;
+}
+
+/* Estilos para mensaje de carrito vacío */
+#texto-informativo {
+    display: none;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    margin: 20px 0;
+    padding: 40px 20px;
+    margin: 20px 0;
+    transition: all 0.3s ease;
+}
+
+/* ==================== ESTILOS DE PRODUCTOS VENDIDOS ==================== */
+
+.vendidos-indicador {
+    width: 98%;
+    grid-column: 1 / -1;
+    text-align: center;
+    margin: 30px 0 20px 0;
+    padding: 10px 0;
+}
+
+.vendidos-texto {
+    color: #ffcf66;
+    font-size: 1.1rem;
+    font-weight: 500;
+    background: rgba(255, 207, 102, 0.08);
+    padding: 6px 16px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 207, 102, 0.2);
+    display: inline-block;
+    opacity: 0.8;
+}
+
+/* Badge para productos vendidos */
+.vendido-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Botones para historial de éxitos */
+.btn-similar {
+    background: linear-gradient(135deg, #ffcf66, #ffb84d) !important;
+    color: #000000 !important;
+    border: 2px solid #ffcf66 !important;
+    padding: 12px 18px !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    margin: 0 !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 3px 12px rgba(255, 207, 102, 0.4) !important;
+    text-shadow: none !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+.btn-similar:hover {
+    background: linear-gradient(135deg, #ffd700, #ffcf66) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 18px rgba(255, 207, 102, 0.6) !important;
+    border-color: #ffd700 !important;
+}
+
+.btn-similar:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(255, 207, 102, 0.3) !important;
+}
+
+.btn-notificaciones {
+    background: linear-gradient(135deg, #25D366, #128C7E) !important;
+    color: #ffffff !important;
+    border: 2px solid #25D366 !important;
+    padding: 12px 18px !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    margin: 0 !important;
+    font-size: 13px !important;
+    text-transform: none !important; /* Cambiado para que "Quiero uno Igual" se vea natural */
+    letter-spacing: 0.3px !important;
+    box-shadow: 0 3px 12px rgba(37, 211, 102, 0.4) !important;
+    text-shadow: none !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+.btn-notificaciones:hover {
+    background: linear-gradient(135deg, #20BA5A, #128C7E) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 18px rgba(37, 211, 102, 0.7) !important;
+    border-color: #20BA5A !important;
+}
+
+.btn-notificaciones:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3) !important;
+}
+
+/* Estilos específicos para productos vendidos - diseño limpio y claro */
+.cuadro-card.vendido .hover-overlay {
+    background: rgba(0, 0, 0, 0.75) !important;
+    border: none !important;
+    padding: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.cuadro-card.vendido .hover-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: transparent !important;
+    width: 100% !important;
+    max-width: 280px !important;
+    padding: 0 !important;
+}
+
+.cuadro-card.vendido .hover-details {
+    background: rgba(0, 0, 0, 0.90) !important;
+    padding: 15px !important;
+    border-radius: 12px !important;
+    border: 2px solid rgba(255, 207, 102, 0.5) !important;
+    margin-bottom: 12px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6) !important;
+}
+
+.cuadro-card.vendido .detail-item {
+    background: rgba(255, 207, 102, 0.10) !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+    border-left: 3px solid #ffcf66 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.cuadro-card.vendido .detail-item:last-child {
+    margin-bottom: 0 !important;
+}
+
+.cuadro-card.vendido .detail-label {
+    color: #ffcf66 !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9) !important;
+    letter-spacing: 0.3px !important;
+}
+
+.cuadro-card.vendido .detail-value {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    text-align: right !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9) !important;
+}
+
+.cuadro-card.vendido .hover-buttons {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    margin-top: 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+}
+
+/* Estilos para testimonios - específicos para productos vendidos */
+.cuadro-card.vendido .detail-item.testimonio {
+    background: rgba(255, 207, 102, 0.15) !important;
+    border-radius: 8px !important;
+    padding: 12px 14px !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-left: 3px solid #ffcf66 !important;
+    position: relative !important;
+    display: block !important;
+}
+
+.cuadro-card.vendido .detail-item.testimonio .detail-label {
+    display: block !important;
+    margin-bottom: 6px !important;
+    font-size: 13px !important;
+}
+
+.cuadro-card.vendido .detail-item.testimonio .detail-value {
+    font-style: italic !important;
+    color: #ffcf66 !important;
+    font-weight: 500 !important;
+    font-size: 12.5px !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
+    display: block !important;
+    padding-left: 8px !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Mejorar contraste del hover overlay */
+.hover-overlay {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(5px);
+}
+
+.hover-content {
+    color: #ffffff !important;
+}
+
+.hover-title {
+    color: #ffcf66 !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    margin-bottom: 15px !important;
+}
+
+.hover-details {
+    margin-bottom: 15px !important;
+}
+
+.detail-item {
+    margin-bottom: 8px !important;
+    padding: 5px 0 !important;
+}
+
+.detail-label {
+    color: #ffcf66 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    display: inline-block !important;
+    min-width: 100px !important;
+}
+
+.detail-value {
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    margin-left: 8px !important;
+}
+
+.hover-buttons {
+    margin-top: 15px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+
+/* Responsive para productos vendidos */
+@media (max-width: 768px) {
+    .vendidos-indicador {
+        margin: 20px 0 15px 0;
+    }
+    
+    .vendidos-texto {
+        font-size: 1rem;
+        padding: 5px 12px;
+    }
 }

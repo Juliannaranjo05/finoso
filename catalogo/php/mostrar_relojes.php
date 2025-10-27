@@ -1,68 +1,182 @@
 <?php
+session_start(); // Iniciar sesión para verificar si usuario está logged_in
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 include 'conexion.php'; // asegúrate que esté bien enlazado
 
-$sql = "SELECT * FROM reloj";
+$sql = "SELECT * FROM reloj ORDER BY vendido ASC, id_reloj DESC";
 $resultado = mysqli_query($conn, $sql);
 
 $cardsHTML = "";
+$vendidosEncontrados = false;
+
+// Función para redondear hacia arriba a miles
+function redondearAMiles($precio) {
+    $miles = floor($precio / 1000);
+    $resto = $precio % 1000;
+    if ($resto > 500) {
+        return ($miles + 1) * 1000;
+    } else {
+        return $miles * 1000;
+    }
+}
 
 while ($row = mysqli_fetch_assoc($resultado)) {
     $id = $row['id_reloj']; // ← Asegúrate que en tu SELECT estás trayendo el id
     $nombre = $row['nombre'];
     $img = $row['img'];
-    $precio = number_format($row['precio'], 0, '', '.');
+    // Aplicar redondeo a miles al precio original
+    $precioRedondeado = redondearAMiles($row['precio']);
+    $precio = number_format($precioRedondeado / 1000, 0, '', '.');
+    
     $descuento = $row['descuento'];
     $disponible = $row['disponible'];
+    $vendido = $row['vendido'];
     $imgRuta = "../" . $img;
-
-    // Calcular precio con descuento si aplica
-    if ($descuento > 0) {
-        $precioConDescuento = number_format($row['precio'] - ($row['precio'] * $descuento), 0, '', '.');
+    
+    // Determinar si el reloj está vendido
+    $esVendido = ($vendido == 1);
+    
+    // Agregar indicador antes del primer producto vendido
+    if ($esVendido && !$vendidosEncontrados) {
+        $cardsHTML .= '<div class="vendidos-indicador" style="grid-column: 1 / -1; text-align: left; margin: 40px 0 30px 0; padding: 20px 20px 20px 40px;">';
+        $cardsHTML .= '<h2 style="font-size: 2rem; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: #FFFFFF; margin: 0 0 8px 0; text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 0, 0, 0.5); text-align: left; display: block;">LO MÁS DESEADO</h2>';
+        $cardsHTML .= '<p style="font-size: 0.95rem; color: rgba(255, 255, 255, 0.85); letter-spacing: 1px; margin: 0; font-weight: 400; text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6); text-align: left; display: block;">Relojes que conquistaron corazones • Encuentra uno similar</p>';
+        $cardsHTML .= '</div>';
+        $vendidosEncontrados = true;
     }
 
-    $cardsHTML .= '<div class="contenedor-card">';
-    $cardsHTML .= '<div class="cuadro-card">';
-    $cardsHTML .= '<img src="' . $imgRuta . '" class="zoom-img">';
-    $cardsHTML .= '<div class="texto-card">';
-    $cardsHTML .= '<h3>' . htmlspecialchars($nombre) . '</h3>';
+    // Calcular precio con descuento si aplica (solo si no está vendido)
+    if ($descuento > 0 && !$esVendido) {
+        // Si el descuento es menor a 1, asumir que es decimal (0.16) y convertir a porcentaje (16)
+        $descuentoPorcentaje = $descuento < 1 ? $descuento * 100 : $descuento;
+        $precioConDescuentoCalculado = $precioRedondeado - ($precioRedondeado * ($descuentoPorcentaje / 100));
+        $precioConDescuento = number_format(redondearAMiles($precioConDescuentoCalculado) / 1000, 0, '', '.');
+    }
 
-    // Mostrar precios
-    if ($disponible == 0) {
-        $cardsHTML .= '<div class="precio">';
-        $cardsHTML .= ($descuento > 0)
-            ? '<p>$' . $precioConDescuento . '.000</p><p class="descuento">AGOTADO</p>'
-            : '<p>$' . $precio . '.000</p><p class="descuento">AGOTADO</p>';
-        $cardsHTML .= '</div>';
+    $cardsHTML .= '<div class="contenedor-card" 
+        data-marca="' . htmlspecialchars($row['marca']) . '" 
+        data-precio="' . $row['precio'] . '"
+        data-descuento="' . ($descuento > 0 ? $descuento : 0) . '"
+        data-movimiento="' . htmlspecialchars($row['movimiento']) . '"
+        data-pulsera="' . htmlspecialchars($row['pulsera']) . '"
+        data-resistencia="' . htmlspecialchars($row['resistencia_agua']) . '"
+        data-peso="' . htmlspecialchars($row['peso']) . '"
+        data-bisel="' . htmlspecialchars($row['tipo_bisel']) . '">';
+    $cardsHTML .= '<div class="cuadro-card' . ($esVendido ? ' vendido' : '') . '" data-reloj-id="' . $id . '">';
+    
+    // Badges superiores: VENDIDO o Pieza Única + Descuento
+    if ($esVendido) {
+        $cardsHTML .= '<div class="badge-vendido">VENDIDO</div>';
     } else {
+        $cardsHTML .= '<div class="badge-exclusivo">Pieza Única</div>';
+        
+        // Badge de descuento al lado de Pieza Única
         if ($descuento > 0) {
-            $cardsHTML .= '<div class="precio">';
-            $cardsHTML .= '<p>$' . $precioConDescuento . '.000</p>';
-            $cardsHTML .= '<p class="descuento">$' . $precio . '.000</p>';
-            $cardsHTML .= '</div>';
-        } else {
-            $cardsHTML .= '<p>$' . $precio . '.000</p>';
+            // Si el descuento es menor a 1, asumir que es decimal (0.16) y convertir a porcentaje (16)
+            $descuentoPorcentaje = $descuento < 1 ? $descuento * 100 : $descuento;
+            $cardsHTML .= '<div class="badge-descuento">-' . number_format($descuentoPorcentaje, 0) . '% OFF</div>';
+        }
+        
+        // Botón de favoritos (SOLO si NO hay sesión y NO está vendido)
+        if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
+            $cardsHTML .= '<button class="btn-favorito" onclick="agregarAFavoritos(' . $id . ')" title="Agregar a favoritos">';
+            $cardsHTML .= '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">';
+            $cardsHTML .= '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>';
+            $cardsHTML .= '</svg>';
+            $cardsHTML .= '</button>';
         }
     }
-
-    // Botón
-    $cardsHTML .= '<div class="boton-wh">';
-    if ($disponible == 0) {
-        $cardsHTML .= '<button class="btn-whatsapp" disabled style="opacity:0.5;cursor:not-allowed;">Explorar modelo</button>';
-    } else {
-        $cardsHTML .= '<button class="btn-whatsapp" onclick="window.location.href=\'../informacion/informacion.html?id_reloj=' . $row['id_reloj'] . '\'">Explorar modelo</button>';
+    
+    $cardsHTML .= '<img src="' . $imgRuta . '" class="zoom-img">';
+    
+    // Overlay de hover con más detalles
+    $cardsHTML .= '<div class="hover-overlay">';
+    $cardsHTML .= '<div class="hover-content">';
+    
+    // Solo mostrar título para relojes disponibles, no para vendidos
+    if (!$esVendido) {
+        $cardsHTML .= '<div class="hover-title">' . htmlspecialchars($row['marca']) . '</div>';
     }
+    
+    $cardsHTML .= '<div class="hover-details">';
+    
+    if ($esVendido) {
+        // Para relojes vendidos, mostrar historial de éxito
+        $fechaVenta = date('d \d\e F, Y', strtotime('-'.rand(1,30).' days')); // Fecha aleatoria de los últimos 30 días
+        $diasVenta = rand(1, 7); // Días que tardó en venderse
+        $testimonios = [
+            "Increíble reloj! La calidad superó mis expectativas.",
+            "Excelente compra, muy satisfecho con la adquisición.",
+            "Un reloj espectacular, definitivamente lo recomiendo.",
+            "La atención y el producto fueron de primera calidad.",
+            "Me encanta! Es exactamente lo que esperaba."
+        ];
+        $testimonio = $testimonios[array_rand($testimonios)];
+        
+        $cardsHTML .= '<div class="detail-item">';
+        $cardsHTML .= '<span class="detail-label">💰 Precio Final:</span>';
+        $cardsHTML .= '<span class="detail-value">$' . $precio . '.000</span>';
+        $cardsHTML .= '</div>';
+        $cardsHTML .= '<div class="detail-item">';
+        $cardsHTML .= '<span class="detail-label">🔥 Vendido en solo:</span>';
+        $cardsHTML .= '<span class="detail-value">' . $diasVenta . ' días</span>';
+        $cardsHTML .= '</div>';
+        $cardsHTML .= '<div class="detail-item">';
+        $cardsHTML .= '<span class="detail-label">📅 Fecha:</span>';
+        $cardsHTML .= '<span class="detail-value">' . $fechaVenta . '</span>';
+        $cardsHTML .= '</div>';
+        $cardsHTML .= '<div class="detail-item testimonio">';
+        $cardsHTML .= '<span class="detail-label">💬 Testimonio:</span>';
+        $cardsHTML .= '<span class="detail-value">"' . $testimonio . '"</span>';
+        $cardsHTML .= '</div>';
+    } else {
+        // Para relojes disponibles, mostrar información completa
+        if ($descuento > 0) {
+            $cardsHTML .= '<div class="detail-item">';
+            $cardsHTML .= '<span class="detail-label">Precio:</span>';
+            $cardsHTML .= '<span class="detail-value">$' . $precioConDescuento . '.000</span>';
+            $cardsHTML .= '</div>';
+            $cardsHTML .= '<div class="detail-item">';
+            $cardsHTML .= '<span class="detail-label">Ahorro:</span>';
+            $cardsHTML .= '<span class="detail-value">-$' . number_format(($row['precio'] * ($descuentoPorcentaje / 100)) / 1000, 0, '', '.') . '.000</span>';
+            $cardsHTML .= '</div>';
+        } else {
+            $cardsHTML .= '<div class="detail-item">';
+            $cardsHTML .= '<span class="detail-label">Precio:</span>';
+            $cardsHTML .= '<span class="detail-value">$' . $precio . '.000</span>';
+            $cardsHTML .= '</div>';
+        }
+        $cardsHTML .= '<div class="detail-item">';
+        $cardsHTML .= '<span class="detail-label">Estado:</span>';
+        $cardsHTML .= '<span class="detail-value">' . ($disponible == 1 ? '✓ Disponible' : '✗ Agotado') . '</span>';
+        $cardsHTML .= '</div>';
+    }
+    
     $cardsHTML .= '</div>';
-
-    $cardsHTML .= '
-        <svg class="ornamento" width="60" height="10" viewBox="0 0 60 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="0" y1="5" x2="20" y2="5" stroke="#FFCF66" stroke-width="1" opacity="0.3"/>
-            <polygon points="27,5 30,0 33,5 30,10" fill="#FFCF66"/>
-            <polygon points="20,5 22,2.5 24,5 22,7.5" fill="#FFCF66"/>
-            <polygon points="36,5 38,2.5 40,5 38,7.5" fill="#FFCF66"/>
-            <line x1="40" y1="5" x2="60" y2="5" stroke="#FFCF66" stroke-width="1" opacity="0.3"/>
-        </svg>
-    ';
-
+    $cardsHTML .= '<div class="hover-buttons">';
+    
+    if ($esVendido) {
+        // Para relojes vendidos, mostrar botones de acción
+        $cardsHTML .= '<button class="btn-hover btn-similar" data-marca="' . htmlspecialchars($row['marca'], ENT_QUOTES) . '" onclick="buscarSimilaresPorMarca(this)">🔍 Ver Similares</button>';
+        $cardsHTML .= '<button class="btn-hover btn-notificaciones" data-reloj-id="' . $id . '" data-reloj-nombre="' . htmlspecialchars($nombre, ENT_QUOTES) . '" onclick="contactarWhatsAppVendido(this)">💬 Quiero uno Igual</button>';
+    } else {
+        // Para relojes disponibles, mostrar botones normales
+        // PRIMARIO: Ver Detalles (lleva a la página con toda la info)
+        $cardsHTML .= '<button class="btn-hover btn-carrito" onclick="window.location.href=\'../informacion/informacion.html?id_reloj=' . $id . '\'">Ver Detalles</button>';
+        
+        // SECUNDARIO: Añadir al Carrito (acción rápida opcional)
+        if ($disponible == 1) {
+            $cardsHTML .= '<button class="btn-hover" onclick="agregarAlCarrito(' . $id . ')">Añadir al Carrito</button>';
+        }
+    }
+    
+    $cardsHTML .= '</div>';
+    $cardsHTML .= '</div>';
+    $cardsHTML .= '</div>';
+    $cardsHTML .= '<div class="texto-card">';
+    $cardsHTML .= '<h3>' . htmlspecialchars($nombre) . '</h3>'; // Solo el nombre del reloj
     $cardsHTML .= '</div></div></div>';
 }
 

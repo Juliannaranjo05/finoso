@@ -1,18 +1,18 @@
 Array
 (
-    [id_reloj] => 2
+    [id_reloj] => 1
     [id_usuario] => 
     [nombre] => Julian
     [cedula] => 1138274130
     [celular] => 3173897119
-    [departamento] => AN
-    [ciudad] => Medellín
+    [departamento] => Huila
+    [ciudad] => Pitalito
     [direccion] => Cll 42 a 2w 74
     [barrio] => El saman
     [referencias] => 
-    [costo_envio] => 10000
+    [costo_envio] => 25000
     [correo] => juliannaranjo58@gmail.com
-    [datos_orden] => {"id_reloj":"2","id_usuario":null,"nombre":"Julian","cedula":"1138274130","celular":"3173897119","departamento":"AN","ciudad":"Medellín","direccion":"Cll 42 a 2w 74","barrio":"El saman","referencias":"","costo_envio":10000,"correo":"juliannaranjo58@gmail.com","precio_final":112500}
-    [descuento_valor] => 12500
-    [descuento_porcentaje] => 10
+    [datos_orden] => {"id_reloj":"1","id_usuario":null,"nombre":"Julian","cedula":"1138274130","celular":"3173897119","departamento":"Huila","ciudad":"Pitalito","direccion":"Cll 42 a 2w 74","barrio":"El saman","referencias":"","costo_envio":25000,"correo":"juliannaranjo58@gmail.com","precio_final":120000}
+    [descuento_valor] => 0
+    [descuento_porcentaje] => 0
 )

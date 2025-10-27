@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Panel Comentarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #1a1a1a; color: #fff; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #333; border-radius: 10px; }
+        button { padding: 10px 20px; margin: 5px; background: #ffcf66; color: #000; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #ffb84d; }
+        .result { margin: 10px 0; padding: 10px; background: #333; border-radius: 5px; }
+        .success { background: #28a745; }
+        .error { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Panel de Comentarios</h1>
+    
+    <div class="test-section">
+        <h3>1. Cargar Comentarios</h3>
+        <button onclick="cargarComentarios()">Cargar Comentarios</button>
+        <div id="resultado-carga" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. Probar Aprobación</h3>
+        <button onclick="probarAprobacion(6)">Aprobar Comentario ID 6</button>
+        <div id="resultado-aprobacion" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. Comentarios Cargados</h3>
+        <div id="lista-comentarios"></div>
+    </div>
+
+    <script>
+        async function cargarComentarios() {
+            try {
+                console.log('🔄 Cargando comentarios...');
+                const response = await fetch('php/gestionar_comentarios_simple.php?accion=obtener_pendientes');
+                const data = await response.json();
+                
+                console.log('📊 Respuesta:', data);
+                
+                if (data.success) {
+                    document.getElementById('resultado-carga').innerHTML = 
+                        `<div class="success">✅ Comentarios cargados: ${data.comentarios.length}</div>`;
+                    
+                    // Mostrar comentarios
+                    const lista = document.getElementById('lista-comentarios');
+                    lista.innerHTML = data.comentarios.map(comentario => `
+                        <div style="margin: 10px 0; padding: 10px; border: 1px solid #555; border-radius: 5px;">
+                            <strong>ID:</strong> ${comentario.id_comentario}<br>
+                            <strong>Usuario:</strong> ${comentario.usuario}<br>
+                            <strong>Reloj:</strong> ${comentario.reloj}<br>
+                            <strong>Calificación:</strong> ${comentario.calificacion} ⭐<br>
+                            <strong>Comentario:</strong> ${comentario.comentario}<br>
+                            <button onclick="probarAprobacion(${comentario.id_comentario})">Aprobar</button>
+                        </div>
+                    `).join('');
+                } else {
+                    document.getElementById('resultado-carga').innerHTML = 
+                        `<div class="error">❌ Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultado-carga').innerHTML = 
+                    `<div class="error">❌ Error de conexión: ${error.message}</div>`;
+            }
+        }
+        
+        async function probarAprobacion(id) {
+            try {
+                console.log('🔄 Aprobando comentario ID:', id);
+                
+                const payload = `accion=aprobar&id=${id}`;
+                console.log('📤 Enviando:', payload);
+                
+                const response = await fetch('php/gestionar_comentarios_simple.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: payload
+                });
+                
+                const data = await response.json();
+                console.log('📊 Respuesta:', data);
+                
+                if (data.success) {
+                    document.getElementById('resultado-aprobacion').innerHTML = 
+                        `<div class="success">✅ ${data.message}</div>`;
+                } else {
+                    document.getElementById('resultado-aprobacion').innerHTML = 
+                        `<div class="error">❌ Error: ${data.error}</div>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('resultado-aprobacion').innerHTML = 
+                    `<div class="error">❌ Error de conexión: ${error.message}</div>`;
+            }
+        }
+        
+        // Cargar comentarios automáticamente al cargar la página
+        window.onload = function() {
+            cargarComentarios();
+        };
+    </script>
+</body>
+</html>
+

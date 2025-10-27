@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Completar Pago - FINOSO</title>
+  <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Playfair Display', serif;
+      color: #FFCF66;
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      src: url('/finoso/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 207, 102, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 207, 102, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 207, 102, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 20px auto;
+      background: rgba(17, 17, 17, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 207, 102, 0.2);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(255, 207, 102, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 207, 102, 0.1);
+      border-top-color: #FFCF66;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    h1 {
+      text-align: center;
+      background: linear-gradient(135deg, #FFCF66 0%, #FFD700 50%, #FFA500 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      animation: titleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+      from { filter: drop-shadow(0 0 10px rgba(255, 207, 102, 0.5)); }
+      to { filter: drop-shadow(0 0 20px rgba(255, 207, 102, 0.8)); }
+    }
+
+    .subtitle {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+
+    .producto {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin: 30px 0;
+      padding: 25px;
+      background: linear-gradient(135deg, rgba(255, 207, 102, 0.1) 0%, rgba(255, 207, 102, 0.05) 100%);
+      border: 1px solid rgba(255, 207, 102, 0.3);
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .producto::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .producto:hover::before {
+      left: 100%;
+    }
+
+    .producto:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 207, 102, 0.2);
+      border-color: rgba(255, 207, 102, 0.5);
+    }
+
+    .producto img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 2px solid rgba(255, 207, 102, 0.3);
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .producto:hover img {
+      transform: scale(1.05) rotate(2deg);
+      border-color: #FFCF66;
+      box-shadow: 0 12px 30px rgba(255, 207, 102, 0.3);
+    }
+
+    .producto-info h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #FFCF66;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 10px rgba(255, 207, 102, 0.3);
+    }
+
+    .producto-info p {
+      font-size: 1rem;
+      color: #e0e0e0;
+      font-weight: 500;
+    }
+
+    .orden-numero {
+      text-align: center;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 20px;
+    }
+
+    /* Alerta de rechazo */
+    .alerta-rechazo {
+      background: rgba(244, 67, 54, 0.1);
+      border: 2px solid rgba(244, 67, 54, 0.4);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 25px 0;
+      text-align: center;
+    }
+
+    .alerta-rechazo h3 {
+      color: #F44336;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .alerta-rechazo p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .resumen {
+      border-top: 1px solid rgba(255, 207, 102, 0.2);
+      margin: 30px 0;
+      padding-top: 25px;
+      font-size: 1.05rem;
+    }
+
+    .resumen div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .resumen div:hover {
+      background: rgba(255, 207, 102, 0.05);
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin: 0 -15px 12px;
+    }
+
+    .resumen div.destacado {
+      border-bottom: none;
+      border-top: 2px solid #FFCF66;
+      padding-top: 20px;
+      margin-top: 10px;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .resumen div.pagado {
+      color: #4CAF50;
+    }
+
+    .resumen span {
+      color: #ffffff;
+    }
+
+    .resumen .valor {
+      color: #FFCF66;
+      font-weight: 600;
+    }
+
+    .resumen .destacado .valor {
+      font-size: 1.5rem;
+      color: #FFB84D;
+      text-shadow: 0 0 15px rgba(255, 207, 102, 0.5);
+    }
+
+    .nequi-info {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      border: 2px solid #FFCF66;
+      padding: 30px;
+      border-radius: 20px;
+      margin: 30px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .nequi-info::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(255, 207, 102, 0.1), transparent);
+      animation: rotate 4s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes rotate {
+      to { transform: rotate(360deg); }
+    }
+
+    .nequi-info strong {
+      display: block;
+      color: #FFCF66;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .monto-destacado {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #FFB84D;
+      margin: 15px 0;
+      text-shadow: 0 2px 20px rgba(255, 207, 102, 0.6);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .nequi-numero {
+      font-size: 2rem;
+      letter-spacing: 3px;
+      font-weight: 700;
+      margin: 20px 0;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(255, 207, 102, 0.5);
+      font-family: 'Courier New', monospace;
+    }
+
+    .copy-btn {
+      background: #0B0B0B;
+      border: none;
+      padding: 12px 30px;
+      font-weight: 600;
+      border-radius: 25px;
+      cursor: pointer;
+      color: #FFFFFF;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255, 207, 102, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .copy-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .copy-btn:hover::before {
+      left: 100%;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 207, 102, 0.5);
+    }
+
+    .qr-section {
+      text-align: center;
+      margin: 40px 0;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 207, 102, 0.1);
+    }
+
+    .qr-section p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: #e0e0e0;
+    }
+
+    .qr-section img {
+      max-width: 200px;
+      border-radius: 16px;
+      background: #fff;
+      padding: 15px;
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        0 0 50px rgba(255, 207, 102, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .qr-section img:hover {
+      transform: scale(1.05);
+      box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        0 0 70px rgba(255, 207, 102, 0.3);
+    }
+
+    form {
+      margin-top: 30px;
+      text-align: center;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 207, 102, 0.1);
+    }
+
+    input[type="file"] {
+      background: rgba(34, 34, 34, 0.8);
+      color: #fff;
+      border: 2px solid rgba(255, 207, 102, 0.3);
+      padding: 15px 20px;
+      border-radius: 15px;
+      width: 100%;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    input[type="file"]:hover {
+      border-color: #FFCF66;
+      background: rgba(34, 34, 34, 0.95);
+    }
+
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #FFCF66;
+      box-shadow: 0 0 20px rgba(255, 207, 102, 0.3);
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(135deg, #FFCF66 0%, #FFD700 50%, #FFA500 100%);
+      border: none;
+      padding: 15px 40px;
+      font-weight: 600;
+      border-radius: 25px;
+      cursor: pointer;
+      color: #000;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(255, 207, 102, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button[type="submit"]::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    button[type="submit"]:hover::before {
+      left: 100%;
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(255, 207, 102, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .producto {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+
+      .producto img {
+        width: 70px;
+        height: 70px;
+      }
+
+      .nequi-numero {
+        font-size: 1.6rem;
+        letter-spacing: 2px;
+      }
+    }
+
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Loading -->
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Cargando información de tu orden...</p>
+    </div>
+
+    <!-- Contenido -->
+    <div id="contenido" style="display: none;">
+      <h1 class="floating">💰 Completar Pago</h1>
+      <p class="subtitle">Paga solo la diferencia que falta</p>
+      <p class="orden-numero">Orden #<span id="orden-numero"></span></p>
+
+      <!-- Alerta de rechazo -->
+      <div class="alerta-rechazo">
+        <h3>⚠️ Motivo del rechazo</h3>
+        <p id="motivo-rechazo"></p>
+      </div>
+
+      <div class="producto">
+        <img id="reloj-img" src="" alt="Reloj">
+        <div class="producto-info">
+          <h2 id="nombre-reloj"></h2>
+          <p id="marca-reloj"></p>
+        </div>
+      </div>
+
+      <div class="resumen">
+        <div>
+          <span>Total del pedido:</span>
+          <span class="valor" id="total-pedido">$0</span>
+        </div>
+        <div class="pagado">
+          <span>✅ Ya pagaste:</span>
+          <span class="valor" id="monto-pagado">$0</span>
+        </div>
+        <div class="destacado">
+          <span>❌ Falta pagar:</span>
+          <span class="valor" id="diferencia">$0</span>
+        </div>
+      </div>
+
+      <div class="nequi-info">
+        <strong>📱 Envía solo la diferencia a este número Nequi</strong>
+        <div class="monto-destacado" id="monto-diferencia">$0</div>
+        <div class="nequi-numero" id="numero-nequi">3173897119</div>
+        <button class="copy-btn" onclick="copiar(event)">Copiar número</button>
+      </div>
+
+      <div class="qr-section">
+        <p>O escanea este código QR</p>
+        <img src="../img/QR.jpg" alt="Código QR de Nequi" class="floating">
+      </div>
+
+      <form action="php/subir_comprobante_diferencia.php" method="POST" enctype="multipart/form-data" id="form-comprobante">
+        <input type="hidden" name="id_orden" id="id_orden" />
+        <input type="hidden" name="diferencia" id="diferencia_hidden" />
+        <input type="hidden" name="token" id="token_hidden" />
+        
+        <p style="margin-bottom: 15px; color: #e0e0e0; font-weight: 600;">
+          📸 Sube el comprobante del pago de la diferencia
+        </p>
+        <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; margin-bottom: 20px;">
+          ⚠️ Asegúrate de que el monto sea exactamente el faltante
+        </p>
+        <input type="file" name="comprobante" accept="image/*,.pdf" required />
+        <br>
+        <button type="submit">✅ Enviar comprobante y completar pago</button>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    // Obtener parámetros de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const idOrden = urlParams.get('orden');
+    const token = urlParams.get('token'); // Token para validar sin sesión
+
+    console.log('📋 Parámetros recibidos:', { idOrden, token: token ? 'Sí' : 'No' });
+
+    if (!idOrden) {
+      alert('❌ No se especificó una orden válida');
+      window.location.href = '../index.html';
+    } else {
+      cargarOrden(idOrden, token);
+    }
+
+    async function cargarOrden(idOrden, token) {
+      try {
+        // Construir URL con token si está disponible
+        let url = `php/obtener_orden_rechazada.php?orden=${idOrden}`;
+        if (token) {
+          url += `&token=${encodeURIComponent(token)}`;
+        }
+        
+        console.log('🔍 Cargando orden desde:', url);
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        console.log('📦 Respuesta del servidor:', data);
+        
+        if (data.success && data.orden) {
+          mostrarOrden(data.orden);
+        } else {
+          alert('❌ ' + (data.error || 'No se pudo cargar la orden'));
+          window.location.href = '../index.html';
+        }
+      } catch (error) {
+        console.error('❌ Error:', error);
+        alert('❌ Error de conexión. Por favor, intenta de nuevo.');
+        window.location.href = '../index.html';
+      }
+    }
+
+    function mostrarOrden(orden) {
+      // Ocultar loading
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('contenido').style.display = 'block';
+      
+      // Llenar información
+      document.getElementById('orden-numero').textContent = orden.id_orden;
+      document.getElementById('nombre-reloj').textContent = orden.nombre_reloj || 'Reloj FINOSO';
+      document.getElementById('marca-reloj').textContent = orden.marca || '';
+      document.getElementById('motivo-rechazo').textContent = orden.motivo_rechazo || 'No especificado';
+      
+      // Imagen del reloj
+      const imgElement = document.getElementById('reloj-img');
+      if (orden.imagen) {
+        imgElement.src = `http://127.0.0.1/finoso/${orden.imagen}`;
+        imgElement.onerror = function() {
+          this.src = '../img/finoso_logo.png';
+        };
+      } else {
+        imgElement.src = '../img/finoso_logo.png';
+      }
+      
+      // Cálculos
+      const total = parseFloat(orden.total) || 0;
+      const montoPagado = parseFloat(orden.monto_pagado) || 0;
+      const diferencia = total - montoPagado;
+      
+      // Mostrar precios
+      document.getElementById('total-pedido').textContent = '$' + total.toLocaleString('es-CO');
+      document.getElementById('monto-pagado').textContent = '$' + montoPagado.toLocaleString('es-CO');
+      document.getElementById('diferencia').textContent = '$' + diferencia.toLocaleString('es-CO');
+      document.getElementById('monto-diferencia').textContent = '$' + diferencia.toLocaleString('es-CO');
+      
+      // Campos hidden del formulario
+      document.getElementById('id_orden').value = orden.id_orden;
+      document.getElementById('diferencia_hidden').value = diferencia;
+      if (token) {
+        document.getElementById('token_hidden').value = token;
+        console.log('✅ Token agregado al formulario');
+      } else {
+        console.log('⚠️ No hay token (usuario con sesión)');
+      }
+
+      // Animación de entrada
+      const elements = document.querySelectorAll('.alerta-rechazo, .producto, .resumen, .nequi-info, .qr-section, form');
+      elements.forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        setTimeout(() => {
+          el.style.transition = 'all 0.6s ease';
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 150 * (index + 1));
+      });
+    }
+
+    function copiar(event) {
+      const numero = document.getElementById("numero-nequi").textContent;
+      navigator.clipboard.writeText(numero).then(() => {
+        const btn = event.target;
+        const original = btn.textContent;
+        btn.textContent = "¡Copiado! ✅";
+        setTimeout(() => {
+          btn.textContent = original;
+        }, 2000);
+      }).catch(err => {
+        console.error("Error al copiar:", err);
+        alert("No se pudo copiar el número");
+      });
+    }
+
+    // Validar antes de enviar
+    document.getElementById("form-comprobante").addEventListener("submit", function(e) {
+      const archivo = this.querySelector('input[type="file"]').files[0];
+      if (!archivo) {
+        e.preventDefault();
+        alert('⚠️ Debes seleccionar un comprobante');
+        return false;
+      }
+      
+      // Confirmación
+      const diferencia = document.getElementById('diferencia_hidden').value;
+      const confirmacion = confirm(
+        `¿Confirmas que pagaste exactamente $${parseFloat(diferencia).toLocaleString('es-CO')} por Nequi?\n\n` +
+        `Si el monto no coincide, tu orden será rechazada de nuevo.`
+      );
+      
+      if (!confirmacion) {
+        e.preventDefault();
+        return false;
+      }
+      
+      return true;
+    });
+  </script>
+
+</body>
+</html>

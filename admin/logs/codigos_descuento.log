@@ -1,0 +1,589 @@
+[2025-10-25 01:42:06] [HEADER] ============================================================ TEST INICIO ============================================================
+[2025-10-25 01:42:06] [INFO] Este es un log de prueba INFO
+[2025-10-25 01:42:06] [SUCCESS] Este es un log de prueba SUCCESS ✓✓✓
+[2025-10-25 01:42:06] [WARNING] Este es un log de prueba WARNING ⚠
+[2025-10-25 01:42:06] [ERROR] Este es un log de prueba ERROR ✗✗✗
+[2025-10-25 01:42:06] [DEBUG] Este es un log de prueba DEBUG
+[2025-10-25 01:42:06] [HEADER] ============================================================ TEST FIN ============================================================
+[2025-10-25 01:48:12] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 01:48:12] [INFO] [APROBAR] ID Orden: 
+[2025-10-25 01:48:12] [DEBUG] [APROBAR] Info Usuario: Array
+(
+    [nombre] => Julian
+    [correo] => juliannaranjo58@gmail.com
+    [costo_envio] => 10000.00
+    [precio_producto] => 125000.00
+)
+
+[2025-10-25 01:48:12] [INFO] [APROBAR] Código generado: FINC2D4D9
+[2025-10-25 01:48:12] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-25 01:48:12] [INFO] [APROBAR] Fecha expiración: 2026-01-23
+[2025-10-25 01:48:12] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 5
+[2025-10-25 01:48:12] [INFO] [APROBAR] ID Usuario de la orden: NULL
+[2025-10-25 01:48:12] [WARNING] [APROBAR] ⚠ Código NO asignado - Usuario inválido o NULL
+[2025-10-25 01:48:12] [WARNING] [APROBAR] El código se envió por email pero NO está en el perfil del usuario
+[2025-10-25 01:48:12] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 01:51:54] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 01:51:54] [INFO] [APROBAR] ID Orden: 12
+[2025-10-25 01:51:54] [DEBUG] [APROBAR] Info Usuario: Array
+(
+    [nombre] => Julian
+    [correo] => juliannaranjo58@gmail.com
+    [costo_envio] => 10000.00
+    [precio_producto] => 100000.00
+)
+
+[2025-10-25 01:51:54] [INFO] [APROBAR] Código generado: FINAA5F7E
+[2025-10-25 01:51:54] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-25 01:51:54] [INFO] [APROBAR] Fecha expiración: 2026-01-23
+[2025-10-25 01:51:54] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 6
+[2025-10-25 01:51:54] [INFO] [APROBAR] ID Usuario de la orden: NULL
+[2025-10-25 01:51:54] [WARNING] [APROBAR] ⚠ Código NO asignado - Usuario inválido o NULL
+[2025-10-25 01:51:54] [WARNING] [APROBAR] El código se envió por email pero NO está en el perfil del usuario
+[2025-10-25 01:51:54] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 01:59:43] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: NULL
+[2025-10-25 01:59:43] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 01:59:43] [INFO] [APROBAR] ID Orden: 13
+[2025-10-25 01:59:43] [DEBUG] [APROBAR] Info Usuario: Array
+(
+    [id_usuario] => 
+    [nombre] => Julian
+    [correo] => juliannaranjo58@gmail.com
+    [costo_envio] => 10000.00
+    [precio_producto] => 125000.00
+)
+
+[2025-10-25 01:59:43] [INFO] [APROBAR] Código generado: FINF5B6D1
+[2025-10-25 01:59:43] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-25 01:59:43] [INFO] [APROBAR] Fecha expiración: 2026-01-23
+[2025-10-25 01:59:43] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 7
+[2025-10-25 01:59:43] [INFO] [APROBAR] ID Usuario de la orden: NULL
+[2025-10-25 01:59:43] [WARNING] [APROBAR] ⚠ Código NO asignado - Usuario inválido o NULL
+[2025-10-25 01:59:43] [WARNING] [APROBAR] El código se envió por email pero NO está en el perfil del usuario
+[2025-10-25 01:59:43] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 02:03:22] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: NULL
+[2025-10-25 02:03:22] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 02:03:22] [INFO] [APROBAR] ID Orden: 14
+[2025-10-25 02:03:22] [DEBUG] [APROBAR] Info Usuario: Array
+(
+    [id_usuario] => 
+    [nombre] => Julian
+    [correo] => juliannaranjo58@gmail.com
+    [costo_envio] => 10000.00
+    [precio_producto] => 135000.00
+)
+
+[2025-10-25 02:03:22] [INFO] [APROBAR] Código generado: FINA158D6
+[2025-10-25 02:03:22] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-25 02:03:22] [INFO] [APROBAR] Fecha expiración: 2026-01-23
+[2025-10-25 02:03:22] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 8
+[2025-10-25 02:03:22] [INFO] [APROBAR] ID Usuario de la orden: NULL
+[2025-10-25 02:03:22] [WARNING] [APROBAR] ⚠ Código NO asignado - Usuario inválido o NULL
+[2025-10-25 02:03:22] [WARNING] [APROBAR] El código se envió por email pero NO está en el perfil del usuario
+[2025-10-25 02:03:22] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 02:14:08] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: 1
+[2025-10-25 02:14:08] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 02:14:08] [INFO] [APROBAR] ID Orden: 14
+[2025-10-25 02:14:08] [DEBUG] [APROBAR] Info Usuario: Array
+(
+    [id_usuario] => 1
+    [nombre] => Julian
+    [correo] => juliannaranjo58@gmail.com
+    [costo_envio] => 10000.00
+    [precio_producto] => 135000.00
+)
+
+[2025-10-25 02:14:08] [INFO] [APROBAR] Código generado: FIN0873E0
+[2025-10-25 02:14:08] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-25 02:14:08] [INFO] [APROBAR] Fecha expiración: 2026-01-23
+[2025-10-25 02:14:08] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 9
+[2025-10-25 02:14:08] [INFO] [APROBAR] ID Usuario de la orden: 1
+[2025-10-25 02:14:08] [INFO] [APROBAR] Intentando asignar código al usuario...
+[2025-10-25 02:14:08] [INFO] [APROBAR] Query preparada OK
+[2025-10-25 02:14:08] [DEBUG] [APROBAR] Params: id_usuario=1, id_codigo=9, notas=Código de agradecimiento por tu compra #14 🎉
+[2025-10-25 02:14:08] [SUCCESS] [APROBAR] ✓✓✓ CÓDIGO ASIGNADO EXITOSAMENTE ✓✓✓
+[2025-10-25 02:14:08] [SUCCESS] [APROBAR] ID Asignación: 1
+[2025-10-25 02:14:08] [SUCCESS] [APROBAR] Código: FIN0873E0 → Usuario: 1
+[2025-10-25 02:14:08] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 06:48:51] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: 1
+[2025-10-25 06:48:51] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 06:48:51] [INFO] [APROBAR] ID Orden: 16
+[2025-10-25 06:48:51] [DEBUG] [APROBAR] Info Usuario: Array
+(
+    [id_usuario] => 1
+    [nombre] => Julian
+    [correo] => juliannaranjo58@gmail.com
+    [costo_envio] => 10000.00
+    [precio_producto] => 97000.00
+)
+
+[2025-10-25 06:48:51] [INFO] [APROBAR] Código generado: FIN32E94E
+[2025-10-25 06:48:51] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-25 06:48:51] [INFO] [APROBAR] Fecha expiración: 2026-01-23
+[2025-10-25 06:48:51] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 10
+[2025-10-25 06:48:51] [INFO] [APROBAR] ID Usuario de la orden: 1
+[2025-10-25 06:48:51] [INFO] [APROBAR] Intentando asignar código al usuario...
+[2025-10-25 06:48:51] [INFO] [APROBAR] Query preparada OK
+[2025-10-25 06:48:51] [DEBUG] [APROBAR] Params: id_usuario=1, id_codigo=10, notas=Código de agradecimiento por tu compra #16 🎉
+[2025-10-25 06:48:51] [SUCCESS] [APROBAR] ✓✓✓ CÓDIGO ASIGNADO EXITOSAMENTE ✓✓✓
+[2025-10-25 06:48:51] [SUCCESS] [APROBAR] ID Asignación: 2
+[2025-10-25 06:48:51] [SUCCESS] [APROBAR] Código: FIN32E94E → Usuario: 1
+[2025-10-25 06:48:51] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 06:52:30] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: 1
+[2025-10-25 06:52:30] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 06:52:30] [INFO] [APROBAR] ID Orden: 17
+[2025-10-25 06:52:30] [DEBUG] [APROBAR] Info Usuario: Array
+(
+    [id_usuario] => 1
+    [nombre] => Julian
+    [correo] => juliannaranjo58@gmail.com
+    [costo_envio] => 10000.00
+    [precio_producto] => 97000.00
+)
+
+[2025-10-25 06:52:30] [INFO] [APROBAR] Código generado: FINECB4DE
+[2025-10-25 06:52:30] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-25 06:52:30] [INFO] [APROBAR] Fecha expiración: 2026-01-23
+[2025-10-25 06:52:30] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 11
+[2025-10-25 06:52:30] [INFO] [APROBAR] ID Usuario de la orden: 1
+[2025-10-25 06:52:30] [INFO] [APROBAR] Intentando asignar código al usuario...
+[2025-10-25 06:52:30] [INFO] [APROBAR] Query preparada OK
+[2025-10-25 06:52:30] [DEBUG] [APROBAR] Params: id_usuario=1, id_codigo=11, id_orden=17, notas=Código de agradecimiento por tu compra #17 🎉
+[2025-10-25 06:52:30] [SUCCESS] [APROBAR] ✓✓✓ CÓDIGO ASIGNADO EXITOSAMENTE ✓✓✓
+[2025-10-25 06:52:30] [SUCCESS] [APROBAR] ID Asignación: 3
+[2025-10-25 06:52:30] [SUCCESS] [APROBAR] Código: FINECB4DE → Usuario: 1
+[2025-10-25 06:52:30] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-25 07:31:20] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN32E94E, ID Reloj: 2, ID Usuario: 1
+[2025-10-25 07:31:20] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-25 07:31:20] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-25 07:31:20] [INFO] [APLICAR-CODIGO] Guardado en sesión para la orden
+[2025-10-25 07:39:45] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN32E94E, ID Reloj: 2, ID Usuario: 1
+[2025-10-25 07:39:45] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-25 07:39:45] [DEBUG] [APLICAR-CODIGO] Precio original: 125000, Descuento código: 10.00%, Precio final: 112500
+[2025-10-25 07:39:45] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-25 07:39:45] [INFO] [APLICAR-CODIGO] Guardado en BD y sesión
+[2025-10-27 01:20:18] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN0873E0, ID Reloj: 2, ID Usuario: 1
+[2025-10-27 01:20:18] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 01:20:18] [DEBUG] [APLICAR-CODIGO] Precio original: 125000, Descuento código: 10.00%, Precio final: 112500
+[2025-10-27 01:20:18] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-27 01:20:18] [INFO] [APLICAR-CODIGO] Guardado en BD y sesión
+[2025-10-27 01:29:34] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: 3333, ID Reloj: 2, ID Usuario: NULL
+[2025-10-27 01:29:34] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: NO
+[2025-10-27 01:29:34] [WARNING] [APLICAR-CODIGO] Error: Código no existe en BD
+[2025-10-27 01:29:59] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FINC2D4D9, ID Reloj: 2, ID Usuario: NULL
+[2025-10-27 01:29:59] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 01:29:59] [DEBUG] [APLICAR-CODIGO] Precio original: 125000, Descuento código: 10.00%, Precio final: 112500
+[2025-10-27 01:29:59] [ERROR] [APLICAR-CODIGO] ✗ Error de BD: Column 'id_usuario' cannot be null
+[2025-10-27 01:30:07] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FINC2D4D9, ID Reloj: 2, ID Usuario: NULL
+[2025-10-27 01:30:07] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 01:30:07] [DEBUG] [APLICAR-CODIGO] Precio original: 125000, Descuento código: 10.00%, Precio final: 112500
+[2025-10-27 01:30:07] [ERROR] [APLICAR-CODIGO] ✗ Error de BD: Column 'id_usuario' cannot be null
+[2025-10-27 01:30:27] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN842264, ID Reloj: 2, ID Usuario: NULL
+[2025-10-27 01:30:27] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 01:30:27] [DEBUG] [APLICAR-CODIGO] Precio original: 125000, Descuento código: 10.00%, Precio final: 112500
+[2025-10-27 01:30:27] [ERROR] [APLICAR-CODIGO] ✗ Error de BD: Column 'id_usuario' cannot be null
+[2025-10-27 01:31:17] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN842264, ID Reloj: 4, ID Usuario: 1
+[2025-10-27 01:31:17] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 01:31:17] [DEBUG] [APLICAR-CODIGO] Precio original: 100000, Descuento código: 10.00%, Precio final: 90000
+[2025-10-27 01:31:17] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-27 01:31:17] [INFO] [APLICAR-CODIGO] Guardado en BD y sesión
+[2025-10-27 01:38:30] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FINE67D70, ID Reloj: 1, ID Usuario: 1
+[2025-10-27 01:38:30] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 01:38:30] [DEBUG] [APLICAR-CODIGO] Precio original: 135000, Descuento código: 10.00%, Precio final: 121500
+[2025-10-27 01:38:30] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-27 01:38:30] [INFO] [APLICAR-CODIGO] Guardado en BD y sesión
+[2025-10-27 02:27:05] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: 1
+[2025-10-27 02:27:05] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 02:27:05] [INFO] [APROBAR] ID Orden: 30
+[2025-10-27 02:27:05] [INFO] [APROBAR] ID Usuario de la orden: 1
+[2025-10-27 02:27:05] [INFO] [APROBAR] Es compra anónima: NO
+[2025-10-27 02:27:05] [INFO] [APROBAR] ✓ Usuario registrado detectado - Generando código de descuento
+[2025-10-27 02:27:05] [INFO] [APROBAR] Código generado: FIN9C1990
+[2025-10-27 02:27:05] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-27 02:27:05] [INFO] [APROBAR] Fecha expiración: 2026-01-25
+[2025-10-27 02:27:05] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 19
+[2025-10-27 02:27:05] [INFO] [APROBAR] Intentando asignar código al usuario...
+[2025-10-27 02:27:05] [INFO] [APROBAR] Query preparada OK
+[2025-10-27 02:27:05] [DEBUG] [APROBAR] Params: id_usuario=1, id_codigo=19, id_orden=30, notas=Código de agradecimiento por tu compra #30 🎉
+[2025-10-27 02:27:05] [SUCCESS] [APROBAR] ✓✓✓ CÓDIGO ASIGNADO EXITOSAMENTE ✓✓✓
+[2025-10-27 02:27:05] [SUCCESS] [APROBAR] ID Asignación: 1
+[2025-10-27 02:27:05] [SUCCESS] [APROBAR] Código: FIN9C1990 → Usuario: 1
+[2025-10-27 02:27:05] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 02:31:21] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN9C1990, ID Reloj: 1, ID Usuario: 1
+[2025-10-27 02:31:21] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 02:31:21] [DEBUG] [APLICAR-CODIGO] Precio original: 135000, Descuento código: 10.00%, Precio final: 121500
+[2025-10-27 02:31:21] [SUCCESS] [APLICAR-CODIGO] ✓ Código marcado como usado y vinculado al reloj #1
+[2025-10-27 02:31:21] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-27 02:31:21] [INFO] [APLICAR-CODIGO] Guardado en BD y sesión
+[2025-10-27 02:31:33] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN9C1990, ID Reloj: 1, ID Usuario: 1
+[2025-10-27 02:31:33] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 02:31:33] [WARNING] [APLICAR-CODIGO] Error: Código ya usado
+[2025-10-27 02:39:56] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 1
+[2025-10-27 02:39:56] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 1
+[2025-10-27 02:39:56] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 02:39:56] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 02:40:06] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 02:40:06] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 02:40:21] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 1
+[2025-10-27 02:40:21] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 1
+[2025-10-27 02:40:21] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 02:40:21] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 02:43:42] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 1
+[2025-10-27 02:43:42] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 1
+[2025-10-27 02:43:42] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 02:43:42] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN9C1990 (10.00%)
+[2025-10-27 02:43:42] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 135000, Con descuento: 121500
+[2025-10-27 02:43:42] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 02:46:36] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 1
+[2025-10-27 02:46:36] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 1
+[2025-10-27 02:46:36] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 02:46:36] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN9C1990 (10.00%)
+[2025-10-27 02:46:36] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 135000, Con descuento: 121500
+[2025-10-27 02:46:36] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 02:47:03] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 1
+[2025-10-27 02:47:03] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 1
+[2025-10-27 02:47:03] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 02:47:03] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN9C1990 (10.00%)
+[2025-10-27 02:47:03] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 135000, Con descuento: 121500
+[2025-10-27 02:47:03] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 02:58:10] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 2
+[2025-10-27 02:58:10] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 2
+[2025-10-27 02:58:10] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 02:58:10] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 02:58:38] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 2
+[2025-10-27 02:58:38] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 2
+[2025-10-27 02:58:38] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 02:58:38] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 04:45:03] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 2
+[2025-10-27 04:45:03] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 05:23:36] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 2
+[2025-10-27 05:23:36] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 2
+[2025-10-27 05:23:36] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 05:23:36] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 05:24:24] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: 1
+[2025-10-27 05:24:24] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 05:24:24] [INFO] [APROBAR] ID Orden: 44
+[2025-10-27 05:24:24] [INFO] [APROBAR] ID Usuario de la orden: 1
+[2025-10-27 05:24:24] [INFO] [APROBAR] Es compra anónima: NO
+[2025-10-27 05:24:24] [INFO] [APROBAR] ✓ Usuario registrado detectado - Generando código de descuento
+[2025-10-27 05:24:24] [INFO] [APROBAR] Código generado: FIN85D5DE
+[2025-10-27 05:24:24] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-27 05:24:24] [INFO] [APROBAR] Fecha expiración: 2026-01-25
+[2025-10-27 05:24:24] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 20
+[2025-10-27 05:24:24] [INFO] [APROBAR] Intentando asignar código al usuario...
+[2025-10-27 05:24:24] [INFO] [APROBAR] Query preparada OK
+[2025-10-27 05:24:24] [DEBUG] [APROBAR] Params: id_usuario=1, id_codigo=20, id_orden=44, notas=Código de agradecimiento por tu compra #44 🎉
+[2025-10-27 05:24:24] [SUCCESS] [APROBAR] ✓✓✓ CÓDIGO ASIGNADO EXITOSAMENTE ✓✓✓
+[2025-10-27 05:24:24] [SUCCESS] [APROBAR] ID Asignación: 2
+[2025-10-27 05:24:24] [SUCCESS] [APROBAR] Código: FIN85D5DE → Usuario: 1
+[2025-10-27 05:24:24] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 05:24:50] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 05:24:50] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 08:52:24] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 4
+[2025-10-27 08:52:24] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 08:52:31] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 3
+[2025-10-27 08:52:31] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 08:52:41] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 4
+[2025-10-27 08:52:41] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 08:52:44] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 2
+[2025-10-27 08:52:44] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 09:13:48] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: NULL
+[2025-10-27 09:13:49] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 09:13:49] [INFO] [APROBAR] ID Orden: 1
+[2025-10-27 09:13:49] [INFO] [APROBAR] ID Usuario de la orden: NULL
+[2025-10-27 09:13:49] [INFO] [APROBAR] Es compra anónima: SÍ
+[2025-10-27 09:13:49] [WARNING] [APROBAR] ⚠ COMPRA ANÓNIMA DETECTADA - NO se generará código de descuento
+[2025-10-27 09:13:49] [INFO] [APROBAR] Se enviará correo de agradecimiento simple sin código
+[2025-10-27 09:13:49] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 09:17:20] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 3
+[2025-10-27 09:17:20] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 3
+[2025-10-27 09:17:20] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:17:20] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 09:18:00] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: 5
+[2025-10-27 09:18:00] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 09:18:00] [INFO] [APROBAR] ID Orden: 2
+[2025-10-27 09:18:00] [INFO] [APROBAR] ID Usuario de la orden: 5
+[2025-10-27 09:18:00] [INFO] [APROBAR] Es compra anónima: NO
+[2025-10-27 09:18:00] [INFO] [APROBAR] ✓ Usuario registrado detectado - Generando código de descuento
+[2025-10-27 09:18:00] [INFO] [APROBAR] Código generado: FIN8DD52F
+[2025-10-27 09:18:00] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-27 09:18:00] [INFO] [APROBAR] Fecha expiración: 2026-01-25
+[2025-10-27 09:18:00] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 1
+[2025-10-27 09:18:00] [INFO] [APROBAR] Intentando asignar código al usuario...
+[2025-10-27 09:18:00] [INFO] [APROBAR] Query preparada OK
+[2025-10-27 09:18:00] [DEBUG] [APROBAR] Params: id_usuario=5, id_codigo=1, id_orden=2, notas=Código de agradecimiento por tu compra #2 🎉
+[2025-10-27 09:18:00] [SUCCESS] [APROBAR] ✓✓✓ CÓDIGO ASIGNADO EXITOSAMENTE ✓✓✓
+[2025-10-27 09:18:00] [SUCCESS] [APROBAR] ID Asignación: 1
+[2025-10-27 09:18:00] [SUCCESS] [APROBAR] Código: FIN8DD52F → Usuario: 5
+[2025-10-27 09:18:00] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 09:19:20] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 4
+[2025-10-27 09:19:20] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 4
+[2025-10-27 09:19:20] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:19:20] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 09:19:24] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN8DD52F, ID Reloj: 4, ID Usuario: 1
+[2025-10-27 09:19:24] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 09:19:24] [WARNING] [APLICAR-CODIGO] Error: Código no asignado al usuario (no revelar existencia)
+[2025-10-27 09:19:58] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 2
+[2025-10-27 09:19:58] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 2
+[2025-10-27 09:19:58] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:19:58] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 09:20:02] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN8DD52F, ID Reloj: 2, ID Usuario: 5
+[2025-10-27 09:20:02] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 09:20:02] [DEBUG] [APLICAR-CODIGO] Precio original: 125000, Descuento código: 10.00%, Precio final: 112500
+[2025-10-27 09:20:02] [SUCCESS] [APLICAR-CODIGO] ✓ Código marcado como usado, vinculado al reloj #2 y id_orden limpiado
+[2025-10-27 09:20:02] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-27 09:20:02] [INFO] [APLICAR-CODIGO] Guardado en BD y sesión
+[2025-10-27 09:21:46] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 2
+[2025-10-27 09:21:46] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 2
+[2025-10-27 09:21:46] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 09:21:46] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN8DD52F (10.00%)
+[2025-10-27 09:21:46] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 125000, Con descuento: 112500
+[2025-10-27 09:21:46] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 09:21:55] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 4
+[2025-10-27 09:21:55] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 4
+[2025-10-27 09:21:55] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:21:55] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 09:22:24] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: 5
+[2025-10-27 09:22:24] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 09:22:24] [INFO] [APROBAR] ID Orden: 3
+[2025-10-27 09:22:24] [INFO] [APROBAR] ID Usuario de la orden: 5
+[2025-10-27 09:22:24] [INFO] [APROBAR] Es compra anónima: NO
+[2025-10-27 09:22:24] [INFO] [APROBAR] ✓ Usuario registrado detectado - Generando código de descuento
+[2025-10-27 09:22:24] [INFO] [APROBAR] Código generado: FIN098B39
+[2025-10-27 09:22:24] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-27 09:22:24] [INFO] [APROBAR] Fecha expiración: 2026-01-25
+[2025-10-27 09:22:24] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 2
+[2025-10-27 09:22:24] [INFO] [APROBAR] Intentando asignar código al usuario...
+[2025-10-27 09:22:24] [INFO] [APROBAR] Query preparada OK
+[2025-10-27 09:22:24] [DEBUG] [APROBAR] Params: id_usuario=5, id_codigo=2, id_orden=3, notas=Código de agradecimiento por tu compra #3 🎉
+[2025-10-27 09:22:24] [SUCCESS] [APROBAR] ✓✓✓ CÓDIGO ASIGNADO EXITOSAMENTE ✓✓✓
+[2025-10-27 09:22:24] [SUCCESS] [APROBAR] ID Asignación: 2
+[2025-10-27 09:22:24] [SUCCESS] [APROBAR] Código: FIN098B39 → Usuario: 5
+[2025-10-27 09:22:24] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 09:23:02] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 2
+[2025-10-27 09:23:02] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 09:23:07] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN098B39, ID Reloj: 2, ID Usuario: NULL
+[2025-10-27 09:23:07] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 09:23:07] [DEBUG] [APLICAR-CODIGO] Precio original: 125000, Descuento código: 10.00%, Precio final: 112500
+[2025-10-27 09:23:07] [WARNING] [APLICAR-CODIGO] ⚠ No se actualizó ninguna fila
+[2025-10-27 09:23:37] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 2
+[2025-10-27 09:23:37] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 2
+[2025-10-27 09:23:37] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:23:37] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 09:23:40] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN098B39, ID Reloj: 2, ID Usuario: 1
+[2025-10-27 09:23:40] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 09:23:40] [WARNING] [APLICAR-CODIGO] Error: Código no asignado al usuario (no revelar existencia)
+[2025-10-27 09:24:30] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 2
+[2025-10-27 09:24:30] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 2
+[2025-10-27 09:24:30] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:24:30] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 09:24:42] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 3
+[2025-10-27 09:24:42] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 3
+[2025-10-27 09:24:42] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:24:42] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 09:24:54] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN098B39, ID Reloj: 3, ID Usuario: 5
+[2025-10-27 09:24:54] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 09:24:54] [DEBUG] [APLICAR-CODIGO] Precio original: 96600, Descuento código: 10.00%, Precio final: 86940
+[2025-10-27 09:24:54] [SUCCESS] [APLICAR-CODIGO] ✓ Código marcado como usado, vinculado al reloj #3 y id_orden limpiado
+[2025-10-27 09:24:54] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-27 09:24:54] [INFO] [APLICAR-CODIGO] Guardado en BD y sesión
+[2025-10-27 09:27:55] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 3
+[2025-10-27 09:27:55] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 3
+[2025-10-27 09:27:55] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 09:27:55] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN098B39 (10.00%)
+[2025-10-27 09:27:55] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 96600, Con descuento: 86940
+[2025-10-27 09:27:55] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 09:29:35] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 3
+[2025-10-27 09:29:35] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 3
+[2025-10-27 09:29:35] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 09:29:35] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN098B39 (10.00%)
+[2025-10-27 09:29:35] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 96600, Con descuento: 86940
+[2025-10-27 09:29:35] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 09:29:37] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 3
+[2025-10-27 09:29:37] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 3
+[2025-10-27 09:29:37] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 09:29:37] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN098B39 (10.00%)
+[2025-10-27 09:29:37] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 96600, Con descuento: 86940
+[2025-10-27 09:29:37] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 09:29:39] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 3
+[2025-10-27 09:29:39] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 3
+[2025-10-27 09:29:39] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 09:29:39] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN098B39 (10.00%)
+[2025-10-27 09:29:39] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 96600, Con descuento: 86940
+[2025-10-27 09:29:39] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 09:30:10] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 3
+[2025-10-27 09:30:10] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 3
+[2025-10-27 09:30:10] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 09:30:10] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN098B39 (10.00%)
+[2025-10-27 09:30:10] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 96600, Con descuento: 86940
+[2025-10-27 09:30:10] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 09:31:20] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: 5
+[2025-10-27 09:31:20] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 09:31:20] [INFO] [APROBAR] ID Orden: 4
+[2025-10-27 09:31:20] [INFO] [APROBAR] ID Usuario de la orden: 5
+[2025-10-27 09:31:20] [INFO] [APROBAR] Es compra anónima: NO
+[2025-10-27 09:31:20] [INFO] [APROBAR] ✓ Usuario registrado detectado - Generando código de descuento
+[2025-10-27 09:31:20] [INFO] [APROBAR] Código generado: FIN8BC9E4
+[2025-10-27 09:31:20] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-27 09:31:20] [INFO] [APROBAR] Fecha expiración: 2026-01-25
+[2025-10-27 09:31:20] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 3
+[2025-10-27 09:31:20] [INFO] [APROBAR] Intentando asignar código al usuario...
+[2025-10-27 09:31:20] [INFO] [APROBAR] Query preparada OK
+[2025-10-27 09:31:20] [DEBUG] [APROBAR] Params: id_usuario=5, id_codigo=3, id_orden=4, notas=Código de agradecimiento por tu compra #4 🎉
+[2025-10-27 09:31:20] [SUCCESS] [APROBAR] ✓✓✓ CÓDIGO ASIGNADO EXITOSAMENTE ✓✓✓
+[2025-10-27 09:31:20] [SUCCESS] [APROBAR] ID Asignación: 3
+[2025-10-27 09:31:20] [SUCCESS] [APROBAR] Código: FIN8BC9E4 → Usuario: 5
+[2025-10-27 09:31:20] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 09:31:47] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 4
+[2025-10-27 09:31:47] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 4
+[2025-10-27 09:31:47] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:31:47] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 09:32:10] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN8BC9E4, ID Reloj: 4, ID Usuario: 5
+[2025-10-27 09:32:10] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 09:32:10] [DEBUG] [APLICAR-CODIGO] Precio original: 100000, Descuento código: 10.00%, Precio final: 90000
+[2025-10-27 09:32:10] [SUCCESS] [APLICAR-CODIGO] ✓ Código marcado como usado, vinculado al reloj #4 y id_orden limpiado
+[2025-10-27 09:32:10] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-27 09:32:10] [INFO] [APLICAR-CODIGO] Guardado en BD y sesión
+[2025-10-27 09:32:13] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 4
+[2025-10-27 09:32:13] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 4
+[2025-10-27 09:32:13] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 09:32:13] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN8BC9E4 (10.00%)
+[2025-10-27 09:32:13] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 100000, Con descuento: 90000
+[2025-10-27 09:32:13] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 09:32:31] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 4
+[2025-10-27 09:32:31] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 4
+[2025-10-27 09:32:31] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 09:32:31] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN8BC9E4 (10.00%)
+[2025-10-27 09:32:31] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 100000, Con descuento: 90000
+[2025-10-27 09:32:31] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 09:32:34] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN8BC9E4, ID Reloj: 4, ID Usuario: 5
+[2025-10-27 09:32:34] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 09:32:34] [WARNING] [APLICAR-CODIGO] Error: Código ya usado
+[2025-10-27 09:36:26] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 4
+[2025-10-27 09:36:26] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 4
+[2025-10-27 09:36:26] [DEBUG] [OBTENER-DESCUENTO] Resultado query: ENCONTRADO
+[2025-10-27 09:36:26] [INFO] [OBTENER-DESCUENTO] ✓ Código encontrado: FIN8BC9E4 (10.00%)
+[2025-10-27 09:36:26] [DEBUG] [OBTENER-DESCUENTO] ✓ Calculando precios - Original: 100000, Con descuento: 90000
+[2025-10-27 09:36:26] [SUCCESS] [OBTENER-DESCUENTO] ✓ Respuesta exitosa enviada
+[2025-10-27 09:36:45] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 2
+[2025-10-27 09:36:45] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 2
+[2025-10-27 09:36:45] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:36:45] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 09:36:48] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN8BC9E4, ID Reloj: 2, ID Usuario: 5
+[2025-10-27 09:36:48] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 09:36:48] [WARNING] [APLICAR-CODIGO] Error: Código ya usado
+[2025-10-27 09:50:39] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 4
+[2025-10-27 09:50:39] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 4
+[2025-10-27 09:50:39] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 09:50:39] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 10:04:42] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 2
+[2025-10-27 10:04:42] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 2
+[2025-10-27 10:04:42] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 10:04:42] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 10:06:30] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 4
+[2025-10-27 10:06:30] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 10:10:54] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 2
+[2025-10-27 10:10:54] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 10:15:05] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 10:15:05] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 15:50:01] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: NULL
+[2025-10-27 15:50:01] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 15:50:01] [INFO] [APROBAR] ID Orden: 9
+[2025-10-27 15:50:01] [INFO] [APROBAR] ID Usuario de la orden: NULL
+[2025-10-27 15:50:01] [INFO] [APROBAR] Es compra anónima: SÍ
+[2025-10-27 15:50:01] [WARNING] [APROBAR] ⚠ COMPRA ANÓNIMA DETECTADA - NO se generará código de descuento
+[2025-10-27 15:50:01] [INFO] [APROBAR] Se enviará correo de agradecimiento simple sin código
+[2025-10-27 15:50:01] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 15:50:06] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: NULL
+[2025-10-27 15:50:06] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 15:50:06] [INFO] [APROBAR] ID Orden: 9
+[2025-10-27 15:50:06] [INFO] [APROBAR] ID Usuario de la orden: NULL
+[2025-10-27 15:50:06] [INFO] [APROBAR] Es compra anónima: SÍ
+[2025-10-27 15:50:06] [WARNING] [APROBAR] ⚠ COMPRA ANÓNIMA DETECTADA - NO se generará código de descuento
+[2025-10-27 15:50:06] [INFO] [APROBAR] Se enviará correo de agradecimiento simple sin código
+[2025-10-27 15:50:06] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 15:51:05] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: NULL
+[2025-10-27 15:51:05] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 15:51:05] [INFO] [APROBAR] ID Orden: 8
+[2025-10-27 15:51:05] [INFO] [APROBAR] ID Usuario de la orden: NULL
+[2025-10-27 15:51:05] [INFO] [APROBAR] Es compra anónima: SÍ
+[2025-10-27 15:51:05] [WARNING] [APROBAR] ⚠ COMPRA ANÓNIMA DETECTADA - NO se generará código de descuento
+[2025-10-27 15:51:05] [INFO] [APROBAR] Se enviará correo de agradecimiento simple sin código
+[2025-10-27 15:51:05] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 15:51:56] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 4
+[2025-10-27 15:51:56] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 4
+[2025-10-27 15:51:56] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 15:51:56] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 15:52:41] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: 1
+[2025-10-27 15:52:41] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 15:52:41] [INFO] [APROBAR] ID Orden: 10
+[2025-10-27 15:52:41] [INFO] [APROBAR] ID Usuario de la orden: 1
+[2025-10-27 15:52:41] [INFO] [APROBAR] Es compra anónima: NO
+[2025-10-27 15:52:41] [INFO] [APROBAR] ✓ Usuario registrado detectado - Generando código de descuento
+[2025-10-27 15:52:41] [INFO] [APROBAR] Código generado: FIN913FF1
+[2025-10-27 15:52:41] [INFO] [APROBAR] Porcentaje: 10%
+[2025-10-27 15:52:41] [INFO] [APROBAR] Fecha expiración: 2026-01-25
+[2025-10-27 15:52:41] [SUCCESS] [APROBAR] ✓ Código insertado en codigo_descuento - ID: 4
+[2025-10-27 15:52:41] [INFO] [APROBAR] Intentando asignar código al usuario...
+[2025-10-27 15:52:41] [INFO] [APROBAR] Query preparada OK
+[2025-10-27 15:52:41] [DEBUG] [APROBAR] Params: id_usuario=1, id_codigo=4, id_orden=10, notas=Código de agradecimiento por tu compra #10 🎉
+[2025-10-27 15:52:41] [SUCCESS] [APROBAR] ✓✓✓ CÓDIGO ASIGNADO EXITOSAMENTE ✓✓✓
+[2025-10-27 15:52:41] [SUCCESS] [APROBAR] ID Asignación: 4
+[2025-10-27 15:52:41] [SUCCESS] [APROBAR] Código: FIN913FF1 → Usuario: 1
+[2025-10-27 15:52:41] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 16:18:49] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 1, ID Reloj: 1
+[2025-10-27 16:18:49] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 1, Reloj: 1
+[2025-10-27 16:18:49] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 16:18:49] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 16:18:52] [INFO] [APLICAR-CODIGO] Intento de aplicación - Código: FIN913FF1, ID Reloj: 1, ID Usuario: 1
+[2025-10-27 16:18:52] [DEBUG] [APLICAR-CODIGO] Búsqueda de código - Encontrado: SÍ
+[2025-10-27 16:18:52] [DEBUG] [APLICAR-CODIGO] Precio original: 120150, Descuento código: 10.00%, Precio final: 108135
+[2025-10-27 16:18:52] [SUCCESS] [APLICAR-CODIGO] ✓ Código marcado como usado, vinculado al reloj #1 y id_orden limpiado
+[2025-10-27 16:18:52] [SUCCESS] [APLICAR-CODIGO] ✓ Código aplicado exitosamente - 10.00% de descuento
+[2025-10-27 16:18:52] [INFO] [APLICAR-CODIGO] Guardado en BD y sesión
+[2025-10-27 17:15:43] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 17:15:43] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 17:19:18] [DEBUG] [APROBAR] Query de ordenInfo ejecutada - id_usuario obtenido: NULL
+[2025-10-27 17:19:19] [HEADER] ============================================================ INICIO GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 17:19:19] [INFO] [APROBAR] ID Orden: 12
+[2025-10-27 17:19:19] [INFO] [APROBAR] ID Usuario de la orden: NULL
+[2025-10-27 17:19:19] [INFO] [APROBAR] Es compra anónima: SÍ
+[2025-10-27 17:19:19] [WARNING] [APROBAR] ⚠ COMPRA ANÓNIMA DETECTADA - NO se generará código de descuento
+[2025-10-27 17:19:19] [INFO] [APROBAR] Se enviará correo de agradecimiento simple sin código
+[2025-10-27 17:19:19] [HEADER] ============================================================ FIN GENERACIÓN DE CÓDIGO ============================================================
+[2025-10-27 17:33:12] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 17:33:12] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 17:44:06] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 17:44:06] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 18:05:12] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 2
+[2025-10-27 18:05:12] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 2
+[2025-10-27 18:05:12] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 18:05:12] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 18:05:24] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: 5, ID Reloj: 2
+[2025-10-27 18:05:24] [DEBUG] [OBTENER-DESCUENTO] Ejecutando query - Usuario: 5, Reloj: 2
+[2025-10-27 18:05:24] [DEBUG] [OBTENER-DESCUENTO] Resultado query: NO ENCONTRADO
+[2025-10-27 18:05:24] [INFO] [OBTENER-DESCUENTO] ℹ️ No hay código aplicado para este reloj
+[2025-10-27 19:44:09] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 2
+[2025-10-27 19:44:09] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 19:46:13] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 2
+[2025-10-27 19:46:13] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 19:46:19] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 19:46:19] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 19:47:00] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 19:47:00] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 19:51:52] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 19:51:52] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 19:52:30] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 2
+[2025-10-27 19:52:30] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 19:52:53] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 2
+[2025-10-27 19:52:53] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 19:52:55] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 19:52:55] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 19:54:21] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 19:54:21] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 19:57:20] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 19:57:20] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 20:02:06] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 20:02:06] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión
+[2025-10-27 20:07:02] [DEBUG] [OBTENER-DESCUENTO] Solicitud recibida - ID Usuario: NULL, ID Reloj: 1
+[2025-10-27 20:07:02] [WARNING] [OBTENER-DESCUENTO] ❌ Validación fallida - ID inválido o sin sesión

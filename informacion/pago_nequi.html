@@ -491,7 +491,7 @@
         <p style="margin-bottom: 15px; color: #e0e0e0;">Sube tu comprobante de pago</p>
         <p id="descuento-info" style="color: #00ff88; font-size: 14px; margin-top: 5px;"></p>
         <input type="file" name="comprobante" accept="image/*,.pdf" required />
-        <br>
+        
         <button type="submit">Enviar comprobante</button>
     </form>
     <div class="success-message" id="success-message">Comprobante enviado exitosamente.</div>
@@ -605,6 +605,8 @@
     if (document.querySelector(".producto img")) {
       document.querySelector(".producto img").src = data.img || "/finoso/default.png";
     }
+
+    // 💰 Mostrar precios directamente (sin dividir entre 1000)
     if (document.getElementById("precio-reloj")) {
       document.getElementById("precio-reloj").textContent = `$${precioFinal.toLocaleString("es-CO")}`;
     }
@@ -614,6 +616,7 @@
     if (document.getElementById("total-pago")) {
       document.getElementById("total-pago").textContent = `$${total.toLocaleString("es-CO")}`;
     }
+
 
     if (document.getElementById("descuento-info")) {
       if (descuento > 0) {

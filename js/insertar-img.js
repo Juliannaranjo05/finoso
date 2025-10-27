@@ -81,32 +81,43 @@ function cargarImagenesDestacadas() {
 
             contenedor.innerHTML = ''; // Limpia el contenido existente
 
-            // Crear el primer contenedor con el elemento insertar-img
-            contenedor.innerHTML += `
-                <div class="img-coleccion">
-                    <a href="http://127.0.0.1/finoso/informacion/informacion.html?id_reloj=2">
-                        <img src="img/Patk Phlppe Bicolor Dorado - Negro.png" alt="Colección" id="insertar-img" style="display: none;">
-                    </a>
-                </div>
-            `;
+            // Agregar todas las imágenes
+            imagenes.forEach((img, index) => {
+                // El primer reloj (más caro disponible) siempre tendrá el efecto
+                const isMostExpensive = index === 0;
 
-            // Agregar las demás imágenes (excluyendo el id 2)
-            imagenes.forEach(img => {
-                if (img.id_reloj != 2) {
-                    contenedor.innerHTML += `
-                        <div class="img-coleccion">
-                            <a href="http://127.0.0.1/finoso/informacion/informacion.html?id_reloj=${img.id_reloj}">
-                                <img src="${img.img}" alt="Reloj colección">
-                            </a>
-                        </div>
-                    `;
-                }
+                contenedor.innerHTML += `
+                    <div class="img-coleccion">
+                        <a href="http://127.0.0.1/finoso/informacion/informacion.html?id_reloj=${img.id_reloj}">
+                            <img src="${img.img}" alt="Reloj colección" ${isMostExpensive ? 'id="insertar-img" style="display: none;"' : ''}>
+                        </a>
+                    </div>
+                `;
             });
 
+            // Actualizar también la imagen principal del efecto (mainElement)
+            const mainElement = document.getElementById('mainElement');
+            if (mainElement && imagenes.length > 0) {
+                const imagenPrincipal = mainElement.querySelector('img');
+                if (imagenPrincipal) {
+                    // Actualizar la imagen principal con la del reloj más caro
+                    imagenPrincipal.src = imagenes[0].img;
+                    imagenPrincipal.alt = imagenes[0].nombre;
+                    console.log('🔄 Imagen principal actualizada:', imagenes[0].nombre);
+                }
+            }
+
             imagenesDestacadasCargadas = true;
+            
+            // Log para debugging
+            console.log('🔄 Carrusel cargado:', {
+                total_relojes: imagenes.length,
+                reloj_con_efecto: imagenes[0] ? imagenes[0].nombre + ' ($' + parseFloat(imagenes[0].precio).toLocaleString() + ')' : 'Ninguno',
+                relojes: imagenes.map(r => ({ id: r.id_reloj, nombre: r.nombre, precio: '$' + parseFloat(r.precio).toLocaleString() }))
+            });
         })
         .catch(err => {
-
+            console.error('❌ Error al cargar imágenes del carrusel:', err);
         });
 }
 

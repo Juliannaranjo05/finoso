@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Relojes - Finoso Admin</title>
+    <link rel="icon" href="../img/finoso_logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/panel.css">
+    <style>
+        .relojes-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page-header {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(255, 207, 102, 0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header-title h1 {
+            color: #FFCF66;
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            font-weight: bold;
+        }
+        
+        .header-title p {
+            color: #ccc;
+            font-size: 16px;
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-back {
+            background: linear-gradient(135deg, #FFCF66 0%, #B8941F 100%);
+            color: #000;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 207, 102, 0.4);
+        }
+        
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header-section h1 {
+            color: #FFCF66;
+            margin: 0;
+        }
+        
+        .btn-agregar {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .btn-agregar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+            background: linear-gradient(135deg, #5CBF60 0%, #388E3C 100%);
+        }
+        
+        .btn-agregar::before {
+            content: "⌚";
+            font-size: 18px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid rgba(255, 207, 102, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #FFCF66;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .relojes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .reloj-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid rgba(255, 207, 102, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .reloj-card:hover {
+            border-color: #FFCF66;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 207, 102, 0.2);
+        }
+        
+        .reloj-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #333;
+        }
+        
+        .reloj-info {
+            padding: 20px;
+        }
+        
+        .reloj-marca {
+            color: #FFCF66;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .reloj-nombre {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .reloj-precio {
+            color: #4CAF50;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .reloj-descuento {
+            color: #FF9800;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .reloj-estado {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .reloj-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-action {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-edit {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: #1976D2;
+        }
+        
+        .btn-toggle {
+            background: #FF9800;
+            color: white;
+        }
+        
+        .btn-toggle:hover {
+            background: #F57C00;
+        }
+        
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: #d32f2f;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #FFCF66;
+            font-size: 18px;
+            padding: 40px;
+        }
+        
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #f44336;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .relojes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header {
+                padding: 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            
+            .header-title h1 {
+                font-size: 24px;
+            }
+            
+            .header-title p {
+                font-size: 14px;
+            }
+            
+            .header-actions {
+                justify-content: center;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn-agregar,
+            .btn-back {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="relojes-container">
+            <div class="page-header">
+                <div class="header-content">
+                    <div class="header-title">
+                        <h1>Gestionar Relojes</h1>
+                        <p>Administra tu inventario de relojes desde aquí</p>
+                    </div>
+                    <div class="header-actions">
+                        <a href="agregar_reloj.html" class="btn-agregar">Agregar Nuevo Reloj</a>
+                        <a href="panel.php" class="btn-back">← Volver al Panel</a>
+                    </div>
+                </div>
+            </div>
+            <div id="errorMessage" class="error-message"></div>
+            
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalRelojes">-</div>
+                    <div class="stat-label">Total Relojes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="disponibles">-</div>
+                    <div class="stat-label">Disponibles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="vendidos">-</div>
+                    <div class="stat-label">Vendidos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="noDisponibles">-</div>
+                    <div class="stat-label">No Disponibles</div>
+                </div>
+            </div>
+            
+            <div id="loadingMessage" class="loading">
+                Cargando relojes...
+            </div>
+            
+            <div id="relojesGrid" class="relojes-grid" style="display: none;">
+                <!-- Los relojes se cargarán aquí dinámicamente -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let relojes = [];
+        
+        // Cargar relojes al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarRelojes();
+        });
+        
+        function cargarRelojes() {
+            const loadingMessage = document.getElementById('loadingMessage');
+            const relojesGrid = document.getElementById('relojesGrid');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            loadingMessage.style.display = 'block';
+            relojesGrid.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            fetch('php/listar_relojes.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        relojes = data.relojes;
+                        mostrarRelojes(relojes);
+                        actualizarEstadisticas(relojes);
+                    } else {
+                        mostrarError(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    mostrarError('Error de conexión. Intenta nuevamente.');
+                })
+                .finally(() => {
+                    loadingMessage.style.display = 'none';
+                });
+        }
+        
+        function mostrarRelojes(relojes) {
+            const relojesGrid = document.getElementById('relojesGrid');
+            
+            if (relojes.length === 0) {
+                relojesGrid.innerHTML = '<div class="loading">No hay relojes registrados</div>';
+                relojesGrid.style.display = 'block';
+                return;
+            }
+            
+            relojesGrid.innerHTML = relojes.map(reloj => `
+                <div class="reloj-card">
+                    <img src="../${reloj.img}" alt="${reloj.nombre}" class="reloj-image" 
+                         onerror="this.src='../img/finoso_logo.png'">
+                    <div class="reloj-info">
+                        <div class="reloj-marca">${reloj.marca}</div>
+                        <div class="reloj-nombre">${reloj.nombre}</div>
+                        <div class="reloj-precio">${reloj.precio_formateado}</div>
+                        ${reloj.descuento ? `<div class="reloj-descuento">Descuento: ${reloj.descuento_formateado}</div>` : ''}
+                        <div class="reloj-estado" style="background: ${reloj.estado_color}20; color: ${reloj.estado_color}; border: 1px solid ${reloj.estado_color}40;">
+                            ${reloj.estado}
+                        </div>
+                        <div class="reloj-actions">
+                            <button class="btn-action btn-edit" onclick="editarReloj(${reloj.id_reloj})">
+                                ✏️ Editar
+                            </button>
+                            <button class="btn-action btn-toggle" onclick="toggleDisponibilidad(${reloj.id_reloj})">
+                                ${reloj.disponible ? '⏸️ Pausar' : '▶️ Activar'}
+                            </button>
+                            <button class="btn-action btn-delete" onclick="eliminarReloj(${reloj.id_reloj})">
+                                🗑️ Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            relojesGrid.style.display = 'block';
+        }
+        
+        function actualizarEstadisticas(relojes) {
+            const total = relojes.length;
+            const disponibles = relojes.filter(r => r.disponible && !r.vendido).length;
+            const vendidos = relojes.filter(r => r.vendido).length;
+            const noDisponibles = relojes.filter(r => !r.disponible && !r.vendido).length;
+            
+            document.getElementById('totalRelojes').textContent = total;
+            document.getElementById('disponibles').textContent = disponibles;
+            document.getElementById('vendidos').textContent = vendidos;
+            document.getElementById('noDisponibles').textContent = noDisponibles;
+        }
+        
+        function mostrarError(mensaje) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '❌ ' + mensaje;
+            errorMessage.style.display = 'block';
+        }
+        
+        function editarReloj(id) {
+            // TODO: Implementar edición de reloj
+            alert('Funcionalidad de edición en desarrollo');
+        }
+        
+        function toggleDisponibilidad(id) {
+            const reloj = relojes.find(r => r.id_reloj === id);
+            if (!reloj) return;
+            
+            const nuevaDisponibilidad = !reloj.disponible;
+            const accion = nuevaDisponibilidad ? 'activar' : 'pausar';
+            
+            if (confirm(`¿Estás seguro de que quieres ${accion} este reloj?`)) {
+                // TODO: Implementar toggle de disponibilidad
+                alert(`Reloj ${accion}do (funcionalidad en desarrollo)`);
+            }
+        }
+        
+        function eliminarReloj(id) {
+            const reloj = relojes.find(r => r.id_reloj === id);
+            if (!reloj) return;
+            
+            if (confirm(`¿Estás seguro de que quieres eliminar "${reloj.nombre}"?\n\nEsta acción no se puede deshacer.`)) {
+                // TODO: Implementar eliminación de reloj
+                alert('Funcionalidad de eliminación en desarrollo');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<?php
+// Verificar sesión de administrador antes de mostrar la página
+require_once 'check_session.php';
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Finoso</title>
+    <link rel="icon" href="../img/finoso_logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/panel.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">FINOSO ADMIN</div>
+        <div class="user-info">
+            <span class="user-name" id="user-name">Cargando...</span>
+            <a href="../login/php/logout.php" class="logout-btn">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Estadísticas -->
+        <div class="stats-grid" id="stats-grid">
+            <!-- Las estadísticas se cargarán dinámicamente -->
+        </div>
+
+        <!-- Navegación Rápida -->
+        <div class="quick-nav">
+            <h2 class="section-title">Gestión de Contenido</h2>
+            <div class="nav-buttons">
+                <a href="agregar_reloj.html" class="nav-btn">
+                    <div class="nav-icon">⌚</div>
+                    <div class="nav-text">Agregar Reloj</div>
+                </a>
+                <a href="gestionar_relojes.html" class="nav-btn">
+                    <div class="nav-icon">📋</div>
+                    <div class="nav-text">Gestionar Relojes</div>
+                </a>
+                <a href="gestionar_codigos.php" class="nav-btn">
+                    <div class="nav-icon">🎫</div>
+                    <div class="nav-text">Códigos Descuento</div>
+                </a>
+                <a href="gestionar_envios.php" class="nav-btn">
+                    <div class="nav-icon">🚚</div>
+                    <div class="nav-text">Gestionar Envíossss</div>
+                </a>
+                <a href="gestionar_comentarios.php" class="nav-btn">
+                    <div class="nav-icon">💬</div>
+                    <div class="nav-text">Comentarios</div>
+                </a>
+                <a href="#" onclick="generarReporteMensual(); return false;" class="nav-btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <div class="nav-icon">📊</div>
+                    <div class="nav-text">Reporte Mensual</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Órdenes Pendientes -->
+        <h2 class="section-title">Órdenes Pendientes de Verificación</h2>
+        <div class="orders-table">
+            <div class="table-content" id="orders-content">
+                <!-- Las órdenes se cargarán dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/panel.js"></script>
+    <script>
+        // Cargar datos del panel al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarDatosPanel();
+        });
+
+        async function cargarDatosPanel() {
+            try {
+                const response = await fetch('php/obtener_datos_panel.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    mostrarEstadisticas(data.stats);
+                    mostrarOrdenes(data.ordenes);
+                    document.getElementById('user-name').textContent = `Bienvenido, ${data.nombre_usuario}`;
+                } else {
+                    console.error('Error al cargar datos:', data.message);
+                    document.getElementById('stats-grid').innerHTML = '<div class="error">Error al cargar estadísticas</div>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('stats-grid').innerHTML = '<div class="error">Error de conexión</div>';
+            }
+        }
+
+        function mostrarEstadisticas(stats) {
+            const statsGrid = document.getElementById('stats-grid');
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${stats.total_ordenes}</div>
+                    <div class="stat-label">Total Órdenes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.pendientes}</div>
+                    <div class="stat-label">Pendientes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${stats.pagadas}</div>
+                    <div class="stat-label">Pagadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$${stats.ventas_totales.toLocaleString()}</div>
+                    <div class="stat-label">Ventas Totales</div>
+                </div>
+            `;
+        }
+
+        function mostrarOrdenes(ordenes) {
+            const ordersContent = document.getElementById('orders-content');
+            
+            if (ordenes.length === 0) {
+                ordersContent.innerHTML = '<div class="no-orders">No hay órdenes pendientes de verificación</div>';
+                return;
+            }
+
+            let html = '';
+            ordenes.forEach(orden => {
+                const fecha = new Date(orden.fecha).toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const token = orden.token_verificacion ? orden.token_verificacion.substring(0, 16) + '...' : 'N/A';
+
+                html += `
+                    <div class="order-item">
+                        <div class="order-header">
+                            <div class="order-id">Orden #${orden.id_orden}</div>
+                            <div class="order-date">${fecha}</div>
+                        </div>
+                        
+                        <div class="order-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Cliente</div>
+                                <div class="detail-value">${escapeHtml(orden.nombre)}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Cédula</div>
+                                <div class="detail-value">${escapeHtml(orden.cedula)}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Celular</div>
+                                <div class="detail-value">${escapeHtml(orden.celular)}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Total</div>
+                                <div class="detail-value">$${parseFloat(orden.total).toLocaleString()}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Producto</div>
+                                <div class="detail-value">${escapeHtml(orden.producto_nombre || 'N/A')}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Token</div>
+                                <div class="detail-value" style="font-family: monospace; font-size: 12px;">
+                                    ${token}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="order-actions">
+                            <button class="btn btn-view" onclick="verComprobante(${orden.id_orden})">
+                                Ver Comprobante
+                            </button>
+                            ${orden.estado === 'pendiente' ? `
+                                <button class="btn btn-approve" onclick="aprobarOrden(${orden.id_orden})">
+                                    ✅ Aprobar
+                                </button>
+                                <button class="btn btn-reject" onclick="rechazarOrden(${orden.id_orden})">
+                                    ❌ Rechazar
+                                </button>
+                            ` : orden.estado === 'pagado' || orden.estado === 'aprobado' ? `
+                                <button class="btn btn-success" onclick="marcarComoEnviado(${orden.id_orden})" style="background: #28a745;">
+                                    🚚 Marcar Enviado
+                                </button>
+                            ` : orden.estado === 'enviado' ? `
+                                <button class="btn btn-info" onclick="marcarComoEntregado(${orden.id_orden})" style="background: #17a2b8;">
+                                    🎁 Marcar Entregado
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            ordersContent.innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

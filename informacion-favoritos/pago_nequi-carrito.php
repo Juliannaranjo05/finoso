@@ -1,0 +1,667 @@
+<?php
+// ⭐ FAVORITOS - NO verificar sesión (permite usuarios anónimos)
+// require_once 'check_session.php';
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pagar con Nequi</title>
+  <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Playfair Display', serif;
+      color: #FFCF66;
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      src: url('/finoso/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fondo animado con partículas doradas */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 207, 102, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 207, 102, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 207, 102, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 20px auto;
+      background: rgba(17, 17, 17, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 207, 102, 0.2);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(255, 207, 102, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      background: linear-gradient(135deg, #FFCF66 0%, 50%, #FFA500 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      position: relative;
+      animation: titleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+      from { filter: drop-shadow(0 0 10px rgba(255, 207, 102, 0.5)); }
+      to { filter: drop-shadow(0 0 20px rgba(255, 207, 102, 0.8)); }
+    }
+
+    #lista-productos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .producto {
+      background: rgba(30, 25, 20, 0.6);
+      border: 1px solid #a57c1b;
+      border-radius: 15px;
+      padding: 15px;
+      width: 100%;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .producto:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 207, 102, 0.2);
+      border-color: rgba(255, 207, 102, 0.5);
+    }
+
+    .producto img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 16px;
+      border: 2px solid rgba(255, 207, 102, 0.3);
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .producto:hover img {
+      transform: scale(1.05) rotate(2deg);
+      border-color: #FFCF66;
+      box-shadow: 0 12px 30px rgba(255, 207, 102, 0.3);
+    }
+
+    .producto-info h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #FFCF66;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 10px rgba(255, 207, 102, 0.3);
+    }
+
+    .producto-info p {
+      font-size: 1.1rem;
+      color: #e0e0e0;
+      font-weight: 500;
+    }
+
+    .resumen {
+      border-top: 1px solid rgba(255, 207, 102, 0.2);
+      margin: 40px 0 30px;
+      padding-top: 25px;
+      font-size: 1.1rem;
+    }
+
+    .resumen div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .resumen div:hover {
+      background: rgba(255, 207, 102, 0.05);
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin: 0 -15px 15px;
+    }
+
+    .resumen div:last-child {
+      border-bottom: none;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFCF66;
+      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+    }
+    .info-envio span {
+      color: #ffffff;
+    }
+    #envio {
+      color: #FFCF66;
+    }
+    .info-total span {
+      color: #ffffff;
+    }
+    #total-pago {
+      color: #FFCF66;
+    }
+
+    .nequi-info {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      border: 2px solid #FFCF66;
+      padding: 30px;
+      border-radius: 20px;
+      margin: 30px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .nequi-info::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(255, 207, 102, 0.1), transparent);
+      z-index: -1;
+    }
+
+    .nequi-info strong {
+      display: block;
+      color: #FFCF66;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nequi-numero {
+      font-size: 2rem;
+      letter-spacing: 3px;
+      font-weight: 700;
+      margin: 20px 0;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(255, 207, 102, 0.5);
+      font-family: 'Courier New', monospace;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    .copy-btn {
+      background: #0B0B0B;
+      border: none;
+      padding: 12px 30px;
+      font-weight: 600;
+      border-radius: 25px;
+      cursor: pointer;
+      color: #FFFFFF;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255, 207, 102, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .copy-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .copy-btn:hover::before {
+      left: 100%;
+    }
+
+    .copy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 207, 102, 0.5);
+    }
+
+    .copy-btn:active {
+      transform: translateY(0);
+    }
+
+    .qr-section {
+      text-align: center;
+      margin: 50px 0;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 207, 102, 0.1);
+    }
+
+    .qr-section p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: #e0e0e0;
+    }
+
+    .qr-section img {
+      max-width: 200px;
+      border-radius: 16px;
+      background: #fff;
+      padding: 15px;
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        0 0 50px rgba(255, 207, 102, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .qr-section img:hover {
+      transform: scale(1.05);
+      box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        0 0 70px rgba(255, 207, 102, 0.3);
+    }
+
+    form {
+      margin-top: 30px;
+      text-align: center;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 207, 102, 0.1);
+    }
+
+    input[type="file"] {
+      background: rgba(34, 34, 34, 0.8);
+      color: #fff;
+      border: 2px solid rgba(255, 207, 102, 0.3);
+      padding: 15px 20px;
+      border-radius: 15px;
+      width: 100%;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    input[type="file"]:hover {
+      border-color: #FFCF66;
+      background: rgba(34, 34, 34, 0.95);
+    }
+
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #FFCF66;
+      box-shadow: 0 0 20px rgba(255, 207, 102, 0.3);
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(135deg, #FFCF66 0%, #FFD700 50%, #FFA500 100%);
+      border: none;
+      padding: 15px 40px;
+      font-weight: 600;
+      border-radius: 25px;
+      cursor: pointer;
+      color: #000;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(255, 207, 102, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button[type="submit"]::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    button[type="submit"]:hover::before {
+      left: 100%;
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(255, 207, 102, 0.5);
+    }
+
+    .success-message {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #22c55e;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+    }
+
+    .success-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .producto {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+      }
+
+      .producto img {
+        width: 70px;
+        height: 70px;
+      }
+
+      .nequi-numero {
+        font-size: 1.6rem;
+        letter-spacing: 2px;
+      }
+
+      .qr-section img {
+        max-width: 160px;
+      }
+    }
+
+    /* Efectos adicionales */
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="floating">Pagar con Nequi</h1>
+
+    <div id="lista-productos">
+      <img src="" alt="Reloj ">
+      <div class="producto-info">
+        <h2 id="nombre-reloj">Nautilus Classic</h2>
+        <p>Precio: <span id="precio-reloj">$125.000</span></p>
+      </div>
+    </div>
+
+    <div class="resumen">
+      <div class="info-envio">
+        <span>Costo de envío:</span>
+        <span id="envio">$1.000</span>
+      </div>
+      <div class="info-total">
+        <span>Total a pagar:</span>
+        <span id="total-pago" class="glow">$126.000</span>
+      </div>
+    </div>
+
+    <div class="nequi-info">
+      <strong>Enviar a este número Nequi</strong>
+      <div class="nequi-numero glow" id="numero-nequi">3173897119</div>
+      <button class="copy-btn" onclick="copiar(event)">Copiar número</button>
+    </div>
+
+    <div class="qr-section">
+      <p>O escanea este código QR</p>
+      <img src="../img/QR.jpg" alt="Código QR de Nequi" class="floating">
+    </div>
+    <form action="http://127.0.0.1/finoso/informacion-carrito/php/subir_comprobante-carrito.php" method="POST" enctype="multipart/form-data" id="form-comprobante">
+        <!-- Campos hidden individuales como backup -->
+        <input type="hidden" name="id_reloj" id="id_reloj" />
+        <input type="hidden" name="id_usuario" id="id_usuario_hidden" />
+        <input type="hidden" name="nombre" id="nombre_hidden" />
+        <input type="hidden" name="cedula" id="cedula_hidden" />
+        <input type="hidden" name="celular" id="celular_hidden" />
+        <input type="hidden" name="departamento" id="departamento_hidden" />
+        <input type="hidden" name="ciudad" id="ciudad_hidden" />
+        <input type="hidden" name="direccion" id="direccion_hidden" />
+        <input type="hidden" name="barrio" id="barrio_hidden" />
+        <input type="hidden" name="referencias" id="referencias_hidden" />
+        <input type="hidden" name="costo_envio" id="costo_envio_hidden" />
+        <input type="hidden" name="correo" id="correo_hidden" />
+        
+        <!-- JSON como backup -->
+        <input type="hidden" name="datos_orden" id="datos_orden" />
+        <input type="hidden" name="productos" id="productos_hidden" />
+
+        <p style="margin-bottom: 15px; color: #e0e0e0;">Sube tu comprobante de pago</p>
+        <input type="file" name="comprobante" accept="image/*,.pdf" required />
+        <br>
+        <button type="submit">Enviar comprobante</button>
+    </form>
+    <div class="success-message" id="success-message">Comprobante enviado exitosamente.</div>
+
+  </div>
+
+  <script>
+    const datosForm = new FormData();
+    // Cargar datos desde localStorage
+    const data = JSON.parse(localStorage.getItem("nequi_datos_pago") || "{}");
+    console.log("📦 Datos cargados desde localStorage:", data);
+    
+    // Verificar que los datos existen y tienen la estructura correcta
+    if (!data || !data.productos || !Array.isArray(data.productos)) {
+        console.error("❌ Error: Datos del carrito no encontrados o estructura incorrecta");
+        console.log("📦 Datos disponibles:", data);
+        alert("Error: No se encontraron los datos del carrito. Por favor, regresa y vuelve a intentar.");
+        // No continuar con el resto del código
+    } else {
+  
+    // Extraer todos los id_reloj
+    const idsRelojes = data.productos.map(producto => producto.id);
+    console.log("🕒 IDs de relojes:", idsRelojes);
+
+    // Si quieres enviar solo uno (por ejemplo, el primer reloj)
+    const idReloj = idsRelojes[0];
+    console.log("ID del primer relojjj:", idReloj);
+
+    datosForm.append("id_reloj", idReloj);
+
+    // Corregir el precio (si es necesario multiplicar por 1000)
+    function corregirPrecio(precio) {
+      const precioNum = parseFloat(precio || 0);
+      return precioNum < 1000 && precioNum > 0 ? precioNum * 1000 : precioNum;
+    }
+
+    const precio = corregirPrecio(data.precio);
+    const costoEnvio = parseFloat(data.envio || 0);
+
+    // Preparar datos para enviar al formulario
+    function prepararDatosOrden() {
+      const datosCliente = data.datos_cliente || {};
+      return {
+        id_reloj: data.productos?.[0]?.id || "",
+        id_usuario: datosCliente.id_usuario || null,
+        nombre: datosCliente.nombre || "",
+        cedula: datosCliente.cedula || "",
+        celular: datosCliente.celular || "",
+        departamento: datosCliente.departamento || "",
+        ciudad: datosCliente.ciudad || "",
+        direccion: datosCliente.direccion || "",
+        barrio: datosCliente.barrio || "",
+        referencias: datosCliente.referencias || "",
+        costo_envio: costoEnvio,
+        correo: datosCliente.correo || ""
+      };
+    }
+
+    const datosOrden = prepararDatosOrden();
+
+    // Asignar valores a los campos del formulario
+    document.getElementById("id_reloj").value = datosOrden.id_reloj;
+    document.getElementById("id_usuario_hidden").value = datosOrden.id_usuario || "";
+    document.getElementById("nombre_hidden").value = datosOrden.nombre;
+    document.getElementById("cedula_hidden").value = datosOrden.cedula;
+    document.getElementById("celular_hidden").value = datosOrden.celular;
+    document.getElementById("departamento_hidden").value = datosOrden.departamento;
+    document.getElementById("ciudad_hidden").value = datosOrden.ciudad;
+    document.getElementById("direccion_hidden").value = datosOrden.direccion;
+    document.getElementById("barrio_hidden").value = datosOrden.barrio;
+    document.getElementById("referencias_hidden").value = datosOrden.referencias;
+    document.getElementById("costo_envio_hidden").value = datosOrden.costo_envio;
+    document.getElementById("correo_hidden").value = datosOrden.correo;
+    document.getElementById("datos_orden").value = JSON.stringify(datosOrden);
+
+    // Validar datos antes de enviar el formulario
+    document.getElementById("form-comprobante").addEventListener("submit", function(e) {
+      const datosOrdenActual = document.getElementById("datos_orden").value;
+
+      if (!datosOrdenActual || datosOrdenActual === "{}") {
+        e.preventDefault();
+        console.error("❌ Error: No hay datos de la orden para enviar");
+        alert("Error: No se pudieron cargar los datos de la orden. Por favor, intenta de nuevo.");
+        return false;
+      }
+      
+      console.log("📤 Enviando formulario con datos:", datosOrdenActual);
+      return true;
+    });
+
+    // Función para copiar número de Nequi
+    function copiar(event) {
+      const numero = document.getElementById("numero-nequi").textContent;
+      navigator.clipboard.writeText(numero).then(() => {
+        const btn = event.target;
+        const original = btn.textContent;
+        btn.textContent = "¡Copiado!";
+        setTimeout(() => {
+          btn.textContent = original;
+        }, 3000);
+      }).catch(err => {
+        console.error("Error al copiar:", err);
+        alert("No se pudo copiar el número");
+      });
+    }
+
+    // Efecto hover para los botones
+    document.querySelectorAll('.copy-btn, button[type="submit"]').forEach(btn => {
+      btn.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-3px) scale(1.02)';
+      });
+      btn.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+
+    const productos = data.productos || [];
+    document.getElementById("productos_hidden").value = JSON.stringify(productos);
+
+    const contenedor = document.getElementById("lista-productos");
+    contenedor.innerHTML = ""; // Limpiar primero
+
+    productos.forEach(producto => {
+      const item = document.createElement("div");
+      item.className = "producto";
+      item.innerHTML = `
+        <img src="http://127.0.0.1/finoso/${producto.imagen}" alt="${producto.nombre}">
+        <div class="producto-info">
+          <h2>${producto.nombre}</h2>
+          <p>Precio: <span>$${Number(producto.precio).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}.000</span></p>
+        </div>
+      `;
+      contenedor.appendChild(item);
+    });
+
+    if (document.getElementById("precio-reloj")) {
+      document.getElementById("precio-reloj").textContent = `$${precio.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}.000`;
+    }
+
+    console.log("🔍 DEBUG pago_nequi-carrito.php - Productos:", productos);
+    productos.forEach(p => {
+        console.log("🔍 DEBUG pago_nequi-carrito.php - Producto:", p.nombre, "Precio:", p.precio);
+    });
+    
+    const subtotal = productos.reduce((acc, p) => {
+        console.log("🔍 DEBUG pago_nequi-carrito.php - Sumando:", p.precio, "para", p.nombre);
+        return acc + p.precio;
+    }, 0);
+    
+    console.log("🔍 DEBUG pago_nequi-carrito.php - Subtotal:", subtotal);
+    console.log("🔍 DEBUG pago_nequi-carrito.php - Costo envío:", costoEnvio);
+    
+    const total = subtotal + costoEnvio;
+    console.log("🔍 DEBUG pago_nequi-carrito.php - Total:", total);
+
+    if (document.getElementById("envio")) {
+      document.getElementById("envio").textContent = `$${costoEnvio.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}.000`;
+    }
+    if (document.getElementById("total-pago")) {
+      document.getElementById("total-pago").textContent = `$${total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}.000`;
+    }
+
+    // Animación de entrada escalonada para los elementos
+    const elements = document.querySelectorAll('.producto, .resumen, .nequi-info, .qr-section, form');
+    elements.forEach((el, index) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      setTimeout(() => {
+        el.style.transition = 'all 0.6s ease';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, 200 * (index + 1));
+    });
+    
+    } // Cerrar el bloque else
+  </script>
+
+</body>
+</html>

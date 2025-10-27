@@ -1,0 +1,333 @@
+/* ===================================
+   MEJORAS UX/UI PARA MÓVIL
+   Feedback: Experto UX/UI
+   =================================== */
+
+/* MEJORA 1: Reducir espaciado superior del header */
+@media (max-width: 768px) {
+    nav {
+        padding: 3px 2% 3px 8%; /* Reducido de 5px a 3px */
+    }
+    
+    .texto-catalogo-finoso {
+        margin: 5px 0; /* Reducido de 15px a 5px */
+    }
+    
+    .texto-catalogo-finoso h3 {
+        font-size: 2rem; /* Reducido de 2.1rem */
+        padding: 0; /* Sin padding extra */
+    }
+    
+    .texto-catalogo-finoso p {
+        font-size: 0.85rem;
+        margin-top: 2px;
+    }
+}
+
+/* FORZAR: Ocultar botón y modal en desktop */
+@media (min-width: 769px) {
+    .btn-abrir-filtros {
+        display: none !important;
+    }
+    
+    .modal-filtros {
+        display: none !important;
+    }
+}
+
+/* MEJORA 2: Tipografía más clara en móvil */
+@media (max-width: 768px) {
+    /* Dorado más brillante para mejor legibilidad */
+    .texto-catalogo-finoso h3,
+    .texto-nombre h2,
+    .cuadro-card {
+        color: #FFD77C; /* Dorado más claro */
+    }
+    
+    .texto-nombre h2 {
+        font-weight: 600; /* Más pesado */
+    }
+}
+
+/* MEJORA 3: Botón de filtros modal en móvil */
+@media (max-width: 768px) {
+    /* Ocultar filtros individuales en móvil */
+    .filtros-row {
+        display: none;
+    }
+    
+    .filtros-container {
+        margin: 10px auto;
+        padding: 0 20px;
+    }
+    
+    /* Botón para abrir filtros - Estilo sutil y elegante */
+    .btn-abrir-filtros {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 14px 25px;
+        background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+        color: #FFCF66; /* Texto dorado */
+        border: 2px solid rgba(255, 207, 102, 0.6); /* Borde dorado sutil */
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600; /* Menos bold */
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px); /* Efecto glass */
+    }
+    
+    .btn-abrir-filtros:hover {
+        background: rgba(255, 207, 102, 0.1); /* Sutil brillo al hover */
+        border-color: #FFCF66;
+        box-shadow: 0 4px 15px rgba(255, 207, 102, 0.2);
+    }
+    
+    .btn-abrir-filtros:active {
+        transform: scale(0.98);
+        background: rgba(255, 207, 102, 0.15);
+        box-shadow: 0 2px 8px rgba(255, 207, 102, 0.3),
+                    inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-abrir-filtros svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* Modal de filtros */
+    .modal-filtros {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        z-index: 9999;
+        backdrop-filter: blur(5px);
+    }
+    
+    .modal-filtros.activo {
+        display: flex;
+        align-items: flex-end;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-filtros-contenido {
+        width: 100%;
+        max-height: 70vh;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        border-radius: 20px 20px 0 0;
+        padding: 25px 20px 30px;
+        box-shadow: 0 -10px 30px rgba(255, 207, 102, 0.2);
+        border-top: 3px solid #FFCF66;
+        animation: slideUp 0.3s ease;
+        overflow-y: auto;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+    
+    .modal-filtros-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid rgba(255, 207, 102, 0.3);
+    }
+    
+    .modal-filtros-header h3 {
+        color: #FFCF66;
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin: 0;
+    }
+    
+    .btn-cerrar-filtros {
+        background: rgba(255, 207, 102, 0.1);
+        border: 2px solid rgba(255, 207, 102, 0.5);
+        color: #FFCF66;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-cerrar-filtros:active {
+        background: rgba(255, 207, 102, 0.2);
+        transform: scale(0.95);
+    }
+    
+    .modal-filtros-body {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+    
+    .modal-filtros-body .filtro-group {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .modal-filtros-body .filtro-select {
+        width: 100% !important;
+        padding: 14px 18px;
+        font-size: 1rem;
+        background: rgba(0, 0, 0, 0.6);
+        color: #FFFFFF;
+        border: 1.5px solid rgba(255, 207, 102, 0.5);
+        border-radius: 10px;
+        box-sizing: border-box;
+    }
+    
+    .modal-filtros-footer {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid rgba(255, 207, 102, 0.3);
+    }
+    
+    .btn-aplicar-filtros {
+        flex: 1;
+        padding: 14px;
+        background: linear-gradient(135deg, #FFCF66, #FFD700);
+        color: #000;
+        border: 2px solid #FFD700;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-aplicar-filtros:active {
+        transform: scale(0.98);
+        box-shadow: inset 0 2px 5px rgba(255, 215, 0, 0.3);
+    }
+    
+    .btn-limpiar-filtros-modal {
+        padding: 14px 20px;
+        background: transparent;
+        color: #FFCF66;
+        border: 1.5px solid rgba(255, 207, 102, 0.5);
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-limpiar-filtros-modal:active {
+        background: rgba(255, 207, 102, 0.1);
+    }
+}
+
+/* MEJORA 4: Botones mejorados en móvil */
+@media (max-width: 768px) {
+    .hover-buttons {
+        gap: 10px;
+    }
+    
+    .btn-hover,
+    .btn-carrito {
+        border-radius: 12px; /* Más redondeado */
+        font-size: 0.95rem;
+        padding: 12px 18px;
+    }
+    
+    .btn-carrito:active {
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6),
+                    inset 0 2px 5px rgba(255, 215, 0, 0.4); /* Sombra dorada activa */
+        transform: translateY(-1px) scale(0.98);
+    }
+    
+    .btn-hover:active {
+        box-shadow: 0 2px 8px rgba(255, 207, 102, 0.4),
+                    inset 0 2px 5px rgba(255, 207, 102, 0.2);
+        transform: translateY(0) scale(0.98);
+    }
+}
+
+/* MEJORA 5: Íconos de navegación más grandes (tap area) */
+@media (max-width: 768px) {
+    .iconos-menu svg {
+        width: 28px; /* Aumentado de ~24px */
+        height: 28px;
+    }
+    
+    .icono-login,
+    .icono-carrito {
+        padding: 8px; /* Más área táctil */
+    }
+}
+
+/* MEJORA 6: Grid optimizado para móvil */
+@media (max-width: 768px) {
+    .contenedor-general-cards {
+        grid-template-columns: 1fr !important; /* Una columna en móvil */
+        gap: 20px !important;
+        padding: 15px 10px !important;
+        justify-items: center !important;
+        align-items: start !important;
+    }
+    
+    .contenedor-card {
+        width: 95% !important; /* Ocupa casi todo el ancho */
+        max-width: 450px !important; /* Límite para no verse demasiado grande */
+    }
+    
+    .cuadro-card {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Para tablets pequeños (2 columnas) */
+@media (min-width: 500px) and (max-width: 768px) {
+    .contenedor-general-cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablets */
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .contenedor-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* ARREGLO PARA DESKTOP: Centrar relojes cuando hay pocos */
+@media (min-width: 769px) {
+    .contenedor-general-cards {
+        /* Cambiar a auto-fill para que se centren cuando hay pocos */
+        grid-template-columns: repeat(auto-fill, minmax(290px, 350px)) !important;
+        justify-content: center !important;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+/* Los filtros inline NO deben aparecer en móvil (se usa el modal) */
+

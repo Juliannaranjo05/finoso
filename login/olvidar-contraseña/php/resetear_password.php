@@ -16,7 +16,7 @@ $row = mysqli_fetch_assoc($result);
 $correo = $row['correo'];
 
 // Actualizar contraseña
-mysqli_query($conn, "UPDATE usuario SET contraseña = '$newPassword' WHERE correo = '$correo'");
+mysqli_query($conn, "UPDATE usuario SET contrasena = '$newPassword' WHERE correo = '$correo'");
 
 // Borrar el token
 mysqli_query($conn, "DELETE FROM reset_tokens WHERE token = '$token'");

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Reloj - Finoso Admin</title>
+    <link rel="icon" href="../img/finoso_logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/panel.css">
+    <style>
+        .form-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page-header {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 207, 102, 0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header-title h1 {
+            color: #FFCF66;
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            font-weight: bold;
+        }
+        
+        .header-title p {
+            color: #ccc;
+            font-size: 16px;
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        .btn-back {
+            background: linear-gradient(135deg, #FFCF66 0%, #B8941F 100%);
+            color: #000;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 207, 102, 0.4);
+        }
+        
+        .btn-back span {
+            font-size: 18px;
+        }
+        
+        
+        .form-section {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 207, 102, 0.3);
+        }
+        
+        .form-title {
+            color: #FFCF66;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #FFCF66;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 207, 102, 0.3);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #FFCF66;
+            box-shadow: 0 0 10px rgba(255, 207, 102, 0.3);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 20px;
+            border: 2px dashed rgba(255, 207, 102, 0.5);
+            border-radius: 8px;
+            text-align: center;
+            color: #FFCF66;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-label:hover {
+            border-color: #FFCF66;
+            background: rgba(255, 207, 102, 0.1);
+        }
+        
+        .file-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .file-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 207, 102, 0.3);
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 35px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 25px;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-submit::before {
+            content: "⌚";
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(76, 175, 80, 0.5);
+            background: linear-gradient(135deg, #5CBF60 0%, #388E3C 100%);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+        }
+        
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #f44336;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .required {
+            color: #f44336;
+        }
+        
+        .optional {
+            color: #FFCF66;
+            font-size: 0.9em;
+            font-weight: normal;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-container {
+                padding: 10px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+            
+            .page-header {
+                padding: 20px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            
+            .header-title h1 {
+                font-size: 24px;
+            }
+            
+            .header-title p {
+                font-size: 14px;
+            }
+            
+            .btn-back {
+                justify-content: center;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="form-container">
+            <div class="page-header">
+                <div class="header-content">
+                    <div class="header-title">
+                        <h1>Agregar Nuevo Reloj</h1>
+                        <p>Completa la información del reloj para agregarlo al catálogo</p>
+                    </div>
+                    <div class="header-actions">
+                        <a href="panel.php" class="btn-back">
+                            <span>←</span> Volver al Panel
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="successMessage" class="success-message">
+                ✅ Reloj agregado exitosamente
+            </div>
+            
+            <div id="errorMessage" class="error-message">
+                ❌ Error al agregar el reloj
+            </div>
+            
+            <form id="relojForm" class="form-section" enctype="multipart/form-data">
+                <h2 class="form-title">Información del Reloj</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="marca">Marca <span class="required">*</span></label>
+                        <select id="marca" name="marca" required>
+                            <option value="">Selecciona una marca</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nombre">Nombre del Reloj <span class="required">*</span></label>
+                        <input type="text" id="nombre" name="nombre" required maxlength="100">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="descripcion">Descripción <span class="required">*</span></label>
+                    <textarea id="descripcion" name="descripcion" required placeholder="Describe las características del reloj..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eslabones">Eslabones <span class="optional">(Opcional)</span></label>
+                        <input type="text" id="eslabones" name="eslabones" maxlength="100" placeholder="Ej: 20 eslabones">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_bisel">Tipo de Bisel <span class="optional">(Opcional)</span></label>
+                        <select id="tipo_bisel" name="tipo_bisel">
+                            <option value="">Seleccionar tipo</option>
+                            <option value="estatico">Estático</option>
+                            <option value="giratorio">Giratorio</option>
+                            <option value="giratorio_bidireccional">Giratorio Bidireccional</option>
+                            <option value="estatico_ceramico">Estático Cerámico</option>
+                            <option value="giratorio_ceramico">Giratorio Cerámico</option>
+                            <option value="estatico_ceramico_dorado">Estático Cerámico Dorado</option>
+                            <option value="giratorio_luminoso">Giratorio Luminoso</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="movimiento">Movimiento <span class="optional">(Opcional)</span></label>
+                        <input type="text" id="movimiento" name="movimiento" maxlength="100" placeholder="Ej: Automático Swiss Made">
+                    </div>
+                    <div class="form-group">
+                        <label for="pulsera">Pulsera <span class="optional">(Opcional)</span></label>
+                        <input type="text" id="pulsera" name="pulsera" maxlength="100" placeholder="Ej: Cuero genuino">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="peso">Peso <span class="optional">(Opcional)</span></label>
+                        <input type="text" id="peso" name="peso" maxlength="50" placeholder="Ej: 150g">
+                    </div>
+                    <div class="form-group">
+                        <label for="resistencia_agua">Resistencia al Agua <span class="optional">(Opcional)</span></label>
+                        <input type="text" id="resistencia_agua" name="resistencia_agua" maxlength="50" placeholder="Ej: 100m">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="precio">Precio (COP) <span class="required">*</span></label>
+                        <input type="number" id="precio" name="precio" required min="0" step="0.01">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descuento">Descuento (%)</label>
+                        <input type="number" id="descuento" name="descuento" min="0" max="100" step="0.01" placeholder="Opcional">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="imagen">Imagen Principal (Frontal) <span class="required">*</span></label>
+                    <div class="file-upload">
+                        <input type="file" id="imagen" name="imagen" accept="image/*" required>
+                        <label for="imagen" class="file-upload-label">
+                            📷 Haz clic para seleccionar imagen frontal
+                        </label>
+                    </div>
+                    <div id="imagePreview" class="file-preview"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="imagen_lateral">Imagen Lateral (Perfil) <span class="optional">(Opcional)</span></label>
+                    <div class="file-upload">
+                        <input type="file" id="imagen_lateral" name="imagen_lateral" accept="image/*">
+                        <label for="imagen_lateral" class="file-upload-label">
+                            📷 Haz clic para seleccionar imagen lateral
+                        </label>
+                    </div>
+                    <div id="imagePreviewLateral" class="file-preview"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="imagen_detalle">Imagen de Detalle (Bisel/Correa) <span class="optional">(Opcional)</span></label>
+                    <div class="file-upload">
+                        <input type="file" id="imagen_detalle" name="imagen_detalle" accept="image/*">
+                        <label for="imagen_detalle" class="file-upload-label">
+                            📷 Haz clic para seleccionar imagen de detalle
+                        </label>
+                    </div>
+                    <div id="imagePreviewDetalle" class="file-preview"></div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="disponible" name="disponible" checked>
+                            <label for="disponible">Reloj disponible para venta</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="vendido" name="vendido">
+                            <label for="vendido">Reloj vendido</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    Agregar Reloj
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Función para cargar marcas
+        async function cargarMarcas() {
+            try {
+                const response = await fetch('php/obtener_marcas.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const select = document.getElementById('marca');
+                    select.innerHTML = '<option value="">Selecciona una marca</option>';
+                    
+                    data.marcas.forEach(marca => {
+                        const option = document.createElement('option');
+                        option.value = marca.nombre;
+                        option.textContent = marca.nombre;
+                        select.appendChild(option);
+                    });
+                } else {
+                    console.error('Error al cargar marcas:', data.message);
+                }
+            } catch (error) {
+                console.error('Error de conexión:', error);
+            }
+        }
+        
+        // Cargar marcas al iniciar la página
+        document.addEventListener('DOMContentLoaded', cargarMarcas);
+        
+        // Preview de imágenes
+        function setupImagePreview(inputId, previewId) {
+            document.getElementById(inputId).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                const preview = document.getElementById(previewId);
+                
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.innerHTML = '';
+                }
+            });
+        }
+        
+        // Configurar previews para las 3 imágenes
+        setupImagePreview('imagen', 'imagePreview');
+        setupImagePreview('imagen_lateral', 'imagePreviewLateral');
+        setupImagePreview('imagen_detalle', 'imagePreviewDetalle');
+        
+        // Validación de descuento
+        document.getElementById('descuento').addEventListener('input', function() {
+            const descuento = parseFloat(this.value);
+            if (descuento > 100) {
+                this.value = 100;
+            }
+        });
+        
+        // Manejo del formulario
+        document.getElementById('relojForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            // Ocultar mensajes anteriores
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            
+            // Validación del frontend
+            const imagenInput = document.getElementById('imagen');
+            if (!imagenInput.files || imagenInput.files.length === 0) {
+                errorMsg.textContent = '❌ El campo imagen es obligatorio';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // Validar otros campos obligatorios
+            const camposObligatorios = ['marca', 'nombre', 'descripcion', 'precio'];
+            for (let campo of camposObligatorios) {
+                const input = document.getElementById(campo);
+                if (!input.value.trim()) {
+                    errorMsg.textContent = `❌ El campo ${campo} es obligatorio`;
+                    errorMsg.style.display = 'block';
+                    input.focus();
+                    return;
+                }
+            }
+            
+            // Validar precio
+            const precio = parseFloat(document.getElementById('precio').value);
+            if (isNaN(precio) || precio <= 0) {
+                errorMsg.textContent = '❌ El precio debe ser un número mayor a 0';
+                errorMsg.style.display = 'block';
+                document.getElementById('precio').focus();
+                return;
+            }
+            
+            // Deshabilitar botón
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Agregando...';
+            
+            // Crear FormData
+            const formData = new FormData(this);
+            
+            // Enviar datos
+            fetch('php/agregar_reloj.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    successMsg.textContent = `✅ ${data.message}`;
+                    successMsg.style.display = 'block';
+                    this.reset();
+                    document.getElementById('imagePreview').innerHTML = '';
+                    
+                    // Scroll al mensaje de éxito
+                    successMsg.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    errorMsg.textContent = `❌ ${data.message}`;
+                    errorMsg.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorMsg.textContent = '❌ Error de conexión. Intenta nuevamente.';
+                errorMsg.style.display = 'block';
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Agregar Reloj';
+            });
+        });
+    </script>
+</body>
+</html>

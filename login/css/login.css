@@ -184,6 +184,8 @@ nav {
   transition: width 0.3s ease;
 }
 .contenedor-login {
+    margin: 0 auto;
+    width: 35%;
     display: none;
     justify-content: center;
     align-items: center;
@@ -335,10 +337,42 @@ nav {
     height: 24px;
 }
 
+/* Ocultar mensajes por defecto */
+#mensaje-error {
+    display: none;
+}
+
+#mensaje-error:not(:empty) {
+    display: block;
+}
+
 .mensaje-error {
-    color: red;
-    font-size: 13px;
-    margin-top: 5px;
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.mensaje-error a {
+    color: #FFCF66;
+    text-decoration: underline;
+}
+
+.mensaje-exito {
+    color: #00ff88;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .olvido {
@@ -674,6 +708,38 @@ nav {
     }
     .menu {
         width: 100%;
+    }
+    .cuadro-carrito {
+        width: 340px;
+        height: 180px;
+        top: 130px;
+        right: 30px;
+        padding: 20px;
+        overflow-x: hidden;
+    }
+}
+@media ( width < 460px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    .texto-nombre {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .menu {
+        width: 100%;
+    }
+    .cuadro-carrito {
+        right: 25px;
+    }
+    .boton-finalizar-carrito button {
+        width: 120px;
+        height: 35px;
+        font-size: 12px;
+    }
+}
     }
     .cuadro-carrito {
         width: 340px;

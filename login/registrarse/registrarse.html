@@ -51,7 +51,7 @@
             </a>
             <input type="text" name="nombre" placeholder="Usuario" required>
             <div class="input-password">
-                <input type="password" name="contraseña" placeholder="Contraseña" required>
+                <input type="password" name="contrasena" id="contrasena" placeholder="Contraseña" required>
                 <span id="togglePassword" class="toggle-password">
                     <!-- OJO ABIERTO -->
                     <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" style="display: none;">
@@ -85,6 +85,7 @@
                     </svg> 
                 </div>
             </div>
+            <h1 id="texto-informativo">No hay productos en el carrito</h1>
             <div class="contenedor-info-relojes-carrito">
                 <div class="cuadro-info-reloj-carrito">
                 
@@ -161,5 +162,11 @@
     </script>
     <script src="js/register.js"></script>
     <script src="../../js/carrito.js"></script>
+    
+    <!-- Protección: no debe haber sesión -->
+    <script src="../../js/proteccion_rutas.js"></script>
+    <script>
+        protegerRutaSinSesion();
+    </script>
 </body>
 </html>

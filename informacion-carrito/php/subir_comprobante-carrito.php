@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include 'conexion.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -7,57 +7,69 @@ require '/finoso/vendor/phpmailer/phpmailer/src/Exception.php';
 require '/finoso/vendor/phpmailer/phpmailer/src/PHPMailer.php';
 require '/finoso/vendor/phpmailer/phpmailer/src/SMTP.php';
 require __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/enviar_correo_confirmacion.php';
+
+// 🔥 PROTECCIÓN CONTRA REENVÍO DE FORMULARIO (POST-REDIRECT-GET)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Si ya se procesó esta orden, redirigir a la página de confirmación
+if (isset($_GET['orden_id']) && isset($_GET['token'])) {
+    $orden_id = intval($_GET['orden_id']);
+    $token = $_GET['token'];
+    
+    // Verificar que la orden existe y obtener sus datos
+    $stmt = $conn->prepare("SELECT o.*, GROUP_CONCAT(r.nombre SEPARATOR ', ') as nombre_relojes
+                            FROM orden o 
+                            LEFT JOIN orden_detalle od ON o.id_orden = od.id_orden
+                            LEFT JOIN reloj r ON od.id_reloj = r.id_reloj
+                            WHERE o.id_orden = ?
+                            GROUP BY o.id_orden");
+    $stmt->bind_param("i", $orden_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $orden = $result->fetch_assoc();
+        // Mostrar página de éxito sin procesar nada
+        mostrarPaginaExito($orden);
+        exit();
+    }
+}
+
+// 🔥 VERIFICAR QUE SEA UNA PETICIÓN POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: /finoso/');
+    exit();
+}
+
+// 🔥 VERIFICAR TOKEN DE SESIÓN PARA EVITAR DOBLE ENVÍO
+if (isset($_SESSION['ultimo_token_procesado_carrito'])) {
+    $token_anterior = $_SESSION['ultimo_token_procesado_carrito'];
+    $tiempo_anterior = $_SESSION['tiempo_ultimo_token_carrito'] ?? 0;
+    
+    // Si el token se procesó hace menos de 10 segundos, es un reenvío
+    if ((time() - $tiempo_anterior) < 10) {
+        // Redirigir a la página de confirmación de la orden anterior
+        if (isset($_SESSION['ultima_orden_id_carrito'])) {
+            header("Location: " . $_SERVER['PHP_SELF'] . "?orden_id=" . $_SESSION['ultima_orden_id_carrito'] . "&token=" . $token_anterior);
+            exit();
+        }
+    }
+}
 
 session_start();
-$_SESSION['id_usuario'] = null;
 $ip_address = $_SERVER['REMOTE_ADDR'];
 
 $id_usuario_sesion = $_SESSION['id_usuario'] ?? null;
 $id_usuario_post = $_POST['id_usuario'] ?? null;
 $id_usuario = $id_usuario_sesion ? intval($id_usuario_sesion) : ($id_usuario_post ? intval($id_usuario_post) : null);
 
-// Validaciones anti-abuso
-$stmt = $conn->prepare("SELECT COUNT(*) FROM orden WHERE ip_address = ? AND fecha >= DATE_SUB(NOW(), INTERVAL 1 HOUR)");
-$stmt->bind_param("s", $ip_address);
-$stmt->execute();
-$stmt->bind_result($pedidos_recientes_ip);
-$stmt->fetch();
-$stmt->close();
-
-if ($pedidos_recientes_ip >= 3) {
-    echo "<script>alert('Demasiados pedidos desde esta IP. Intente más tarde.'); history.back();</script>";
-    exit;
-}
-
-$correo_temp = trim($_POST['correo'] ?? '');
-if (!empty($correo_temp)) {
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM orden WHERE correo = ? AND fecha >= DATE_SUB(NOW(), INTERVAL 1 DAY)");
-    $stmt->bind_param("s", $correo_temp);
-    $stmt->execute();
-    $stmt->bind_result($pedidos_recientes_correo);
-    $stmt->fetch();
-    $stmt->close();
-
-    if ($pedidos_recientes_correo >= 2) {
-        echo "<script>alert('Demasiados pedidos con este correo. Intente mañana.'); history.back();</script>";
-        exit;
-    }
-}
-
-$cedula_temp = trim($_POST['cedula'] ?? '');
-if (!empty($cedula_temp)) {
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM orden WHERE cedula = ? AND fecha >= DATE_SUB(NOW(), INTERVAL 1 DAY)");
-    $stmt->bind_param("s", $cedula_temp);
-    $stmt->execute();
-    $stmt->bind_result($pedidos_recientes_cedula);
-    $stmt->fetch();
-    $stmt->close();
-
-    if ($pedidos_recientes_cedula >= 2) {
-        echo "<script>alert('Demasiados pedidos con esta cédula. Intente mañana.'); history.back();</script>";
-        exit;
-    }
-}
+// Debug: Log de ID de usuario al subir comprobante
+error_log('[NEQUI-CARRITO] id_usuario_sesion: ' . ($id_usuario_sesion ?? 'NULL'));
+error_log('[NEQUI-CARRITO] id_usuario_post: ' . ($id_usuario_post ?? 'NULL'));
+error_log('[NEQUI-CARRITO] id_usuario final: ' . ($id_usuario ?? 'NULL'));
 
 if (!isset($_FILES['comprobante'])) {
     die("Error: No se seleccionó ningún archivo.");
@@ -100,8 +112,9 @@ if ($archivo['size'] < 1024) {
 
 $hash_archivo = md5_file($archivo['tmp_name']);
 
-$stmt = $conn->prepare("SELECT COUNT(*) FROM orden WHERE hash_archivo = ?");
-$stmt->bind_param("s", $hash_archivo);
+// Validación de archivo duplicado - verificar por nombre de archivo
+$stmt = $conn->prepare("SELECT COUNT(*) FROM orden WHERE nombre_archivo_comprobante = ?");
+$stmt->bind_param("s", $nombre_archivo);
 $stmt->execute();
 $stmt->bind_result($ya_subido);
 $stmt->fetch();
@@ -109,6 +122,7 @@ $stmt->close();
 
 if ($ya_subido > 0) {
     echo "<script>alert('Este comprobante ya fue registrado anteriormente.'); history.back();</script>";
+    exit;
 }
 
 $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -256,7 +270,10 @@ chmod($rutaCompleta, 0644);
 
 $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? 'Desconocido';
 
-$param_estado = 'pagado';
+// Capturar monto pagado (opcional)
+$monto_pagado = isset($_POST['monto_pagado']) && !empty($_POST['monto_pagado']) ? floatval($_POST['monto_pagado']) : null;
+
+$param_estado = 'pendiente_verificacion';  // Estado inicial al subir comprobante
 $param_metodo = 'nequi';
 $param_nombre = $data['nombre'];
 $param_cedula = $data['cedula'];
@@ -267,18 +284,21 @@ $param_direccion = $data['direccion'];
 $param_barrio = $data['barrio'];
 $param_referencias = $data['referencias'];
 
+// Generar token de verificación ANTES de crear la orden
+$token_verificacion = bin2hex(random_bytes(16));
+
 try {
     $conn->begin_transaction();
 
     $sql_orden = "INSERT INTO orden (
         id_usuario, total, estado, metodo_pago, costo_envio,
         nombre, cedula, celular, departamento, ciudad, direccion, barrio, referencias,
-        comprobante_pago, correo, ip_address, hash_archivo, user_agent
+        comprobante_pago, nombre_archivo_comprobante, correo, token_verificacion, monto_pagado
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql_orden);
     $stmt->bind_param(
-        "idssdsssssssssssss",
+        "idssdssssssssssssd",
         $id_usuario,
         $total,
         $param_estado,
@@ -293,10 +313,10 @@ try {
         $param_barrio,
         $param_referencias,
         $nombreArchivo,
+        $nombreArchivo,  // También guardar en nombre_archivo_comprobante
         $correo,
-        $ip_address,
-        $hash_archivo,
-        $user_agent
+        $token_verificacion,
+        $monto_pagado
     );
 
 
@@ -328,11 +348,66 @@ try {
     $stmt_detalle->close();
     $conn->commit();
 
-    // Calcular valores formateados para mostrar
-    $total_productos = $total - $costo_envio;
+
+    //  ENVIAR CORREO DE CONFIRMACIÓN AL CLIENTE
+    $productos_texto = '';
+    foreach ($productos_detalle as $prod) {
+        $productos_texto .= $prod['nombre'] . ' - $' . number_format($prod['precio'], 0, ',', '.') . "
+";
+    }
+    $productos_para_correo = trim($productos_texto);
+    $productos_para_correo = trim($productos_texto);
+    error_log('[NEQUI-CARRITO]  Preparando envío de correo de confirmación...');
+    error_log('[NEQUI-CARRITO] Correo: ' . $correo . ', Nombre: ' . $param_nombre . ', Orden: #' . $id_orden);
+    enviarCorreoConfirmacionOrden($correo, $param_nombre, $id_orden, $productos_para_correo, $total, $token_verificacion);
+    error_log('[NEQUI-CARRITO]  Llamada a enviarCorreoConfirmacionOrden() completada');
+    // Guardar token en sesión para evitar reenvíos
+    $_SESSION['ultimo_token_procesado_carrito'] = $token_verificacion;
+    $_SESSION['tiempo_ultimo_token_carrito'] = time();
+    $_SESSION['ultima_orden_id_carrito'] = $id_orden;
+
+    // 🔥 REDIRIGIR A LA MISMA PÁGINA CON GET (POST-REDIRECT-GET PATTERN)
+    header("Location: " . $_SERVER['PHP_SELF'] . "?orden_id=" . $id_orden . "&token=" . $token_verificacion);
+    exit();
+
+} catch (Exception $e) {
+    $conn->rollback();
+    if (file_exists($rutaCompleta)) {
+        unlink($rutaCompleta);
+    }
+    die("Error: " . $e->getMessage());
+}
+
+// 🔥 FUNCIÓN PARA MOSTRAR LA PÁGINA DE ÉXITO
+function mostrarPaginaExito($orden) {
+    // Calcular valores formateados
+    $total_productos = $orden['total'] - $orden['costo_envio'];
     $total_productos_formateado = number_format($total_productos, 0, ',', '.');
-    $costo_envio_formateado = number_format($costo_envio, 0, ',', '.');
-    $total_formateado = number_format($total, 0, ',', '.');
+    $costo_envio_formateado = number_format($orden['costo_envio'], 0, ',', '.');
+    $total_formateado = number_format($orden['total'], 0, ',', '.');
+    
+    // Obtener productos de esta orden
+    global $conn;
+    $stmt = $conn->prepare("SELECT r.nombre, od.precio_unitario 
+                            FROM orden_detalle od
+                            JOIN reloj r ON od.id_reloj = r.id_reloj
+                            WHERE od.id_orden = ?");
+    $stmt->bind_param("i", $orden['id_orden']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $productos_html = '';
+    while ($row = $result->fetch_assoc()) {
+        $nombre_producto = htmlspecialchars($row['nombre']);
+        $precio_producto_formateado = number_format($row['precio_unitario'], 0, ',', '.');
+        
+        $productos_html .= '
+            <div class="producto-item" style="display: flex; justify-content: space-between; padding: 6px 12px; border-bottom: 1px solid #ffffff1a;">
+                <span class="producto-nombre" style="font-weight: 500;">' . $nombre_producto . '</span>
+                <span class="producto-precio" style="color: #fff;">$' . $precio_producto_formateado . '</span>
+            </div>';
+    }
+    $stmt->close();
 
  echo '
  <!DOCTYPE html>
@@ -340,7 +415,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pago Exitoso</title>
+    <title>Comprobante Recibido - Finoso</title>
     <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
     <style>
         * {
@@ -872,22 +947,27 @@ try {
             <!-- Contenido interior -->
             <div class="success-card">
                 <div class="success-icon">✅</div>
-                <h1 class="success-title">¡PAGO EXITOSO!</h1>
-                <p class="success-subtitle">Tu orden ha sido procesada correctamente</p>
+                <h1 class="success-title">¡Comprobante recibido!</h1>
+                <p class="success-subtitle">Tu comprobante fue recibido y está en verificación. Esto puede tardar hasta 3 horas.</p>
                 
                 <div class="order-details">
                     <h3>Detalles de tu orden</h3>
                     
                     <div class="detail-row">
                         <span class="detail-label">Número de orden:</span>
-                        <span class="detail-value">#' . $id_orden . '</span>
+                        <span class="detail-value">#' . $orden['id_orden'] . '</span>
                     </div>
 
                     <div class="detail-row">
-                        <span class="detail-label">Productos:</span>
+                        <span class="detail-label">Producto:</span>
                     </div>
                     <div class="productos-lista" style="border: 1px solid #ffffff1a; border-radius: 5px; overflow: hidden; margin-bottom: 10px;">
                         ' . $productos_html . '
+                    </div>
+                    
+                    <div class="detail-row">
+                        <span class="detail-label">Precio:</span>
+                        <span class="detail-value">$' . $total_productos_formateado . '</span>
                     </div>
 
                     <div class="detail-row">
@@ -896,21 +976,31 @@ try {
                     </div>
                     
                     <div class="detail-row">
-                        <span class="detail-label">Total pagado:</span>
+                        <span class="detail-label">Total:</span>
                         <span class="detail-value total-amount">$' . $total_formateado . '</span>
                     </div>
                     
                     <div class="detail-row">
                         <span class="detail-label">Estado:</span>
-                        <span class="status-badge">
-                            ✅ Pagado
+                        <span class="status-badge" style="background: rgba(255, 193, 7, 0.2); color: #FFC107; border: 1px solid rgba(255, 193, 7, 0.3);">
+                            ⏳ Pendiente de Verificación
                         </span>
                     </div>
                     
                     <div class="detail-row">
                         <span class="detail-label">Correo:</span>
-                        <span class="detail-value">' . htmlspecialchars($correo) . '</span>
+                        <span class="detail-value">' . htmlspecialchars($orden['correo']) . '</span>
                     </div>
+                </div>
+                
+                <div style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 10px; padding: 20px; margin: 20px 0; text-align: left;">
+                    <h4 style="color: #FFC107; margin-bottom: 10px;">📋 Próximos pasos</h4>
+                    <ul style="color: #ccc; margin: 0; padding-left: 20px;">
+                        <li>Tu comprobante será verificado en las próximas <strong>3 horas</strong>.</li>
+                        <li>Si la verificación es correcta, recibirás la <strong>confirmación del pedido por correo</strong>.</li>
+                        <li>Si no se valida o hay inconsistencias en el monto o datos, te notificaremos por correo con los pasos a seguir.</li>
+                        <li>Conserva tu comprobante y el token de verificación para cualquier revisión.</li>
+                    </ul>
                 </div>
                 
                 <a href="/finoso/" class="home-button">VOLVER AL INICIO</a>
@@ -919,98 +1009,7 @@ try {
     </div>
 </body>
 </html>';
-
-$codigo_descuento = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
-$porcentaje = 10; // Por ejemplo, 10% de descuento
-$fecha_expiracion = date('Y-m-d', strtotime('+90 days')); // 30 días desde hoy
-
-// Guardar en la base de datos
-$stmt = $conn->prepare("INSERT INTO codigo_descuento (codigo, porcentaje, fecha_expiracion) VALUES (?, ?, ?)");
-$stmt->bind_param("sds", $codigo_descuento, $porcentaje, $fecha_expiracion);
-$stmt->execute();
-
-
-function enviarCorreoCompraExitosa($correoDestino, $codigo_descuento, $porcentaje, $fecha_expiracion) {
-    $mail = new PHPMailer(true);
-
-    try {
-
-        // Depuración SMTP activada (nivel 2 para mayor detalle)
-        $mail->SMTPDebug = 2; 
-        $mail->Debugoutput = function($str, $level) {
-        };
-
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'davidpascuas708@gmail.com';  // Tu correo Gmail
-        $mail->Password = 'qinc wznz hvmv zqwu';         // App Password
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
-        $mail->CharSet = 'UTF-8'; // Asegura que todo el correo use UTF-8
-
-        $mail->setFrom('davidpascuas708@gmail.com', 'Finoso');
-        $mail->addAddress($correoDestino);
-
-        $mail->isHTML(true);
-        $fecha_expiracion_formateada = date('d/m/Y', strtotime($fecha_expiracion));
-        $productos_raw = $_POST['productos'] ?? '';
-        $productos = json_decode($productos_raw, true) ?: []; // Aquí es donde se recibe la información de los relojes seleccionados
-        $mail->Subject = '¡Gracias por tu compra en Finoso! Aqui tienes un obsequio especial';
-
-        $productos_lista = '';
-        foreach ($productos as $producto) {
-            $productos_lista .= "<p>Producto: {$producto['nombre']} - Precio: {$producto['precio']}</p>";
-        }
-
-        // Modificar el cuerpo del correo para incluir los productos
-        $mail->Body = <<<EOD
-        <div style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 30px; border-radius: 10px; color: #333;">
-            <div style="max-width: 600px; margin: auto; background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-                <h2 style="color: #333; text-align: center;">🤝 ¡Gracias por confiar en Finoso!</h2>
-                <p style="font-size: 16px; line-height: 1.6;">
-                    Hemos recibido tu compra y estamos preparando todo para que la experiencia sea inolvidable.
-                </p>
-                <p style="font-size: 16px; line-height: 1.6;">
-                    A continuación, te detallamos los productos que adquiriste:
-                </p>
-
-                $productos_lista
-
-                <div style="text-align: center; margin: 30px 0;">
-                    <span style="display: inline-block; font-size: 24px; background: #000; color: #fff; padding: 15px 25px; border-radius: 5px; letter-spacing: 4px;">
-                        $codigo_descuento
-                    </span>
-                </div>
-
-                <p style="text-align: center; font-size: 14px; color: #888;">
-                    Válido hasta el <strong>$fecha_expiracion_formateada</strong>
-                </p>
-
-                <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
-
-                <p style="font-size: 14px; text-align: center; color: #666;">
-                    💼 Somos Finoso. Un detalle habla más que mil palabras.<br>
-                    Gracias por ser parte de esta experiencia.
-                </p>
-            </div>
-        </div>
-        EOD;
-
-        $mail->send();
-        echo "<script>console.log('✅ Correo enviado a: " . $correoDestino . "');</script>";
-    } catch (Exception $e) {
-        echo "<script>console.error('❌ Error al enviar correo: " . $mail->ErrorInfo . "');</script>";
-    }
 }
 
-enviarCorreoCompraExitosa($correo, $codigo_descuento, $porcentaje, $fecha_expiracion);
-
-} catch (Exception $e) {
-    $conn->rollback();
-    if (file_exists($rutaCompleta)) {
-        unlink($rutaCompleta);
-    }
-    die("Error: " . $e->getMessage());
-}
+// FIN DEL ARCHIVO - El código de generación de códigos y emails se ejecuta desde admin/php/acciones.php cuando se aprueba la orden
 ?>

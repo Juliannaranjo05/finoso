@@ -1,0 +1,265 @@
+<?php
+// ⭐ FAVORITOS - NO verificar sesión (permite usuarios anónimos)
+// require_once 'check_session.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informacion</title>
+    <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/informacion-carrito.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <div class="texto-nombre">
+            <h2>FINOSO</h2>
+        </div>
+        <div class="menu">
+            <div class="texto-inicio">
+                <a href="../index.html">
+                    <h3>INICIO</h3>
+                </a>
+            </div>
+            <div class="texto-catalogo">
+                <a href="../catalogo/catalogo.html">
+                    <h3>CATALOGO</h3>
+                </a>
+            </div>
+            <div class="texto-contacto">
+                <a href="../index.html#contacto">
+                    <h3>CONTACTO</h3>
+                </a>
+            </div>
+        </div>
+        <div class="iconos-menu">
+            <div class="icono-login">
+                    <svg id="iconoLogin" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="icon icon-account" fill="none" viewBox="0 0 18 19">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.5a3 3 0 116 0 3 3 0 01-6 0zm3-4a4 4 0 100 8 4 4 0 000-8zm5.58 12.15c1.12.82 1.83 2.24 1.91 4.85H1.51c.08-2.6.79-4.03 1.9-4.85C4.66 11.75 6.5 11.5 9 11.5s4.35.26 5.58 1.15zM9 10.5c-2.5 0-4.65.24-6.17 1.35C1.27 12.98.5 14.93.5 18v.5h17V18c0-3.07-.77-5.02-2.33-6.15-1.52-1.1-3.67-1.35-6.17-1.35z" fill="currentColor">
+                        </path>
+                    </svg>
+            </div>
+            <div class="icono-carrito" id="iconoCarrito">
+                <svg class="icon icon-cart" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+                    <path fill="currentColor" fill-rule="evenodd" d="M20.5 6.5a4.75 4.75 0 00-4.75 4.75v.56h-3.16l-.77 11.6a5 5 0 004.99 5.34h7.38a5 5 0 004.99-5.33l-.77-11.6h-3.16v-.57A4.75 4.75 0 0020.5 6.5zm3.75 5.31v-.56a3.75 3.75 0 10-7.5 0v.56h7.5zm-7.5 1h7.5v.56a3.75 3.75 0 11-7.5 0v-.56zm-1 0v.56a4.75 4.75 0 109.5 0v-.56h2.22l.71 10.67a4 4 0 01-3.99 4.27h-7.38a4 4 0 01-4-4.27l.72-10.67h2.22z"></path>
+                </svg>
+                <span id="contadorCarrito" class="contador-carrito">0</span>
+            </div>
+        </div>
+    </nav>
+    <div class="contenedor-general">
+        <div class="contenedor-texto-finalizar">
+            <h2>Finalizar Compra</h2>
+        </div>
+        <div class="contenedor-informacion-pago">
+            <div class="particles" id="particles"></div>
+            <div class="contenedor-general-informacion">
+                <div class="navigation-controls">
+                    <button class="nav-button" id="prevBtn" onclick="changeProduct(-1)">‹</button>
+                    <div class="product-counter">
+                        <span id="currentProduct">1</span> / <span id="totalProducts">1</span>
+                    </div>
+                    <button class="nav-button" id="nextBtn" onclick="changeProduct(1)">›</button>
+                </div>
+                <div class="img-informacion">
+                    <img id="img-lupa" src="../img/" alt="Imagen principal">
+                    <!-- AQUI mas imagenes de otro producto -->
+                    <div class="product-thumbnails" id="thumbnails">
+                        <!-- Las miniaturas se generarán aquí -->
+                    </div>
+                </div>
+                <div class="contenedor-informacion">
+                    <div class="nombre-informacion">
+                        <h2 id="product-name">Cargando...</h2>
+                    </div>
+                    <div class="contenedor-precio-total">
+                        <div class="precio">
+                            <div class="precio-descuento">
+                                <p id="current-price">$...</p>
+                                <h4 id="original-price">$...</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contenedor-total">
+                        <h3>Total:</h3><p id="precio-total">$245.000</p>
+                    </div>
+                    <div class="descripcion-informacion">
+                        <h1>Detalles:</h1>
+                        <h2 id="product-description">...</h2>
+                    </div>
+                </div>
+                <!-- AQUI otro contenedor-informacion para la informacion del otro producto -->
+            </div>
+            <div class="contenedor-pago">
+                <div class="contenedor-metodos-pago">
+                    <div class="form-container">
+                        <form action="#" method="POST" id="form-envio">
+                            <div class="texto-metodos-pago">
+                                <h3>Metodos de Pago:</h3>
+                            </div>
+                            <div class="botones-metodos-pago">
+                                <div class="boton-metodo">
+                                    <img class="mercado-pago" src="../informacion/img/mercado-pago.jpg" alt="Mercado Pago" data-metodo="mercado_pago">
+                                </div>
+                                <div class="boton-metodo">
+                                    <img class="nequi" src="../informacion/img/nequi-logo-png_seeklogo-404357.png" alt="nequi" data-metodo="nequi">
+                                </div>
+                                <input type="hidden" id="metodo-pago" name="metodo_pago" required>
+                                <span class="error-message" id="error-metodo-pago"></span>
+                            </div>
+
+                            <h2>Datos de Envío:</h2>
+
+                            <div class="form-section">
+                                <label for="nombre">Nombre completo del destinatario:</label>
+                                <input type="text" id="nombre" name="nombre" required maxlength="30">
+                                <span class="error-message" id="error-nombre"></span>
+
+                                <label for="cedula">Número de cédula:</label>
+                                <input type="text" id="cedula" name="cedula" required maxlength="12">
+                                <span class="error-message" id="error-cedula"></span>
+
+                                <label for="celular">Número de celular:</label>
+                                <input type="tel" id="celular" name="celular" required maxlength="10">
+                                <span class="error-message" id="error-celular"></span>
+                            </div>
+
+                            <div class="form-section" id="campo-correo" style="display: none;">
+                                <label for="correo">Correo electrónico:</label>
+                                <input type="email" id="correo" name="correo" maxlength="50">
+                                <span class="error-message" id="error-correo"></span>
+                            </div>
+
+                            <div class="form-section">
+                                <label for="departamento">Departamento:</label>
+                                <select id="departamento" name="departamento" required>
+                                    <option value="">Selecciona un departamento</option>
+                                </select>
+                                <span class="error-message" id="error-departamento"></span>
+
+                                <label for="ciudad">Ciudad:</label>
+                                <select id="ciudad" name="ciudad" required>
+                                    <option value="">Selecciona una ciudad</option>
+                                </select>
+                                <span class="error-message" id="error-ciudad"></span>
+
+                                <label for="direccion">Dirección exacta:</label>
+                                <input type="text" id="direccion" name="direccion" placeholder="Ej. Cra 45 #123-45 Apto 302" required maxlength="50">
+                                <span class="error-message" id="error-direccion"></span>
+
+                                <label for="barrio">Barrio:</label>
+                                <input type="text" id="barrio" name="barrio" required maxlength="50">
+                                <span class="error-message" id="error-barrio"></span>
+
+                                <label for="referencias">Referencias de ubicación (opcional):</label>
+                                <textarea id="referencias" name="referencias" placeholder="Color de la casa, cerca a un parque, etc." maxlength="100"></textarea>
+                                <span class="error-message" id="error-referencias"></span>
+                            </div>
+                            <div class="envio-total-info">
+                                <p><span class="circulo-verde">●</span> Envío Total: $<strong id="precio-envio">0</strong> COP</p>
+                                <p class="descuento-texto">🚚 ¡Envío gratis por compras superiores a $200.000 COP!</p>
+                            </div>
+                            <div class="guardar-info">
+                                <input type="checkbox" id="guardar-info" name="guardar_info">
+                                <label for="guardar-info">Guardar información para futuras compras</label>
+                            </div>
+
+                            <button type="submit" class="boton-comprar">
+                                <h3>Comprar</h3>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="contenedor-mas-productos">
+            <div class="contenedor-sobre-nosotros">
+                <div class="titulo-sobre-nosotros">
+                    <h3>Sobre Nosotros</h3>
+
+                    <p>Nuestra misión es simple pero poderosa: ofrecer relojes de calidad garantizada con total transparencia y una experiencia de compra sin complicaciones. Sabemos que muchos aman los relojes pero dudan al comprar online por falta de confianza, y precisamente para cambiar eso existe Finoso.</p>
+
+                    <p>Nos guían cuatro principios: <strong>accesibilidad</strong> para que todos puedan disfrutar de un gran reloj, <strong>elegancia</strong> en cada pieza que ofrecemos, <strong>servicio excepcional</strong> porque tu confianza es nuestro mayor compromiso, y <strong>transparencia</strong> total en cada detalle.</p>
+
+                    <p>Más que una tienda, somos tu aliado de confianza en el mundo de los relojes. Cada producto lleva nuestra promesa: calidad, elegancia y honestidad garantizada. <strong>Gracias por ser parte de esta historia.</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cuadrolupa">
+        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 70 70" id="Magnifier">
+            <path d="M21 42c5.071 0 9.728-1.808 13.361-4.811L38.172 41l-1.586 1.586a2 2 0 0 0 0 2.828l18 18c.391.391.902.586 1.414.586s1.023-.195 1.414-.586l6-6a2 2 0 0 0 0-2.828l-18-18a2 2 0 0 0-2.828 0L41 38.172l-3.811-3.811A20.908 20.908 0 0 0 42 21C42 9.42 32.579 0 21 0S0 9.42 0 21s9.421 21 21 21zm38.172 14L56 59.171 40.828 44 44 40.829 59.172 56zM21 4c9.374 0 17 7.626 17 17s-7.626 17-17 17S4 30.374 4 21 11.626 4 21 4z" fill="#ffffff" class="color000000 svgShape"></path>
+            <path d="M12 23h7v7a2 2 0 0 0 4 0v-7h7a2 2 0 0 0 0-4h-7v-7a2 2 0 0 0-4 0v7h-7a2 2 0 0 0 0 4z" fill="#ffffff" class="color000000 svgShape"></path>
+          </svg>
+    </div>
+        <div class="cuadro-carrito" id="cuadroCarrito">
+            <div class="texto-close-carrito">
+                <div class="texto-carrito">
+                    <h1>Carrito de compras</h1>
+                </div>
+                <div class="close" id="cerrarCarrito">
+                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                    </svg> 
+                </div>
+            </div>
+            <div class="contenedor-info-relojes-carrito">
+                <div class="cuadro-info-reloj-carrito">
+                
+                    <div class="img-reloj-carrito">
+                        <img src="../img/" alt="Cargando...">
+                    </div>
+                    <div class="nombre-precio-carrito">
+                        <div class="nombre-carrito">
+                            <h2>Rchrd Mll Calavera Blanco Circones Negros-Dorados</h2>
+                        </div>
+                        <div class="precio-carrito">
+                            <h3>$100.000</h3>
+                            <h4>$100.000</h4>
+                        </div>
+                    </div>
+                    <div class="boton-eliminar">
+                        <button disabled="disabled">Eliminar</button>
+                    </div>
+                </div>
+                <div class="cuadro-info-reloj-carrito">
+                    <div class="img-reloj-carrito">
+                        <img src="../img/" alt="Cargando...">
+                    </div>
+                    <div class="nombre-precio-carrito">
+                        <div class="nombre-carrito">
+                            <h2>Reloj Inteligente</h2>
+                        </div>
+                        <div class="precio-carrito">
+                            <h3>$100.000</h3>
+                            <h4>$100.000</h4>
+                        </div>
+                    </div>
+                    <div class="boton-eliminar">
+                        <button>Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="contenedor-total-finalizar-carrito">
+                <div class="total-carrito">
+                    <h2>Total:</h2>
+                    <h3>$100.000</h3>
+                </div>
+                <div class="boton-finalizar-carrito">
+                    <button type="submit" form="form-envio">Finalizar Compra</button>
+                </div>
+            </div>
+        </div>
+        <div class="user-box" id="cuadro-sesion">
+            <p class="username" id="nombreUsuario">Juan Perez</p>
+            <button class="logout-btn" id="cerrarSesionBtn">Cerrar sesión</button>
+        </div>
+    <script src="http://127.0.0.1/finoso/login/js/sesion.js"></script>
+    <script src="js/productos.js?v=<?php echo time(); ?>"></script>
+    <script src="js/validaciones-compra.js?v=<?php echo time(); ?>"></script>
+    <script src="js/lupa.js"></script>
+    <script src="../js/carrito.js"></script>
+</body>
+</html>

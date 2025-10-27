@@ -87,7 +87,7 @@
                             </div>
                             <div class="botones-metodos-pago">
                                 <div class="boton-metodo">
-                                    <img class="mercado-pago" src="img/mercado-pago.jpg" alt="Mercado Pago" data-metodo="mercado_pago">
+                                    <img class="wompi" src="img/Wompi.png" alt="Wompi" data-metodo="wompi">
                                 </div>
                                 <div class="boton-metodo">
                                     <img class="nequi" src="img/nequi-logo-png_seeklogo-404357.png" alt="nequi" data-metodo="nequi">
@@ -200,20 +200,69 @@
                             <button type="submit" class="boton-comprar">
                                 <h3>Comprar</h3>
                             </button>
+                            <div class="botones-comprar-anadir">
+                                <button type="submit" class="boton-anadir">
+                                    <h2>Añadir al carrito</h2>
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M5 3a1 1 0 0 0 0 2h.687L7.82 15.24A3 3 0 1 0 11.83 17h2.34A3 3 0 1 0 17 15H9.813l-.208-1h8.145a1 1 0 0 0 .979-.796l1.25-6A1 1 0 0 0 19 6h-2.268A2 2 0 0 1 15 9a2 2 0 1 1-4 0 2 2 0 0 1-1.732-3h-1.33L7.48 3.796A1 1 0 0 0 6.5 3H5Z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M14 5a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1a1 1 0 1 0 2 0V8h1a1 1 0 1 0 0-2h-1V5Z" clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </form>
-                    </div>
-                    <div class="botones-comprar-anadir">
-                        <button type="submit" class="boton-anadir">
-                            <h2>Añadir al carrito</h2>
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M5 3a1 1 0 0 0 0 2h.687L7.82 15.24A3 3 0 1 0 11.83 17h2.34A3 3 0 1 0 17 15H9.813l-.208-1h8.145a1 1 0 0 0 .979-.796l1.25-6A1 1 0 0 0 19 6h-2.268A2 2 0 0 1 15 9a2 2 0 1 1-4 0 2 2 0 0 1-1.732-3h-1.33L7.48 3.796A1 1 0 0 0 6.5 3H5Z" clip-rule="evenodd"/>
-                            <path fill-rule="evenodd" d="M14 5a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1a1 1 0 1 0 2 0V8h1a1 1 0 1 0 0-2h-1V5Z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Sección de Comentarios -->
+        <div class="seccion-comentarios">
+            <div class="comentarios-header">
+                <h2>Comentarios y Calificaciones</h2>
+            </div>
+            
+            <!-- Formulario para agregar comentario -->
+            <div class="formulario-comentario">
+                <h3>Deja tu comentario</h3>
+                <form id="form-comentario">
+                    <div class="campo-calificacion">
+                        <label>Calificación:</label>
+                        <div class="estrellas-input">
+                            <input type="radio" name="calificacion" value="5" id="estrella5">
+                            <label for="estrella5" class="estrella-input">★</label>
+                            <input type="radio" name="calificacion" value="4" id="estrella4">
+                            <label for="estrella4" class="estrella-input">★</label>
+                            <input type="radio" name="calificacion" value="3" id="estrella3">
+                            <label for="estrella3" class="estrella-input">★</label>
+                            <input type="radio" name="calificacion" value="2" id="estrella2">
+                            <label for="estrella2" class="estrella-input">★</label>
+                            <input type="radio" name="calificacion" value="1" id="estrella1">
+                            <label for="estrella1" class="estrella-input">★</label>
+                        </div>
+                    </div>
+                    
+                    <div class="campo-nombre" id="campo-nombre-usuario">
+                        <label for="nombre-comentario">Tu nombre:</label>
+                        <input type="text" id="nombre-comentario" name="nombre_usuario" required maxlength="100" placeholder="Ej: Juan Pérez">
+                    </div>
+                    
+                    <div class="campo-comentario">
+                        <label for="texto-comentario">Tu comentario:</label>
+                        <textarea id="texto-comentario" name="comentario" required maxlength="500" placeholder="Comparte tu experiencia con este reloj..."></textarea>
+                        <div class="contador-caracteres">
+                            <span id="contador">0</span>/500 caracteres
+                        </div>
+                    </div>
+                    
+                        <button type="button" class="btn-enviar-comentario">
+                            Enviar Comentario
+                        </button>
+                </form>
+            </div>
+            
+            <!-- Lista de comentarios se carga dinámicamente -->
+        </div>
+        
         <div class="contenedor-mas-productos">
             <div class="texto-producto" id="productoRelacionados">
                 <h3>Productos Relacionados</h3>
@@ -243,11 +292,11 @@
                 <div class="titulo-sobre-nosotros">
                     <h3>Sobre Nosotros</h3>
 
-                    <p>Somos un emprendimiento dedicado a ofrecer relojes de lujo de alta gama, con un diseño excepcional y materiales de calidad superior.</p>
+                    <p>Nuestra misión es simple pero poderosa: ofrecer relojes de calidad garantizada con total transparencia y una experiencia de compra sin complicaciones. Sabemos que muchos aman los relojes pero dudan al comprar online por falta de confianza, y precisamente para cambiar eso existe Finoso.</p>
 
-                    <strong>Garantizamos la autenticidad de cada producto y ofrecemos soporte durante todo el proceso de compra.</strong>
+                    <p>Nos guían cuatro principios: <strong>accesibilidad</strong> para que todos puedan disfrutar de un gran reloj, <strong>elegancia</strong> en cada pieza que ofrecemos, <strong>servicio excepcional</strong> porque tu confianza es nuestro mayor compromiso, y <strong>transparencia</strong> total en cada detalle.</p>
 
-                    <h2>Compra de forma segura y recibe tu pedido con total confianza.</h2>
+                    <p>Más que una tienda, somos tu aliado de confianza en el mundo de los relojes. Cada producto lleva nuestra promesa: calidad, elegancia y honestidad garantizada. <strong>Gracias por ser parte de esta historia.</strong></p>
                 </div>
             </div>
         </div>
@@ -269,8 +318,8 @@
                     </svg> 
                 </div>
             </div>
+            <h1 id="texto-informativo">No hay productos en el carrito</h1>
             <div class="contenedor-info-relojes-carrito">
-                <h1 id="texto-informativo">No hay productos en el carrito</h1>
                 <div class="cuadro-info-reloj-carrito">
                     
                 </div>
@@ -349,12 +398,21 @@
         </div>
 
     <script>
+        // Variables globales
+        let precioOriginal = 0;
+        
+        // Obtener ID del reloj desde la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        let idRelojActual = parseInt(urlParams.get('id_reloj')) || parseInt(urlParams.get('id')) || 0;
+
+        // Función para aplicar código de descuento
         function aplicarDescuento() {
-            const codigo = document.getElementById("codigo-descuento").value.trim();
+            const codigo = document.getElementById("codigo-descuento").value.trim().toUpperCase();
             const errorDiv = document.getElementById("error-codigo-descuento");
             const successDiv = document.getElementById("discount-success");
             const discountAmountEl = document.getElementById("discount-amount");
             const discountPercentEl = document.getElementById("discount-percentage");
+            const applyBtn = document.querySelector(".discount-btn");
 
             errorDiv.textContent = '';
             successDiv.style.display = 'none';
@@ -364,67 +422,206 @@
                 return;
             }
 
-            fetch("php/validar_codigo_descuento.php", {
+            if (idRelojActual <= 0) {
+                errorDiv.textContent = "Error: No se pudo identificar el reloj.";
+                return;
+            }
+
+            // Deshabilitar botón mientras procesa
+            applyBtn.disabled = true;
+            applyBtn.textContent = 'Validando...';
+
+            fetch("php/aplicar_codigo_descuento.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `codigo=${encodeURIComponent(codigo)}`
+                body: `codigo=${encodeURIComponent(codigo)}&id_reloj=${idRelojActual}`
             })
             .then(res => res.json())
             .then(data => {
-                if (data.valido) {
+                console.log('🎯 Respuesta del servidor al aplicar código:', data);
+                
+                applyBtn.disabled = false;
+                applyBtn.textContent = 'Aplicar';
+
+                if (data.success) {
                     const porcentaje = parseFloat(data.porcentaje);
-                    // Detectar el precio correcto (con o sin descuento)
-                    let precioTexto = '';
-                    const precioConDescuento = document.querySelector(".precio-descuentos");
-                    const precioNormal = document.querySelector(".precio-normal");
+                    const precioOriginal = parseFloat(data.precio_original);
+                    const precioFinal = parseFloat(data.precio_con_descuento);
+                    const descuento = precioOriginal - precioFinal;
 
-                    if (precioConDescuento) {
-                        precioTexto = precioConDescuento.textContent.replace(/[^\d]/g, '');
-                    } else if (precioNormal) {
-                        precioTexto = precioNormal.textContent.replace(/[^\d]/g, '');
-                    } else {
-                        console.error("No se encontró el precio en la página.");
-                        return;
-                    }
+                    console.log('💵 Valores calculados:', {
+                        porcentaje,
+                        precioOriginal,
+                        precioFinal,
+                        descuento
+                    });
 
-                    const precio = parseFloat(precioTexto);
-                    const descuento = precio * (porcentaje / 100);
-                    const nuevoPrecio = precio - descuento;
+                    // Actualizar precio en la página
+                    console.log('🔄 Llamando a actualizarPrecioVisual...');
+                    actualizarPrecioVisual(precioFinal, precioOriginal);
 
-                    // Actualizar el precio mostrado en pantalla (visual)
-                    const precioFormateado = `$${nuevoPrecio.toLocaleString('es-CO')}`;
-
-                    if (precioConDescuento) {
-                        precioConDescuento.textContent = precioFormateado;
-                    } else if (precioNormal) {
-                        precioNormal.textContent = precioFormateado;
-                    }
-
-                    // También actualiza el total final si existe
-                    const totalFinal = document.getElementById("total-final");
-                    if (totalFinal) {
-                        totalFinal.textContent = precioFormateado;
-                    }
-
-                    // Mostrar resultado
-                    discountAmountEl.textContent = `-$${descuento.toLocaleString('es-CO')}`;
+                    // Mostrar mensaje de éxito
+                    discountAmountEl.textContent = `-$${Math.round(descuento).toLocaleString('es-CO')}`;
                     discountPercentEl.textContent = `${porcentaje}%`;
-                    successDiv.style.display = 'block';
+                    successDiv.style.display = 'flex';
+                    successDiv.classList.add('active');
 
-                    // Guardar descuento para proceso de compra
-                    localStorage.setItem("descuento_aplicado", JSON.stringify({
-                        porcentaje: porcentaje,
-                        valor: descuento.toFixed(2)
-                    }));
+                    // Deshabilitar input y botón
+                    document.getElementById("codigo-descuento").disabled = true;
+                    applyBtn.disabled = true;
+                    applyBtn.textContent = 'Aplicado ✓';
+
+                    console.log('✓ Código aplicado:', data.codigo, '- Descuento:', porcentaje + '%');
+                    console.log('Precio original:', precioOriginal, '→ Precio final:', precioFinal);
 
                 } else {
                     errorDiv.textContent = data.mensaje || "Código inválido o expirado.";
                 }
             })
             .catch(err => {
-                errorDiv.textContent = "Error de conexión con el servidor.";
+                applyBtn.disabled = false;
+                applyBtn.textContent = 'Aplicar';
+                errorDiv.textContent = "Error al validar el código. Intenta de nuevo.";
+                console.error('Error:', err);
             });
         }
+
+        // Función para actualizar el precio visual en la página
+        function actualizarPrecioVisual(precioFinal, precioOriginal = null) {
+            console.log('🔄 actualizarPrecioVisual llamada con:', {precioFinal, precioOriginal});
+            
+            const precioFormateado = `$${Math.round(precioFinal).toLocaleString('es-CO')}`;
+            
+            // Buscar los elementos de precio
+            const precioConDescuentoEl = document.querySelector(".precio-descuentos");
+            const precioNormalEl = document.querySelector(".precio-normal");
+            const precioTituloEl = document.querySelector(".precio-reloj h2");
+
+            console.log('📍 Elementos encontrados:', {
+                precioConDescuentoEl: !!precioConDescuentoEl,
+                precioNormalEl: !!precioNormalEl,
+                precioTituloEl: !!precioTituloEl
+            });
+
+            // ESTRUCTURA DEL HTML:
+            // Caso 1 (sin descuento del reloj): <p class="precio-normal">$135.000</p>
+            // Caso 2 (con descuento del reloj): <p class="precio-descuentos">$130.000</p><h4 class="precio-normal">$145.000</h4>
+            
+            // Si hay precio original diferente (es decir, hay descuento del código)
+            if (precioOriginal && precioOriginal !== precioFinal) {
+                const precioOriginalFormateado = `$${Math.round(precioOriginal).toLocaleString('es-CO')}`;
+                console.log('💰 Hay descuento del código, reestructurando HTML...');
+                
+                // Si NO existe .precio-descuentos, necesitamos crearlo
+                if (!precioConDescuentoEl && precioNormalEl) {
+                    console.log('🔧 Creando elemento .precio-descuentos...');
+                    
+                    // Obtener el contenedor
+                    const container = precioNormalEl.parentElement;
+                    
+                    // Crear el nuevo elemento para el precio con descuento
+                    const nuevoPrecioDescuento = document.createElement('p');
+                    nuevoPrecioDescuento.className = 'precio-descuentos';
+                    nuevoPrecioDescuento.textContent = precioFormateado;
+                    
+                    // Insertar ANTES del precio-normal
+                    container.insertBefore(nuevoPrecioDescuento, precioNormalEl);
+                    
+                    // Cambiar el precio-normal de <p> a <h4> si es necesario
+                    if (precioNormalEl.tagName === 'P') {
+                        const nuevoH4 = document.createElement('h4');
+                        nuevoH4.className = 'precio-normal';
+                        nuevoH4.textContent = precioOriginalFormateado;
+                        container.replaceChild(nuevoH4, precioNormalEl);
+                        console.log('✅ Estructura creada: precio-descuentos + precio-normal (tachado)');
+                    } else {
+                        precioNormalEl.textContent = precioOriginalFormateado;
+                        console.log('✅ Estructura actualizada');
+                    }
+                } else if (precioConDescuentoEl && precioNormalEl) {
+                    // Ya existe la estructura correcta, solo actualizar valores
+                    console.log('✅ Actualizando .precio-descuentos a:', precioFormateado);
+                    precioConDescuentoEl.textContent = precioFormateado;
+                    precioNormalEl.textContent = precioOriginalFormateado;
+                    precioNormalEl.style.display = 'block';
+                    console.log('✅ Precios actualizados');
+                }
+            } else {
+                // No hay descuento del código, mantener estructura original
+                if (precioConDescuentoEl) {
+                    precioConDescuentoEl.textContent = precioFormateado;
+                    console.log('✅ Actualizando .precio-descuentos (sin cambio de estructura)');
+                } else if (precioNormalEl) {
+                    precioNormalEl.textContent = precioFormateado;
+                    console.log('✅ Actualizando .precio-normal (sin descuento)');
+                }
+            }
+
+            console.log('✓ Precio visual actualizado completamente');
+        }
+
+        // Función para cargar código aplicado desde BD
+        async function cargarCodigoAplicado() {
+            console.log('🔍 cargarCodigoAplicado() llamada, ID reloj:', idRelojActual);
+            
+            if (idRelojActual <= 0) {
+                console.log('⚠️ ID reloj no válido, no se carga descuento');
+                return;
+            }
+
+            try {
+                const url = `php/obtener_descuento_aplicado.php?id_reloj=${idRelojActual}`;
+                console.log('📡 Solicitando descuento aplicado desde:', url);
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                console.log('📦 Respuesta obtener_descuento_aplicado:', data);
+                console.log('🐛 Debug del servidor:', data.debug);
+
+                if (data.tiene_descuento) {
+                    console.log('✓✓✓ DESCUENTO ENCONTRADO EN BD ✓✓✓');
+                    console.log('📋 Detalles:', {
+                        codigo: data.codigo,
+                        porcentaje: data.porcentaje,
+                        precio_original: data.precio_original,
+                        precio_con_descuento: data.precio_con_descuento
+                    });
+
+                    const errorDiv = document.getElementById("error-codigo-descuento");
+                    const successDiv = document.getElementById("discount-success");
+                    const discountAmountEl = document.getElementById("discount-amount");
+                    const discountPercentEl = document.getElementById("discount-percentage");
+                    const inputCodigo = document.getElementById("codigo-descuento");
+                    const applyBtn = document.querySelector(".discount-btn");
+
+                    // Actualizar precio en pantalla
+                    actualizarPrecioVisual(data.precio_con_descuento, data.precio_original);
+
+                    // Mostrar mensaje de código aplicado
+                    inputCodigo.value = data.codigo;
+                    inputCodigo.disabled = true;
+                    applyBtn.disabled = true;
+                    applyBtn.textContent = 'Aplicado ✓';
+
+                    const descuento = data.precio_original - data.precio_con_descuento;
+                    discountAmountEl.textContent = `-$${Math.round(descuento).toLocaleString('es-CO')}`;
+                    discountPercentEl.textContent = `${data.porcentaje}%`;
+                    successDiv.style.display = 'flex';
+                    successDiv.classList.add('active');
+
+                    console.log('Precio original:', data.precio_original, '→ Precio final:', data.precio_con_descuento);
+                } else {
+                    console.log('❌ No hay descuento aplicado para este reloj');
+                    console.log('💡 Razón (debug):', data.debug);
+                }
+            } catch (error) {
+                console.error('❌ Error al cargar descuento aplicado:', error);
+            }
+        }
+
+        // NOTA: cargarCodigoAplicado() ahora se llama desde obtener-reloj.js
+        // después de que se cargue el reloj, para evitar problemas de sincronización
         function generateParticles() {
             const particlesContainer = document.getElementById('particles');
             for (let i = 0; i < 30; i++) {
@@ -444,8 +641,28 @@
             if (modal) modal.style.display = "none";
         }
     </script>
+    <!-- Wompi Widget Script - Cargar primero -->
+    <script src="https://checkout.wompi.co/widget.js" onload="console.log('✅ Script de Wompi cargado correctamente')" onerror="console.error('❌ Error al cargar script de Wompi desde checkout.wompi.co')"></script>
+    <!-- Fallback: Intentar con otra URL -->
+    <script>
+        window.addEventListener('load', function() {
+            if (typeof WompiWidget === 'undefined') {
+                console.log('🔄 Intentando cargar script de Wompi desde sandbox...');
+                var script = document.createElement('script');
+                script.src = 'https://sandbox.wompi.co/widget.js';
+                script.onload = function() {
+                    console.log('✅ Script de Wompi cargado desde sandbox');
+                };
+                script.onerror = function() {
+                    console.error('❌ Error al cargar script de Wompi desde sandbox también');
+                };
+                document.head.appendChild(script);
+            }
+        });
+    </script>
     <script src="js/añadir-carrito.js"></script>
-    <script src="js/obtener-reloj.js"></script>
+    <script src="js/obtener-reloj.js?v=20251008"></script>
+    <script src="js/comentarios.js"></script>
     <script src="http://127.0.0.1/finoso/login/js/sesion.js"></script>
     <script src="js/validaciones-compra.js"></script>
     <script src="js/cambio-img.js"></script>

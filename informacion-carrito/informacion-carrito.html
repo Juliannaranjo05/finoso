@@ -1,3 +1,7 @@
+<?php
+// Verificar sesión de usuario antes de mostrar la página
+require_once 'check_session.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,7 +101,7 @@
                             </div>
                             <div class="botones-metodos-pago">
                                 <div class="boton-metodo">
-                                    <img class="mercado-pago" src="../informacion/img/mercado-pago.jpg" alt="Mercado Pago" data-metodo="mercado_pago">
+                                    <img class="wompi" src="../informacion/img/Wompi.png" alt="Wompi" data-metodo="wompi">
                                 </div>
                                 <div class="boton-metodo">
                                     <img class="nequi" src="../informacion/img/nequi-logo-png_seeklogo-404357.png" alt="nequi" data-metodo="nequi">
@@ -132,38 +136,6 @@
                                 <label for="departamento">Departamento:</label>
                                 <select id="departamento" name="departamento" required>
                                     <option value="">Selecciona un departamento</option>
-                                    <option value="AMA">Amazonas</option>
-                                    <option value="AN">Antioquia</option>
-                                    <option value="Arauca">Arauca</option>
-                                    <option value="Atlántico">Atlántico</option>
-                                    <option value="Bolívar">Bolívar</option>
-                                    <option value="Boyacá">Boyacá</option>
-                                    <option value="Caldas">Caldas</option>
-                                    <option value="Caquetá">Caquetá</option>
-                                    <option value="Casanare">Casanare</option>
-                                    <option value="Cauca">Cauca</option>
-                                    <option value="Cesar">Cesar</option>
-                                    <option value="Chocó">Chocó</option>
-                                    <option value="Córdoba">Córdoba</option>
-                                    <option value="Cundinamarca">Cundinamarca</option>
-                                    <option value="Guainía">Guainía</option>
-                                    <option value="Guaviare">Guaviare</option>
-                                    <option value="Huila">Huila</option>
-                                    <option value="La Guajira">La Guajira</option>
-                                    <option value="Magdalena">Magdalena</option>
-                                    <option value="Meta">Meta</option>
-                                    <option value="Nariño">Nariño</option>
-                                    <option value="Norte de Santander">Norte de Santander</option>
-                                    <option value="Putumayo">Putumayo</option>
-                                    <option value="Quindío">Quindío</option>
-                                    <option value="Risaralda">Risaralda</option>
-                                    <option value="San Andrés y Providencia">San Andrés y Providencia</option>
-                                    <option value="Santander">Santander</option>
-                                    <option value="Sucre">Sucre</option>
-                                    <option value="Tolima">Tolima</option>
-                                    <option value="Valle del Cauca">Valle del Cauca</option>
-                                    <option value="Vaupés">Vaupés</option>
-                                    <option value="Vichada">Vichada</option>
                                 </select>
                                 <span class="error-message" id="error-departamento"></span>
 
@@ -186,7 +158,7 @@
                                 <span class="error-message" id="error-referencias"></span>
                             </div>
                             <div class="envio-total-info">
-                                <p><span class="circulo-verde">●</span> Envío Total: $<strong id="precio-envio">10000</strong> COP</p>
+                                <p><span class="circulo-verde">●</span> Envío Total: $<strong id="precio-envio">0</strong> COP</p>
                                 <p class="descuento-texto">🚚 ¡Envío gratis por compras superiores a $200.000 COP!</p>
                             </div>
                             <div class="guardar-info">
@@ -207,11 +179,11 @@
                 <div class="titulo-sobre-nosotros">
                     <h3>Sobre Nosotros</h3>
 
-                    <p>Somos un emprendimiento dedicado a ofrecer relojes de lujo de alta gama, con un diseño excepcional y materiales de calidad superior.</p>
+                    <p>Nuestra misión es simple pero poderosa: ofrecer relojes de calidad garantizada con total transparencia y una experiencia de compra sin complicaciones. Sabemos que muchos aman los relojes pero dudan al comprar online por falta de confianza, y precisamente para cambiar eso existe Finoso.</p>
 
-                    <strong>Garantizamos la autenticidad de cada producto y ofrecemos soporte durante todo el proceso de compra.</strong>
+                    <p>Nos guían cuatro principios: <strong>accesibilidad</strong> para que todos puedan disfrutar de un gran reloj, <strong>elegancia</strong> en cada pieza que ofrecemos, <strong>servicio excepcional</strong> porque tu confianza es nuestro mayor compromiso, y <strong>transparencia</strong> total en cada detalle.</p>
 
-                    <h2>Compra de forma segura y recibe tu pedido con total confianza.</h2>
+                    <p>Más que una tienda, somos tu aliado de confianza en el mundo de los relojes. Cada producto lleva nuestra promesa: calidad, elegancia y honestidad garantizada. <strong>Gracias por ser parte de esta historia.</strong></p>
                 </div>
             </div>
         </div>
@@ -233,11 +205,12 @@
                     </svg> 
                 </div>
             </div>
+            <h1 id="texto-informativo">No hay productos en el carrito</h1>
             <div class="contenedor-info-relojes-carrito">
                 <div class="cuadro-info-reloj-carrito">
                 
                     <div class="img-reloj-carrito">
-                        <img src="../img/" alt="Cargando...">
+                        <img src="../img/" alt="">
                     </div>
                     <div class="nombre-precio-carrito">
                         <div class="nombre-carrito">
@@ -284,10 +257,35 @@
             <p class="username" id="nombreUsuario">Juan Perez</p>
             <button class="logout-btn" id="cerrarSesionBtn">Cerrar sesión</button>
         </div>
+    <!-- Wompi Widget Script - Cargar primero -->
+    <script src="https://checkout.wompi.co/widget.js" onload="console.log('✅ Script de Wompi cargado correctamente')" onerror="console.error('❌ Error al cargar script de Wompi desde checkout.wompi.co')"></script>
+    <!-- Fallback: Intentar con otra URL -->
+    <script>
+        window.addEventListener('load', function() {
+            if (typeof WompiWidget === 'undefined') {
+                console.log('🔄 Intentando cargar script de Wompi desde sandbox...');
+                var script = document.createElement('script');
+                script.src = 'https://sandbox.wompi.co/widget.js';
+                script.onload = function() {
+                    console.log('✅ Script de Wompi cargado desde sandbox');
+                };
+                script.onerror = function() {
+                    console.error('❌ Error al cargar script de Wompi desde sandbox también');
+                };
+                document.head.appendChild(script);
+            }
+        });
+    </script>
     <script src="http://127.0.0.1/finoso/login/js/sesion.js"></script>
-    <script src="js/productos.js"></script>
-    <script src="js/validaciones-compra.js"></script>
+    <script src="js/productos.js?v=20251027c"></script>
+    <script src="js/validaciones-compra.js?v=20251027"></script>
     <script src="js/lupa.js"></script>
-    <script src="../js/carrito.js"></script>
+    <script src="../js/carrito.js?v=20251027"></script>
+    
+    <!-- Protección: requiere sesión -->
+    <script src="../js/proteccion_rutas.js"></script>
+    <script>
+        protegerRutaConSesion();
+    </script>
 </body>
 </html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Comprobante Recibido - Finoso</title>
+  <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Playfair Display', serif;
+      color: #FFCF66;
+    }
+    @font-face {
+      font-family: 'Playfair Display';
+      src: url('/finoso/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Fondo animado con partículas doradas */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 207, 102, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 207, 102, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 207, 102, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 20px auto;
+      background: rgba(17, 17, 17, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 207, 102, 0.2);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(255, 207, 102, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      background: linear-gradient(135deg, #FFCF66 0%, #FFD700 50%, #FFA500 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      position: relative;
+      animation: titleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+      from { filter: drop-shadow(0 0 10px rgba(255, 207, 102, 0.5)); }
+      to { filter: drop-shadow(0 0 20px rgba(255, 207, 102, 0.8)); }
+    }
+
+    .success-icon {
+      text-align: center;
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: scaleIn 0.5s ease-out;
+      filter: drop-shadow(0 0 20px rgba(76, 175, 80, 0.6));
+    }
+
+    @keyframes scaleIn {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #e0e0e0;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    /* SECCIÓN DE PAGO COMPLEMENTARIO */
+    .info-complemento {
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.05) 100%);
+      border: 1px solid rgba(76, 175, 80, 0.4);
+      border-radius: 20px;
+      padding: 25px;
+      margin: 30px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-complemento::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+      animation: rotate 6s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+
+    .info-complemento h2 {
+      color: #4caf50;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
+    }
+
+    .detalle-pago {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .detalle-pago:hover {
+      background: rgba(76, 175, 80, 0.08);
+      transform: translateX(5px);
+    }
+
+    .detalle-pago span:first-child {
+      color: #b0b0b0;
+    }
+
+    .detalle-pago span:last-child {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .detalle-pago.destacado span:last-child {
+      color: #4caf50;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(76, 175, 80, 0.5);
+    }
+
+    /* RESUMEN DE ORDEN */
+    .resumen {
+      border-top: 1px solid rgba(255, 207, 102, 0.2);
+      margin: 40px 0 30px;
+      padding-top: 25px;
+      font-size: 1.1rem;
+    }
+
+    .resumen div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .resumen div:hover {
+      background: rgba(255, 207, 102, 0.05);
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin: 0 -15px 15px;
+    }
+
+    .resumen div:last-child {
+      border-bottom: none;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFCF66;
+      text-shadow: 0 2px 10px rgba(255, 207, 102, 0.3);
+    }
+
+    .resumen span {
+      color: #ffffff;
+    }
+
+    .resumen .valor {
+      color: #FFCF66;
+      font-weight: 600;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+      color: #000;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+    }
+
+    /* BOTONES */
+    .btn-container {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #FFCF66 0%, #FFD700 50%, #FFA500 100%);
+      color: #000;
+      box-shadow: 0 8px 25px rgba(255, 207, 102, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(255, 207, 102, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(108, 117, 125, 0.8);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(90, 98, 104, 0.9);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .btn-container {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+
+      .detalle-pago,
+      .resumen div {
+        flex-direction: column;
+        gap: 8px;
+        text-align: left;
+      }
+    }
+
+    /* Efectos adicionales */
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="success-icon floating">✅</div>
+    <h1 id="titulo-principal" class="floating">¡Comprobante Recibido!</h1>
+    <p class="subtitle" id="mensaje-principal">
+      Tu comprobante ha sido recibido correctamente.<br>
+      Será verificado en las próximas 3 horas.
+    </p>
+
+    <!-- SECCIÓN DE PAGO COMPLEMENTARIO (solo para diferencia) -->
+    <div class="info-complemento" id="info-diferencia" style="display: none;">
+      <h2>💰 Pago Complementario</h2>
+      <div class="detalle-pago">
+        <span>Monto pagado anteriormente:</span>
+        <span id="monto-anterior">$0</span>
+      </div>
+      <div class="detalle-pago destacado">
+        <span>Diferencia pagada ahora:</span>
+        <span id="diferencia-pagada">$0</span>
+      </div>
+      <div class="detalle-pago">
+        <span>Total acumulado:</span>
+        <span id="monto-nuevo">$0</span>
+      </div>
+    </div>
+
+    <!-- RESUMEN DE LA ORDEN -->
+    <div class="resumen">
+      <div>
+        <span>Número de orden:</span>
+        <span class="valor">#<span id="order-id">Cargando...</span></span>
+      </div>
+      <div>
+        <span>Método de pago:</span>
+        <span class="valor">Nequi</span>
+      </div>
+      <div>
+        <span>Estado:</span>
+        <span class="status-badge">⏳ Pendiente de Verificación</span>
+      </div>
+      <div>
+        <span>Total de la orden:</span>
+        <span class="valor" id="total-amount">Cargando...</span>
+      </div>
+    </div>
+
+    <div class="btn-container">
+      <a href="../index.html" class="btn btn-primary">Volver al Inicio</a>
+      <a href="../catalogo/catalogo.html" class="btn btn-secondary">Ver Más Relojes</a>
+    </div>
+  </div>
+
+  <script>
+    // Obtener parámetros de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('orden');
+    const tipo = urlParams.get('tipo');
+    const diferencia = urlParams.get('diferencia');
+    const totalOrden = urlParams.get('total_orden');
+    const montoAnterior = urlParams.get('monto_anterior');
+    const montoNuevo = urlParams.get('monto_nuevo');
+
+    console.log('📋 Parámetros recibidos:', { orderId, tipo, diferencia, totalOrden, montoAnterior, montoNuevo });
+
+    // Mostrar información de la orden
+    if (orderId) {
+      document.getElementById('order-id').textContent = orderId;
+    }
+
+    // SI ES PAGO DE DIFERENCIA, personalizar la página
+    if (tipo === 'diferencia') {
+      console.log('💰 Detectado pago de diferencia');
+      
+      // Cambiar título y mensaje
+      document.getElementById('titulo-principal').textContent = '¡Pago Complementario Recibido!';
+      document.getElementById('mensaje-principal').innerHTML = 
+        'Tu pago adicional ha sido recibido correctamente.<br>' +
+        'Será verificado en las próximas 3 horas.';
+      
+      // Mostrar sección de información de diferencia
+      document.getElementById('info-diferencia').style.display = 'block';
+      
+      // Llenar datos de la diferencia
+      if (montoAnterior) {
+        document.getElementById('monto-anterior').textContent = 
+          '$' + parseFloat(montoAnterior).toLocaleString('es-CO');
+      }
+      
+      if (diferencia) {
+        document.getElementById('diferencia-pagada').textContent = 
+          '$' + parseFloat(diferencia).toLocaleString('es-CO');
+      }
+      
+      if (montoNuevo) {
+        document.getElementById('monto-nuevo').textContent = 
+          '$' + parseFloat(montoNuevo).toLocaleString('es-CO');
+      }
+    }
+
+    // Mostrar total de la orden
+    if (totalOrden) {
+      const totalFormatted = '$' + parseFloat(totalOrden).toLocaleString('es-CO');
+      document.getElementById('total-amount').textContent = totalFormatted;
+    } else {
+      // Fallback: obtener desde backend
+      const totalAmount = urlParams.get('total');
+      if (totalAmount) {
+        const totalFormatted = '$' + parseFloat(totalAmount).toLocaleString('es-CO');
+        document.getElementById('total-amount').textContent = totalFormatted;
+      } else if (orderId) {
+        fetch(`../php/obtener_total_orden.php?orden=${orderId}`)
+          .then(response => response.json())
+          .then(data => {
+            console.log('💰 Datos de orden:', data);
+            if (data.success) {
+              const totalFormatted = '$' + parseFloat(data.total).toLocaleString('es-CO');
+              document.getElementById('total-amount').textContent = totalFormatted;
+            } else {
+              document.getElementById('total-amount').textContent = 'No disponible';
+            }
+          })
+          .catch(err => {
+            console.error('❌ Error al obtener total:', err);
+            document.getElementById('total-amount').textContent = 'No disponible';
+          });
+      } else {
+        document.getElementById('total-amount').textContent = 'No disponible';
+      }
+    }
+
+    // Limpiar localStorage si existe
+    localStorage.removeItem("nequi_datos_pago");
+    localStorage.removeItem("descuento_aplicado");
+    console.log('🧹 LocalStorage limpiado');
+
+    // Animación de entrada escalonada para los elementos
+    const elements = document.querySelectorAll('.info-complemento, .resumen, .btn-container');
+    elements.forEach((el, index) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      setTimeout(() => {
+        el.style.transition = 'all 0.6s ease';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, 200 * (index + 1));
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - FINOSO</title>
+    <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../css/style.css?v=1">
+    <link rel="stylesheet" href="css/perfil.css?v=9">
+</head>
+<body>
+    <nav>
+        <div class="texto-nombre">
+            <h2>FINOSO</h2>
+        </div>
+        <div class="menu">
+            <div class="texto-inicio">
+                <a href="../index.html">
+                    <h3>INICIO</h3>
+                </a>
+            </div>
+            <div class="texto-catalogo">
+                <a href="../catalogo/catalogo.html">
+                    <h3>CATALOGO</h3>
+                </a>
+            </div>
+            <div class="texto-contacto">
+                <a href="../index.html#contacto">
+                    <h3>CONTACTO</h3>
+                </a>
+            </div>
+        </div>
+        <div class="iconos-menu">
+            <div class="icono-login">
+                <svg id="iconoLogin" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="icon icon-account" fill="none" viewBox="0 0 18 19">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.5a3 3 0 116 0 3 3 0 01-6 0zm3-4a4 4 0 100 8 4 4 0 000-8zm5.58 12.15c1.12.82 1.83 2.24 1.91 4.85H1.51c.08-2.6.79-4.03 1.9-4.85C4.66 11.75 6.5 11.5 9 11.5s4.35.26 5.58 1.15zM9 10.5c-2.5 0-4.65.24-6.17 1.35C1.27 12.98.5 14.93.5 18v.5h17V18c0-3.07-.77-5.02-2.33-6.15-1.52-1.1-3.67-1.35-6.17-1.35z" fill="currentColor">
+                    </path>
+                </svg>
+            </div>
+            <div class="icono-carrito" id="iconoCarrito">
+                <svg class="icon icon-cart" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+                    <path fill="currentColor" fill-rule="evenodd" d="M20.5 6.5a4.75 4.75 0 00-4.75 4.75v.56h-3.16l-.77 11.6a5 5 0 004.99 5.34h7.38a5 5 0 004.99-5.33l-.77-11.6h-3.16v-.57A4.75 4.75 0 0020.5 6.5zm3.75 5.31v-.56a3.75 3.75 0 10-7.5 0v.56h7.5zm-7.5 1h7.5v.56a3.75 3.75 0 11-7.5 0v-.56zm-1 0v.56a4.75 4.75 0 109.5 0v-.56h2.22l.71 10.67a4 4 0 01-3.99 4.27h-7.38a4 4 0 01-4-4.27l.72-10.67h2.22z"></path>
+                </svg>
+                <span id="contadorCarrito" class="contador-carrito">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal -->
+    <div class="perfil-container">
+        <!-- Header de Perfil -->
+        <div class="perfil-header">
+            <div class="perfil-avatar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+            <div class="perfil-info">
+                <div class="perfil-info-header">
+                    <div>
+                        <h1 id="nombreUsuario">Cargando...</h1>
+                        <p id="correoUsuario">usuario@email.com</p>
+                    </div>
+                    <button class="btn-editar-perfil" onclick="abrirModalEditarPerfil()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
+                        Editar Perfil
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-content">
+                    <p class="stat-value" id="totalOrdenes">0</p>
+                    <p class="stat-label">Órdenes Totales</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⌚</div>
+                <div class="stat-content">
+                    <p class="stat-value" id="totalRelojes">0</p>
+                    <p class="stat-label">Relojes Comprados</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-content">
+                    <p class="stat-value" id="totalGastado">$0</p>
+                    <p class="stat-label">Total Invertido</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Códigos de Descuento -->
+        <div class="codigos-section">
+            <div class="codigos-header">
+                <h2>🎟️ Mis Códigos de Descuento</h2>
+            </div>
+            
+            <div class="codigos-loading" id="codigosLoading">
+                <div class="spinner"></div>
+                <p>Cargando tus códigos...</p>
+            </div>
+            
+            <div class="codigos-empty" id="codigosEmpty" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="80" height="80">
+                    <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
+                </svg>
+                <p>No tienes códigos de descuento asignados</p>
+                <small>Los códigos exclusivos aparecerán aquí cuando los recibas</small>
+            </div>
+            
+            <div class="codigos-lista" id="codigosLista"></div>
+        </div>
+
+        <!-- Título del Historial -->
+        <div class="historial-header">
+            <h2>📋 Historial de Compras</h2>
+            <button class="logout-btn" id="cerrarSesionBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                </svg>
+                Cerrar Sesión
+            </button>
+        </div>
+
+        <!-- Loading / Empty / Lista -->
+        <div class="historial-loading" id="historialLoading">
+            <div class="spinner"></div>
+            <p>Cargando tu historial...</p>
+        </div>
+
+        <div class="historial-empty" id="historialEmpty" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="100" height="100">
+                <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/>
+            </svg>
+            <p>Aún no has realizado ninguna compra</p>
+            <a href="../catalogo/catalogo.html" class="btn-explorar">Explorar Catálogo</a>
+        </div>
+
+        <div class="historial-lista" id="historialLista"></div>
+    </div>
+
+    <!-- Modal Carrito -->
+    <div class="cuadro-carrito" id="cuadroCarrito">
+        <div class="texto-close-carrito">
+            <div class="texto-carrito">
+                <h1>Carrito de compras</h1>
+            </div>
+            <div class="close" id="cerrarCarrito">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                </svg> 
+            </div>
+        </div>
+        <h1 id="texto-informativo">No hay productos en el carrito</h1>
+        <div class="contenedor-info-relojes-carrito">
+            <div class="cuadro-info-reloj-carrito">
+            
+                <div class="img-reloj-carrito">
+                    <img src="../img/" alt="Cargando...">
+                </div>
+                <div class="nombre-precio-carrito">
+                    <div class="nombre-carrito">
+                        <h2>Rchrd Mll Calavera Blanco Circones Negros-Dorados</h2>
+                    </div>
+                    <div class="precio-carrito">
+                        <h3>$100.000</h3>
+                        <h4>$100.000</h4>
+                    </div>
+                </div>
+                <div class="boton-eliminar">
+                    <button disabled="disabled">Eliminar</button>
+                </div>
+            </div>
+        </div>
+        <div class="contenedor-total-finalizar-carrito">
+            <div class="total-carrito">
+                <h2>Total:</h2>
+                <h3>$100.000</h3>
+            </div>
+            <div class="boton-finalizar-carrito" style="display: block;">
+                <button>Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Perfil -->
+    <div id="modalEditarPerfil" class="modal-editar-perfil">
+        <div class="modal-editar-content">
+            <div class="modal-editar-header">
+                <h2>✏️ Editar Perfil</h2>
+                <button class="modal-close" onclick="cerrarModalEditarPerfil()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="formEditarPerfil" onsubmit="guardarCambiosPerfil(event)">
+                <div class="form-group">
+                    <label for="editNombre">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        Nombre Completo
+                    </label>
+                    <input type="text" id="editNombre" name="nombre" required minlength="3" placeholder="Ej: Juan Pérez">
+                </div>
+
+                <div class="modal-editar-footer">
+                    <button type="button" class="btn-cancelar" onclick="cerrarModalEditarPerfil()">Cancelar</button>
+                    <button type="submit" class="btn-guardar">
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="http://127.0.0.1/finoso/login/js/sesion.js"></script>
+    <script src="../js/carrito.js"></script>
+    <script src="js/perfil.js"></script>
+    
+    <!-- Protección: requiere sesión -->
+    <script src="../js/proteccion_rutas.js"></script>
+    <script>
+        protegerRutaConSesion();
+    </script>
+</body>
+</html>
+

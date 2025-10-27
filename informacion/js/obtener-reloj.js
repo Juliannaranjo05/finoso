@@ -1,3 +1,15 @@
+// Función para redondear hacia arriba a miles
+function redondearAMiles(precio) {
+    const miles = Math.floor(precio / 1000);
+    const resto = precio % 1000;
+    if (resto > 500) {
+        return (miles + 1) * 1000;
+    } else {
+        return miles * 1000;
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     function inicializarLupa() {
         const contenedor = document.querySelector('.img-informacion');
@@ -97,8 +109,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetch(`http://127.0.0.1/finoso/informacion/php/obtener_reloj.php?id_reloj=${relojId}`)
         .then(res => {
-            if (!res.ok) throw new Error('No se pudo cargar el reloj');
-            return res.json();
+            if (!res.ok) {
+                throw new Error(`Error HTTP: ${res.status} - ${res.statusText}`);
+            }
+            return res.text().then(text => {
+                if (!text.trim()) {
+                    throw new Error('Respuesta vacía del servidor');
+                }
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Error al parsear JSON:', text);
+                    throw new Error('Respuesta no válida del servidor');
+                }
+            });
         })
         .then(data => {
             if (data.error) {
@@ -106,19 +130,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Verificar si el reloj está vendido
+            const esVendido = data.vendido == 1;
+            
             const precioOriginal = Number(data.precio);
             const descuento = Number(data.descuento);
-            const precioConDescuento = Math.round(precioOriginal - (precioOriginal * descuento));
+            
+            
+            const precioConDescuento = redondearAMiles(precioOriginal - (precioOriginal * descuento));
 
-            // Construcción dinámica de miniaturas
-            const thumbnails = [data.img, data.img1, data.img2, data.img3]
-                .filter(src => src) // Evita valores vacíos o null
-                .map((src, index) => `
-                    <img class="thumbnail${index === 0 ? ' active' : ''}" 
-                         src="../${src}" 
-                         alt="Imagen ${index + 1}" 
-                         data-full="../${src}">
-                `).join('');
+            // Construcción dinámica de miniaturas con las 3 imágenes
+            const imagenes = [
+                { src: data.img, alt: 'Vista Frontal', tipo: 'frontal' },
+                { src: data.img_lateral, alt: 'Vista Lateral', tipo: 'lateral' },
+                { src: data.img_detalle, alt: 'Vista Detalle', tipo: 'detalle' }
+            ].filter(img => img.src && img.src.trim() !== ''); // Solo imágenes que existen
+            
+            const thumbnails = imagenes.map((img, index) => `
+                <img class="thumbnail${index === 0 ? ' active' : ''}" 
+                     src="../${img.src}" 
+                     alt="${img.alt}" 
+                     data-full="../${img.src}"
+                     title="${img.alt}">
+            `).join('');
 
             const html = `
                 <div class="img-informacion">
@@ -127,38 +161,139 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="contenedor-img">
                     ${thumbnails}
                 </div>
+                ${imagenes.length > 1 ? `
+                    <div class="controles-imagenes">
+                        <button class="btn-navegacion" id="btn-anterior">‹</button>
+                        <span class="contador-imagenes">
+                            <span id="imagen-actual">1</span> / <span id="total-imagenes">${imagenes.length}</span>
+                        </span>
+                        <button class="btn-navegacion" id="btn-siguiente">›</button>
+                    </div>
+                ` : ''}
                 <div class="contenedor-informacion">
                     <div class="nombre-informacion">
                         <h2>${data.nombre}</h2>
                     </div>
                     <div class="contenedor-precio-total">
                         <div class="precio">
-                            <div class="precio-descuento">
-                                ${descuento > 0
-                                    ? `<p class="precio-descuentos">$${precioConDescuento.toLocaleString('es-CO')}.000</p><h4 class="precio-normal">$${precioOriginal.toLocaleString('es-CO')}.000</h4>`
-                                    : `<p class="precio-normal">$${precioOriginal.toLocaleString('es-CO')}.000</p>`}
-                            </div>
+                            ${esVendido 
+                                ? `<div class="precio-vendido">
+                                    <div class="badge-vendido-grande">VENDIDO</div>
+                                    <p class="precio-original">$${precioOriginal.toLocaleString('es-CO')}</p>
+                                </div>`
+                                : `<div class="precio-descuento">
+                                    ${descuento > 0
+                                        ? `<p class="precio-descuentos">$${precioConDescuento.toLocaleString('es-CO')}</p><h4 class="precio-normal">$${precioOriginal.toLocaleString('es-CO')}</h4>`
+                                        : `<p class="precio-normal">$${precioOriginal.toLocaleString('es-CO')}</p>`}
+                                </div>`
+                            }
                         </div>
                     </div>
                     <div class="descripcion-informacion">
-                        <h1>Detalles:</h1>
-                        <h2>${data.descripcion || 'No hay detalles disponibles.'}</h2>
+                        <h1>Descripción:</h1>
+                        <h2>${data.descripcion || 'No hay descripción disponible.'}</h2>
+                    </div>
+                    ${(data.eslabones || data.tipo_bisel || data.movimiento || data.pulsera || data.peso || data.resistencia_agua) ? `
+                        <div class="especificaciones-informacion">
+                            <h1>Especificaciones:</h1>
+                            <div class="especificaciones-lista">
+                                ${data.eslabones ? `<div class="especificacion-item">• Cantidad de Eslabones: ${data.eslabones}</div>` : ''}
+                                ${data.tipo_bisel ? `<div class="especificacion-item">• Tipo de Bisel: ${data.tipo_bisel === 'estatico' ? 'Estático' : data.tipo_bisel === 'giratorio' ? 'Giratorio' : data.tipo_bisel}</div>` : ''}
+                                ${data.movimiento ? `<div class="especificacion-item">• Tipo deMovimiento: ${data.movimiento}</div>` : ''}
+                                ${data.pulsera ? `<div class="especificacion-item">• Material de la Pulsera: ${data.pulsera}</div>` : ''}
+                                ${data.peso ? `<div class="especificacion-item">• Peso del Reloj: ${data.peso} g </div>` : ''}
+                                ${data.resistencia_agua ? `<div class="especificacion-item">• Resistencia al Agua: ${data.resistencia_agua}</div>` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+                    <!-- Sección de comentarios existentes -->
+                    <div class="comentarios-existente" id="comentarios-existente">
+                        <div class="cargando-comentarios">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            Cargando comentarios...
+                        </div>
                     </div>
                 </div>
             `;
 
             document.querySelector('.contenedor-general-informacion').innerHTML = html;
+            
+            // Manejar relojes vendidos
+            if (esVendido) {
+                const formContainer = document.querySelector('.form-container');
+                if (formContainer) {
+                    formContainer.innerHTML = `
+                        <div class="mensaje-vendido">
+                            <h2>Este reloj ya fue vendido</h2>
+                            <p>Lamentamos informarte que este reloj ya no está disponible para la venta.</p>
+                        </div>
+                    `;
+                }
+            }
+            
             inicializarLupa();
 
+            // Variables para navegación
+            let imagenActual = 0;
+            const totalImagenes = imagenes.length;
+            
+            // Función para cambiar imagen
+            function cambiarImagen(indice) {
+                if (indice < 0 || indice >= totalImagenes) return;
+                
+                imagenActual = indice;
+                const imagen = imagenes[imagenActual];
+                const imgLupa = document.querySelector('#img-lupa');
+                
+                imgLupa.src = `../${imagen.src}`;
+                imgLupa.alt = imagen.alt;
+                
+                // Actualizar thumbnails
+                document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+                    thumb.classList.toggle('active', index === imagenActual);
+                });
+                
+                // Actualizar contador
+                if (document.getElementById('imagen-actual')) {
+                    document.getElementById('imagen-actual').textContent = imagenActual + 1;
+                }
+            }
+            
             // Activar funcionalidad para cambiar imagen principal al hacer clic en miniaturas
-            document.querySelectorAll('.thumbnail').forEach(thumbnail => {
+            document.querySelectorAll('.thumbnail').forEach((thumbnail, index) => {
                 thumbnail.addEventListener('click', () => {
-                    document.querySelector('#img-lupa').src = thumbnail.dataset.full;
-
-                    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
-                    thumbnail.classList.add('active');
+                    cambiarImagen(index);
                 });
             });
+            
+            // Controles de navegación
+            if (totalImagenes > 1) {
+                const btnAnterior = document.getElementById('btn-anterior');
+                const btnSiguiente = document.getElementById('btn-siguiente');
+                
+                if (btnAnterior) {
+                    btnAnterior.addEventListener('click', () => {
+                        const nuevaImagen = (imagenActual - 1 + totalImagenes) % totalImagenes;
+                        cambiarImagen(nuevaImagen);
+                    });
+                }
+                
+                if (btnSiguiente) {
+                    btnSiguiente.addEventListener('click', () => {
+                        const nuevaImagen = (imagenActual + 1) % totalImagenes;
+                        cambiarImagen(nuevaImagen);
+                    });
+                }
+            }
+            
+            // ✅ CARGAR DESCUENTO APLICADO DESPUÉS DE RENDERIZAR EL RELOJ
+            // Esperar un momento para que el DOM se actualice completamente
+            setTimeout(() => {
+                if (typeof cargarCodigoAplicado === 'function') {
+                    console.log('🔄 Verificando descuento aplicado...');
+                    cargarCodigoAplicado();
+                }
+            }, 100);
         })
         .catch(error => {
             console.error('Error al cargar datos del reloj:', error);
@@ -166,7 +301,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         fetch(`http://127.0.0.1/finoso/informacion/php/obtener_relacionados.php?id_reloj=${relojId}`)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Error HTTP: ${res.status} - ${res.statusText}`);
+                }
+                return res.text().then(text => {
+                    if (!text.trim()) {
+                        return []; // Retorna array vacío si no hay datos
+                    }
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('Error al parsear JSON de relacionados:', text);
+                        return []; // Retorna array vacío en caso de error
+                    }
+                });
+            })
             .then(relacionados => {
                 if (!Array.isArray(relacionados) || relacionados.length === 0) {
                     document.querySelector('.contenedor-general-cards').innerHTML = "<p></p>";
@@ -179,14 +329,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const relacionadosHTML = relacionados.map(prod => {
                     const precioOriginal = Number(prod.precio);
                     const descuento = Number(prod.descuento);
-                    const precioConDescuento = Math.round(precioOriginal - (precioOriginal * descuento));
+                    
+                    // Aplicar redondeo a miles al precio original
+                    const precioOriginalRedondeado = redondearAMiles(precioOriginal);
+                    const precioConDescuento = redondearAMiles(precioOriginalRedondeado - (precioOriginalRedondeado * descuento));
+                    
                     const disponible = Number(prod.disponible) === 1;
 
                     // Precio o mensaje de agotado
                     const precioHTML = disponible
                         ? (descuento > 0
-                            ? `$${precioConDescuento.toLocaleString('es-CO')}.000 <span class="tachado">$${precioOriginal.toLocaleString('es-CO')}.000</span>`
-                            : `$${precioOriginal.toLocaleString('es-CO')}.000`)
+                            ? `$${precioConDescuento.toLocaleString('es-CO')} <span class="tachado">$${precioOriginalRedondeado.toLocaleString('es-CO')}</span>`
+                            : `$${precioOriginalRedondeado.toLocaleString('es-CO')}`)
                         : `<span class="tachado">AGOTADO</span>`;
 
                     // Botón con estilos si está deshabilitado

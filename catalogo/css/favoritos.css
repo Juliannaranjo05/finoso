@@ -1,0 +1,180 @@
+/* ===================================
+   SISTEMA DE FAVORITOS
+   Solo para usuarios SIN sesión
+   =================================== */
+
+/* Icono de Favoritos */
+.icono-favoritos {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none !important;
+    background-color: transparent !important;
+}
+
+.icono-favoritos:hover {
+    background: none !important;
+    background-color: transparent !important;
+}
+
+.icono-favoritos svg {
+    width: 26px;
+    height: 26px;
+    color: #FFCF66;
+    fill: none;
+    stroke: #FFCF66;
+    stroke-width: 1.8;
+    transition: all 0.3s ease;
+}
+
+.icono-favoritos:hover svg,
+.icono-favoritos:hover .contador-favoritos {
+    transform: translateY(-3px) scale(1.08);
+    filter: brightness(1.1);
+    transition: all 0.3s ease;
+}
+
+.icono-favoritos:hover svg {
+    fill: #FFD700;
+    stroke: #FFD700;
+}
+
+/* Contador de Favoritos */
+.contador-favoritos {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: linear-gradient(135deg, #FFCF66, #FFD700);
+    color: #000;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(255, 207, 102, 0.4);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Botón "Agregar a Favoritos" en tarjetas de relojes */
+.btn-favorito {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #FFCF66;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100; /* Por encima del hover-overlay */
+    pointer-events: auto; /* Asegurar que sea clickeable */
+}
+
+.btn-favorito svg {
+    width: 20px;
+    height: 20px;
+    color: #FFCF66;
+    fill: none;
+    stroke: #FFCF66;
+    transition: all 0.3s ease;
+}
+
+.btn-favorito:hover {
+    background: rgba(255, 207, 102, 0.2);
+    border-color: #FFD700;
+    transform: translateX(-50%) scale(1.1);
+}
+
+.btn-favorito:hover svg {
+    fill: #FFD700;
+    stroke: #FFD700;
+}
+
+.btn-favorito.activo svg {
+    fill: #FFCF66;
+    animation: starPop 0.3s ease;
+}
+
+@keyframes starPop {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3) rotate(15deg);
+    }
+}
+
+/* Ajustes para móvil */
+@media (max-width: 768px) {
+    .icono-favoritos svg {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .contador-favoritos {
+        font-size: 10px;
+        min-width: 16px;
+        height: 16px;
+        top: -6px;
+        right: -6px;
+    }
+    
+    .btn-favorito {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .btn-favorito svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Estilos para el modal de favoritos (hereda estilos del carrito) */
+#cuadroFavoritos .texto-carrito h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#texto-informativo-favoritos {
+    text-align: center;
+    padding: 40px 20px;
+    color: #FFCF66;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+#btnCumplirDeseos {
+    background: linear-gradient(135deg, #FFCF66, #FFD700) !important;
+    color: #000 !important;
+    font-weight: bold !important;
+    transition: all 0.3s ease !important;
+}
+
+#btnCumplirDeseos:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 4px 15px rgba(255, 207, 102, 0.5) !important;
+}
+

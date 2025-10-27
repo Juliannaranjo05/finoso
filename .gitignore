@@ -1,0 +1,104 @@
+# ===========================
+# CREDENCIALES Y CONFIGURACIÓN
+# ===========================
+
+# Archivos de configuración con credenciales reales
+config/twilio_config.php
+config/twilio_config.BACKUP_*.php
+informacion/php/wompi_config.php
+CREDENCIALES_BACKUP.txt
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# ===========================
+# DEPENDENCIAS
+# ===========================
+
+# Composer
+vendor/
+composer.lock
+
+# Node modules (si se usan)
+node_modules/
+package-lock.json
+yarn.lock
+
+# ===========================
+# LOGS Y TEMPORAL
+# ===========================
+
+# Logs
+logs/*.log
+*.log
+
+# Archivos temporales
+temp/
+tmp/
+*.tmp
+*.temp
+
+# Archivos de prueba temporales
+temp_*.php
+test_*.php
+
+# ===========================
+# ARCHIVOS DEL SISTEMA
+# ===========================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ===========================
+# IDE Y EDITORES
+# ===========================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PhpStorm
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ===========================
+# SUBIDAS DE USUARIOS
+# ===========================
+
+# Comprobantes de pago (opcional - descomentar si no quieres versionar)
+# comprobantes/
+# img/comprobantes/
+
+# ===========================
+# BASE DE DATOS
+# ===========================
+
+# Backups de base de datos
+*.sql.gz
+*.sql.zip
+backup/*.sql
+
+# ===========================
+# OTROS
+# ===========================
+
+# Cache
+cache/
+*.cache
+

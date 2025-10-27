@@ -16,33 +16,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Validación de campos
-    registroForm.addEventListener("submit", function (e) {
-        const nombre = registroForm.querySelector('input[name="nombre"]').value.trim();
-        const contrasena = passwordField.value.trim();
-        const email = registroForm.querySelector('input[name="correo"]').value.trim();
-
-        if (!nombre || !contrasena || !email) {
-            e.preventDefault();
-            mensaje.textContent = "Por favor completa todos los campos.";
-
-            // Agrega efecto de vibración
-            registroForm.classList.add("shake");
-            setTimeout(() => {
-                registroForm.classList.remove("shake");
-            }, 400);
-        } else {
-            mensaje.textContent = "";
-        }
-    });
-
-    const form = document.getElementById('registroForm');
-
-    form.addEventListener('submit', async (e) => {
+    // UN SOLO event listener para submit
+    registroForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const formData = new FormData(form);
+        // Limpiar mensaje anterior
+        mensaje.textContent = "";
+        mensaje.className = "";
+        mensaje.style.display = "none";
+
+        const formData = new FormData(registroForm);
         const data = Object.fromEntries(formData.entries());
+
+        // Validación básica frontend
+        if (!data.nombre || !data.contrasena || !data.correo) {
+            mensaje.textContent = "Por favor completa todos los campos.";
+            mensaje.className = "mensaje-error";
+            mensaje.style.display = "block";
+            
+            registroForm.classList.add("shake");
+            setTimeout(() => registroForm.classList.remove("shake"), 400);
+            return;
+        }
 
         try {
             const response = await fetch('http://127.0.0.1/finoso/login/registrarse/php/registrarse.php', {
@@ -53,16 +48,53 @@ document.addEventListener("DOMContentLoaded", function () {
                 body: JSON.stringify(data)
             });
 
-            const resultado = await response.text();
-            alert(resultado);
+            const resultado = await response.json();
 
-            if (resultado.includes("exitosamente")) {
-                window.location.href = '../login.html';
+            // Mostrar mensaje (permite HTML para el link)
+            mensaje.innerHTML = resultado.message;
+            mensaje.style.display = "block";
+            
+            if (resultado.success) {
+                // Éxito - mensaje verde
+                mensaje.className = "mensaje-exito";
+                
+                // Redirigir después de 2 segundos
+                setTimeout(() => {
+                    window.location.href = '../login.html';
+                }, 2000);
+            } else {
+                // Error - mensaje rojo
+                mensaje.className = "mensaje-error";
+                
+                // Vibración
+                registroForm.classList.add("shake");
+                setTimeout(() => registroForm.classList.remove("shake"), 400);
             }
 
         } catch (error) {
             console.error('Error al registrar:', error);
-            alert('Error en el registro.');
+            mensaje.textContent = "Error de conexión. Por favor intenta de nuevo.";
+            mensaje.className = "mensaje-error";
+            mensaje.style.display = "block";
+            
+            registroForm.classList.add("shake");
+            setTimeout(() => registroForm.classList.remove("shake"), 400);
+        }
+    });
+});
+                // Vibración
+                registroForm.classList.add("shake");
+                setTimeout(() => registroForm.classList.remove("shake"), 400);
+            }
+
+        } catch (error) {
+            console.error('Error al registrar:', error);
+            mensaje.textContent = "Error de conexión. Por favor intenta de nuevo.";
+            mensaje.className = "mensaje-error";
+            mensaje.style.display = "block";
+            
+            registroForm.classList.add("shake");
+            setTimeout(() => registroForm.classList.remove("shake"), 400);
         }
     });
 });
