@@ -171,10 +171,9 @@ try {
     $id_orden = $stmtOrden->insert_id;
     $stmtOrden->close();
 
-    $cantidad = 1;
     $precio_unitario = round(floatval($precio_final), 2);
 
-    $stmtDetalle = $conn->prepare("INSERT INTO orden_detalle (id_orden, id_reloj, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
+    $stmtDetalle = $conn->prepare("INSERT INTO orden_detalle (id_orden, id_reloj, precio_unitario) VALUES (?, ?, ?)");
     if (!$stmtDetalle) {
         mysqli_rollback($conn);
         $transactionInProgress = false;
@@ -183,7 +182,7 @@ try {
         exit;
     }
 
-    $stmtDetalle->bind_param('iiid', $id_orden, $id_reloj, $cantidad, $precio_unitario);
+    $stmtDetalle->bind_param('iid', $id_orden, $id_reloj, $precio_unitario);
 
     if (!$stmtDetalle->execute()) {
         $stmtDetalle->close();
