@@ -3,7 +3,7 @@
 session_start();
 
 $id_usuario = $_SESSION['id_usuario'] ?? null;
-$correo = $_SESSION['correo'] ?? null;
+$correoSesion = $_SESSION['correo'] ?? null;
 
 // Si no hay sesión activa, crear un usuario temporal
 if (!$id_usuario) {
@@ -27,6 +27,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $input = json_decode(file_get_contents('php://input'), true);
 $id_reloj = intval($input['id_reloj'] ?? 0);
 $costo_envio = intval($input['costo_envio'] ?? 0);
+
+$nombre = trim($input['nombre'] ?? '');
+$cedula = trim($input['cedula'] ?? '');
+$celular = trim($input['celular'] ?? '');
+$departamento = trim($input['departamento'] ?? '');
+$ciudad = trim($input['ciudad'] ?? '');
+$direccion = trim($input['direccion'] ?? '');
+$barrio = trim($input['barrio'] ?? '');
+$referencias = trim($input['referencias'] ?? '');
+$correoInput = trim($input['correo'] ?? '');
+$correo = $correoSesion ?: $correoInput;
+$transactionInProgress = false;
 
 // Validación básica
 if (!$id_reloj) {
@@ -75,10 +87,95 @@ try {
         echo json_encode(['error' => 'Llave pública vacía o no definida en wompi_config.php']);
         exit;
     }
-    
-    error_log("DEBUG - PUBLIC KEY: " . WOMPI_PUBLIC_KEY);
-    error_log("DEBUG - PUBLIC KEY LENGTH: " . strlen(WOMPI_PUBLIC_KEY));
-    
+
+    // Guardar la orden en la base de datos antes de redirigir a Wompi
+    mysqli_begin_transaction($conn);
+    $transactionInProgress = true;
+
+    $estado_inicial = 'pendiente';
+    $metodo_pago = 'wompi';
+    $total_decimal = round(floatval($total_con_envio), 2);
+    $costo_envio_decimal = round(floatval($costo_envio), 2);
+    $id_usuario_db = $id_usuario ? intval($id_usuario) : 0;
+
+    // Evitar referencias duplicadas (muy poco probable, pero seguro)
+    $stmtCheck = $conn->prepare("SELECT id_orden FROM orden WHERE token_verificacion = ? LIMIT 1");
+    $stmtCheck->bind_param("s", $referencia);
+    $stmtCheck->execute();
+    $stmtCheck->store_result();
+    if ($stmtCheck->num_rows > 0) {
+        $stmtCheck->close();
+        mysqli_rollback($conn);
+        $transactionInProgress = false;
+        echo json_encode(['error' => 'Referencia de orden duplicada, intenta de nuevo.']);
+        exit;
+    }
+    $stmtCheck->close();
+
+    $stmtOrden = $conn->prepare("INSERT INTO orden (id_usuario, nombre, correo, cedula, celular, departamento, ciudad, direccion, barrio, referencias, total, metodo_pago, costo_envio, estado, token_verificacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    if (!$stmtOrden) {
+        mysqli_rollback($conn);
+        $transactionInProgress = false;
+        echo json_encode(['error' => 'No fue posible preparar la inserción de la orden.']);
+        exit;
+    }
+
+    $stmtOrden->bind_param(
+        'isssssssssdsdss',
+        $id_usuario_db,
+        $nombre,
+        $correo,
+        $cedula,
+        $celular,
+        $departamento,
+        $ciudad,
+        $direccion,
+        $barrio,
+        $referencias,
+        $total_decimal,
+        $metodo_pago,
+        $costo_envio_decimal,
+        $estado_inicial,
+        $referencia
+    );
+
+    if (!$stmtOrden->execute()) {
+        $stmtOrden->close();
+        mysqli_rollback($conn);
+        $transactionInProgress = false;
+        echo json_encode(['error' => 'No fue posible guardar la orden antes de redirigir a Wompi.']);
+        exit;
+    }
+
+    $id_orden = $stmtOrden->insert_id;
+    $stmtOrden->close();
+
+    $cantidad = 1;
+    $precio_unitario = round(floatval($precio_final), 2);
+
+    $stmtDetalle = $conn->prepare("INSERT INTO orden_detalle (id_orden, id_reloj, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
+    if (!$stmtDetalle) {
+        mysqli_rollback($conn);
+        $transactionInProgress = false;
+        echo json_encode(['error' => 'No fue posible preparar el detalle de la orden.']);
+        exit;
+    }
+
+    $stmtDetalle->bind_param('iiid', $id_orden, $id_reloj, $cantidad, $precio_unitario);
+
+    if (!$stmtDetalle->execute()) {
+        $stmtDetalle->close();
+        mysqli_rollback($conn);
+        $transactionInProgress = false;
+        echo json_encode(['error' => 'No fue posible guardar el detalle de la orden.']);
+        exit;
+    }
+
+    $stmtDetalle->close();
+
+    mysqli_commit($conn);
+    $transactionInProgress = false;
+
     // Generar firma de integridad para producción
     // Formato correcto: referencia + amount_in_cents + currency + events_secret
     $signature_string = $referencia . $amount_in_cents . 'COP' . WOMPI_EVENTS_SECRET;
@@ -107,28 +204,29 @@ try {
     error_log("VPOS URL: " . $vpos_url);
     error_log("Amount in cents: " . $amount_in_cents);
     error_log("Reference: " . $referencia);
-
+    
     // Guardar datos del formulario en sesión para usar después del pago
     $_SESSION['wompi_transaction_data'] = [
         'id_usuario' => $id_usuario,
+        'id_orden' => $id_orden,
         'id_reloj' => $id_reloj,
         'precio_reloj' => $precio_final,
         'costo_envio' => $costo_envio,
         'total' => $total_con_envio,
         'referencia' => $referencia,
         'datos_cliente' => [
-            'nombre' => $input['nombre'] ?? '',
-            'cedula' => $input['cedula'] ?? '',
-            'celular' => $input['celular'] ?? '',
-            'departamento' => $input['departamento'] ?? '',
-            'ciudad' => $input['ciudad'] ?? '',
-            'direccion' => $input['direccion'] ?? '',
-            'barrio' => $input['barrio'] ?? '',
-            'referencias' => $input['referencias'] ?? '',
+            'nombre' => $nombre,
+            'cedula' => $cedula,
+            'celular' => $celular,
+            'departamento' => $departamento,
+            'ciudad' => $ciudad,
+            'direccion' => $direccion,
+            'barrio' => $barrio,
+            'referencias' => $referencias,
             'metodo_pago' => 'wompi'
         ]
     ];
-
+    
     // Respuesta para el frontend
     echo json_encode([
         'success' => true,
@@ -140,6 +238,10 @@ try {
     ]);
 
 } catch (Exception $e) {
+    if ($transactionInProgress) {
+        mysqli_rollback($conn);
+        $transactionInProgress = false;
+    }
     echo json_encode([
         'error' => 'Error al crear transacción',
         'message' => $e->getMessage()
