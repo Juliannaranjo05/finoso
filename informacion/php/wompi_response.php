@@ -9,14 +9,25 @@
 session_start();
 include 'conexion.php';
 
-error_log("[WOMPI-RESPONSE] 🔄 Usuario redirigido desde Wompi");
+$LOG_FILE = __DIR__ . '/../../logs/wompi_flow.log';
+if (!file_exists(dirname($LOG_FILE))) {
+    @mkdir(dirname($LOG_FILE), 0775, true);
+}
+
+function wompi_response_log($message) {
+    global $LOG_FILE;
+    $timestamp = date('Y-m-d H:i:s');
+    error_log("[$timestamp] $message\n", 3, $LOG_FILE);
+}
+
+wompi_response_log('[WOMPI-RESPONSE] Usuario redirigido desde Wompi');
 
 // Obtener parámetros de la URL
 $transaction_id = $_GET['id'] ?? '';
 $reference = $_GET['reference'] ?? '';
 $status = $_GET['status'] ?? '';
 
-error_log("[WOMPI-RESPONSE] Params - ID: $transaction_id, Ref: $reference, Status: $status");
+wompi_response_log("[WOMPI-RESPONSE] Params - ID: $transaction_id, Ref: $reference, Status: $status");
 
 // Si no hay parámetros, mostrar mensaje genérico
 if (empty($reference)) {
@@ -116,7 +127,7 @@ if ($result->num_rows > 0) {
     $nombre_reloj = $orden['nombre_reloj'] ?? 'tu reloj';
     $token = $orden['token_verificacion'];
     
-    error_log("[WOMPI-RESPONSE] ✅ Orden encontrada: #$id_orden");
+    wompi_response_log("[WOMPI-RESPONSE] ✅ Orden encontrada: #$id_orden");
     
     // Limpiar datos de sesión
     unset($_SESSION['wompi_transaction_data']);
@@ -257,7 +268,7 @@ if ($result->num_rows > 0) {
     
 } else {
     // Orden no encontrada (el webhook aún no procesó)
-    error_log("[WOMPI-RESPONSE] ⏳ Orden no encontrada aún, webhook puede estar procesando");
+    wompi_response_log("[WOMPI-RESPONSE] ⏳ Orden no encontrada aún, webhook puede estar procesando");
     ?>
     <!DOCTYPE html>
     <html lang="es">

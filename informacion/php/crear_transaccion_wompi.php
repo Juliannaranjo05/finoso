@@ -13,6 +13,17 @@ if (!$id_usuario) {
 include 'wompi_config.php';
 include 'conexion.php';
 
+$LOG_FILE = __DIR__ . '/../../logs/wompi_flow.log';
+if (!file_exists(dirname($LOG_FILE))) {
+    @mkdir(dirname($LOG_FILE), 0775, true);
+}
+
+function wompi_log($message) {
+    global $LOG_FILE;
+    $timestamp = date('Y-m-d H:i:s');
+    error_log("[$timestamp] $message\n", 3, $LOG_FILE);
+}
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
@@ -28,8 +39,8 @@ $input = json_decode(file_get_contents('php://input'), true);
 $id_reloj = intval($input['id_reloj'] ?? 0);
 $costo_envio = intval($input['costo_envio'] ?? 0);
 
-error_log('[WOMPI-CREAR] ➡️ Inicio crear_transaccion_wompi.php');
-error_log(sprintf('[WOMPI-CREAR] Datos crudos: id_reloj=%d, costo_envio=%d, usuario=%s', $id_reloj, $costo_envio, $id_usuario ?: '0'));
+wompi_log('=== ➡️ crear_transaccion_wompi.php INICIO ===');
+wompi_log(sprintf('Datos crudos POST: id_reloj=%d, costo_envio=%d, usuario=%s', $id_reloj, $costo_envio, $id_usuario ?: '0'));
 
 $nombre = trim($input['nombre'] ?? '');
 $cedula = trim($input['cedula'] ?? '');
@@ -45,13 +56,13 @@ $transactionInProgress = false;
 
 // Validación básica
 if (!$id_reloj) {
-    error_log('[WOMPI-CREAR] ❌ ID de reloj no proporcionado');
+    wompi_log('❌ ID de reloj no proporcionado');
     echo json_encode(['error' => 'ID de reloj no proporcionado']);
     exit;
 }
 
 if ($costo_envio <= 0) {
-    error_log('[WOMPI-CREAR] ❌ Costo de envío no válido');
+    wompi_log('❌ Costo de envío no válido');
     echo json_encode(['error' => 'Costo de envío no válido']);
     exit;
 }
@@ -61,7 +72,7 @@ $sql = "SELECT * FROM reloj WHERE id_reloj = $id_reloj AND vendido = 0";
 $resultado = mysqli_query($conn, $sql);
 
 if (!$resultado || mysqli_num_rows($resultado) === 0) {
-    error_log(sprintf('[WOMPI-CREAR] ❌ Reloj %d no encontrado o ya vendido', $id_reloj));
+    wompi_log(sprintf('❌ Reloj %d no encontrado o ya vendido', $id_reloj));
     echo json_encode(['error' => 'Reloj no encontrado o ya vendido']);
     exit;
 }
@@ -90,7 +101,7 @@ try {
     
     // Verificar que la llave pública esté definida
     if (empty(WOMPI_PUBLIC_KEY)) {
-        error_log('[WOMPI-CREAR] ❌ WOMPI_PUBLIC_KEY vacío');
+        wompi_log('❌ WOMPI_PUBLIC_KEY vacío');
         echo json_encode(['error' => 'Llave pública vacía o no definida en wompi_config.php']);
         exit;
     }
@@ -103,7 +114,7 @@ try {
     $metodo_pago = 'wompi';
     $total_decimal = round(floatval($total_con_envio), 2);
     $costo_envio_decimal = round(floatval($costo_envio), 2);
-    $id_usuario_db = $id_usuario ? intval($id_usuario) : 0;
+    $id_usuario_db = ($id_usuario && $id_usuario > 0) ? intval($id_usuario) : null;
 
     // Evitar referencias duplicadas (muy poco probable, pero seguro)
     $stmtCheck = $conn->prepare("SELECT id_orden FROM orden WHERE token_verificacion = ? LIMIT 1");
@@ -114,7 +125,7 @@ try {
         $stmtCheck->close();
         mysqli_rollback($conn);
         $transactionInProgress = false;
-        error_log(sprintf('[WOMPI-CREAR] ❌ Referencia duplicada detectada (%s)', $referencia));
+        wompi_log(sprintf('❌ Referencia duplicada detectada (%s)', $referencia));
         echo json_encode(['error' => 'Referencia de orden duplicada, intenta de nuevo.']);
         exit;
     }
@@ -124,7 +135,7 @@ try {
     if (!$stmtOrden) {
         mysqli_rollback($conn);
         $transactionInProgress = false;
-        error_log('[WOMPI-CREAR] ❌ No fue posible preparar la inserción de la orden: ' . $conn->error);
+        wompi_log('❌ No fue posible preparar la inserción de la orden: ' . $conn->error);
         echo json_encode(['error' => 'No fue posible preparar la inserción de la orden.']);
         exit;
     }
@@ -152,7 +163,7 @@ try {
         $stmtOrden->close();
         mysqli_rollback($conn);
         $transactionInProgress = false;
-        error_log('[WOMPI-CREAR] ❌ Error al guardar orden: ' . $stmtOrden->error);
+        wompi_log('❌ Error al guardar orden: ' . $stmtOrden->error);
         echo json_encode(['error' => 'No fue posible guardar la orden antes de redirigir a Wompi.']);
         exit;
     }
@@ -167,7 +178,7 @@ try {
     if (!$stmtDetalle) {
         mysqli_rollback($conn);
         $transactionInProgress = false;
-        error_log('[WOMPI-CREAR] ❌ No fue posible preparar el detalle de la orden: ' . $conn->error);
+        wompi_log('❌ No fue posible preparar el detalle de la orden: ' . $conn->error);
         echo json_encode(['error' => 'No fue posible preparar el detalle de la orden.']);
         exit;
     }
@@ -178,7 +189,7 @@ try {
         $stmtDetalle->close();
         mysqli_rollback($conn);
         $transactionInProgress = false;
-        error_log('[WOMPI-CREAR] ❌ Error al guardar detalle: ' . $stmtDetalle->error);
+        wompi_log('❌ Error al guardar detalle: ' . $stmtDetalle->error);
         echo json_encode(['error' => 'No fue posible guardar el detalle de la orden.']);
         exit;
     }
@@ -188,9 +199,9 @@ try {
     mysqli_commit($conn);
     $transactionInProgress = false;
 
-    error_log(sprintf('[WOMPI-CREAR] ✅ Orden #%d creada (ref=%s, total=%s, costo_envio=%s, usuario=%s)', $id_orden, $referencia, number_format($total_decimal, 2, '.', ''), number_format($costo_envio_decimal, 2, '.', ''), $id_usuario_db ?: '0'));
+    wompi_log(sprintf('✅ Orden #%d creada (ref=%s, total=%s, costo_envio=%s, usuario=%s)', $id_orden, $referencia, number_format($total_decimal, 2, '.', ''), number_format($costo_envio_decimal, 2, '.', ''), $id_usuario_db !== null ? $id_usuario_db : 'NULL'));
 
-    error_log(sprintf('[WOMPI-CREAR] Detalle: reloj=%d, precio_unitario=%s', $id_reloj, number_format($precio_unitario, 2, '.', '')));
+    wompi_log(sprintf('Detalle guardado: reloj=%d, precio_unitario=%s', $id_reloj, number_format($precio_unitario, 2, '.', '')));
 
     // Generar firma de integridad para producción
     // Formato correcto: referencia + amount_in_cents + currency + events_secret
@@ -198,8 +209,8 @@ try {
     $signature = hash('sha256', $signature_string);
     
     // Debug de la firma
-    error_log("DEBUG - Signature String: " . $signature_string);
-    error_log("DEBUG - Generated Signature: " . $signature);
+    wompi_log('Signature String: ' . $signature_string);
+    wompi_log('Signature Hash: ' . $signature);
     
     // Usar checkout directo de Wompi (/p/) con firma de integridad
     $vpos_url = 'https://checkout.wompi.co/p/?' . http_build_query([
@@ -211,15 +222,12 @@ try {
         'redirect-url' => WOMPI_REDIRECT_URL
     ]);
     
-    error_log("=== WOMPI CHECKOUT DIRECTO ===");
-    error_log("Product: " . $product_brand . " " . $product_name);
-    error_log("Amount: $" . number_format($total_con_envio) . " COP");
-    error_log("Checkout URL: " . $vpos_url);
-    
-    error_log("=== WOMPI VPOS URL DEBUG ===");
-    error_log("VPOS URL: " . $vpos_url);
-    error_log("Amount in cents: " . $amount_in_cents);
-    error_log("Reference: " . $referencia);
+    wompi_log('=== WOMPI CHECKOUT DIRECTO ===');
+    wompi_log('Producto: ' . $product_brand . ' ' . $product_name);
+    wompi_log('Total COP: ' . number_format($total_con_envio));
+    wompi_log('VPOS URL: ' . $vpos_url);
+    wompi_log('Amount in cents: ' . $amount_in_cents);
+    wompi_log('Reference: ' . $referencia);
     
     // Guardar datos del formulario en sesión para usar después del pago
     $_SESSION['wompi_transaction_data'] = [
@@ -258,12 +266,13 @@ try {
         mysqli_rollback($conn);
         $transactionInProgress = false;
     }
-    error_log('[WOMPI-CREAR] ❌ Excepción no controlada: ' . $e->getMessage());
+    wompi_log('❌ Excepción no controlada: ' . $e->getMessage());
     echo json_encode([
         'error' => 'Error al crear transacción',
         'message' => $e->getMessage()
     ]);
 }
+wompi_log('=== ⬅️ crear_transaccion_wompi.php FIN ===');
 ?>
 
 

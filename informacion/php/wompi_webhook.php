@@ -5,12 +5,31 @@ session_start();
 include 'wompi_config.php';
 include 'conexion.php';
 
+$LOG_FILE = __DIR__ . '/../../logs/wompi_flow.log';
+if (!file_exists(dirname($LOG_FILE))) {
+    @mkdir(dirname($LOG_FILE), 0775, true);
+}
+
+function wompi_log($message) {
+    global $LOG_FILE;
+    $timestamp = date('Y-m-d H:i:s');
+    error_log("[$timestamp] $message\n", 3, $LOG_FILE);
+}
+
 // Obtener el cuerpo de la petición
 $input = file_get_contents('php://input');
+if (!$input) {
+    wompi_log('❌ Webhook recibido sin cuerpo');
+}
+if (isset($_SERVER['REQUEST_URI'])) {
+    wompi_log('=== ➡️ wompi_webhook.php INICIO (' . $_SERVER['REQUEST_URI'] . ') ===');
+}
 $event = json_decode($input, true);
+wompi_log('Payload bruto: ' . $input);
 
 // Verificar que es un evento válido
 if (!$event || !isset($event['data']) || !isset($event['event'])) {
+    wompi_log('❌ Evento inválido recibido');
     http_response_code(400);
     exit('Evento inválido');
 }
@@ -20,34 +39,39 @@ $signature = $_SERVER['HTTP_SIGNATURE'] ?? '';
 $expected_signature = hash_hmac('sha256', $input, WOMPI_EVENTS_SECRET);
 
 if (!hash_equals($signature, $expected_signature)) {
+    wompi_log('❌ Firma inválida. header=' . $signature . ' expected=' . $expected_signature);
     http_response_code(401);
     exit('Firma inválida');
 }
 
 // Log del evento recibido
-error_log("Webhook Wompi recibido: " . json_encode($event));
+wompi_log('Evento Wompi recibido: ' . json_encode($event));
 
 // Procesar según el tipo de evento
 switch ($event['event']) {
     case 'transaction.updated':
+        wompi_log('➡️ Evento transaction.updated');
         procesarActualizacionTransaccion($event['data'], $conn);
         break;
     
     case 'transaction.approved':
+        wompi_log('➡️ Evento transaction.approved');
         procesarTransaccionAprobada($event['data'], $conn);
         break;
     
     case 'transaction.declined':
+        wompi_log('➡️ Evento transaction.declined');
         procesarTransaccionDeclinada($event['data'], $conn);
         break;
     
     default:
-        error_log("Evento Wompi no manejado: " . $event['event']);
+        wompi_log('Evento Wompi no manejado: ' . $event['event']);
 }
 
 // Responder con 200 OK
 http_response_code(200);
 echo 'OK';
+wompi_log('=== ⬅️ wompi_webhook.php FIN ===');
 
 /**
  * Procesar actualización de transacción
@@ -57,7 +81,7 @@ function procesarActualizacionTransaccion($transactionData, $conn) {
     $status = $transactionData['status'];
     $reference = $transactionData['reference'];
     
-    error_log("Actualizando transacción $transaction_id a estado: $status");
+    wompi_log("Actualizando transacción $transaction_id a estado: $status");
     
     // Buscar la orden por referencia
     $stmt = $conn->prepare("SELECT id_orden FROM orden WHERE token_verificacion = ?");
@@ -130,12 +154,12 @@ function procesarActualizacionTransaccion($transactionData, $conn) {
                     $stmt_update_codigo->execute();
                     $stmt_update_codigo->close();
                     
-                    error_log("[WOMPI-WEBHOOK] ✓ Orden vinculada con código de descuento #$id_orden");
+                    wompi_log("Orden vinculada con código de descuento #$id_orden");
                 }
                 $stmt_codigo_check->close();
             }
             
-            error_log("Orden $id_orden actualizada a estado: $nuevo_estado");
+            wompi_log("Orden $id_orden actualizada a estado: $nuevo_estado");
         }
     }
 }
@@ -144,7 +168,7 @@ function procesarActualizacionTransaccion($transactionData, $conn) {
  * Procesar transacción aprobada
  */
 function procesarTransaccionAprobada($transactionData, $conn) {
-    error_log("[WOMPI-WEBHOOK] 🎉 Transacción aprobada: " . json_encode($transactionData));
+    wompi_log("Transacción aprobada: " . json_encode($transactionData));
     procesarActualizacionTransaccion($transactionData, $conn);
     
     $reference = $transactionData['reference'];
@@ -165,7 +189,7 @@ function procesarTransaccionAprobada($transactionData, $conn) {
     $result = $stmt->get_result();
     
     if ($result->num_rows === 0) {
-        error_log("[WOMPI-WEBHOOK] ❌ Orden no encontrada con token: $reference");
+        wompi_log("❌ Orden no encontrada con token: $reference");
         return;
     }
     
@@ -175,7 +199,7 @@ function procesarTransaccionAprobada($transactionData, $conn) {
     $correo = $orden['correo'];
     $nombre_cliente = $orden['nombre'];
     
-    error_log("[WOMPI-WEBHOOK] 📦 Procesando orden #$id_orden - Usuario: " . ($id_usuario ?: 'NULL (anónimo)'));
+    wompi_log("Procesando orden #$id_orden - Usuario: " . ($id_usuario ?: 'NULL (anónimo)'));
     
     // ========================================
     // 1. GENERAR CÓDIGO DE DESCUENTO (si hay sesión)
@@ -216,13 +240,13 @@ function procesarTransaccionAprobada($transactionData, $conn) {
                 'fecha_expiracion' => $fecha_expiracion
             ];
             
-            error_log("[WOMPI-WEBHOOK] ✅ Código generado: $codigo para usuario #$id_usuario");
+            wompi_log("Código generado: $codigo para usuario #$id_usuario");
             
         } catch (Exception $e) {
-            error_log("[WOMPI-WEBHOOK] ❌ Error al generar código: " . $e->getMessage());
+            wompi_log("Error al generar código: " . $e->getMessage());
         }
     } else {
-        error_log("[WOMPI-WEBHOOK] ℹ️ No se genera código (orden anónima)");
+        wompi_log("No se genera código (orden anónima)");
     }
     
     // ========================================
@@ -347,10 +371,10 @@ function procesarTransaccionAprobada($transactionData, $conn) {
         $mail->isHTML(true);
         $mail->send();
         
-        error_log("[WOMPI-WEBHOOK] ✅ Email enviado a: $correo");
+        wompi_log("Email enviado a: $correo");
         
     } catch (Exception $e) {
-        error_log("[WOMPI-WEBHOOK] ❌ Error al enviar email: " . $e->getMessage());
+        wompi_log("Error al enviar email: " . $e->getMessage());
     }
     
     // ========================================
@@ -393,20 +417,20 @@ function procesarTransaccionAprobada($transactionData, $conn) {
             $mensajeAdmin = WhatsAppTemplates::nuevaOrdenAdmin($datosAdmin);
             $whatsapp->enviarMensaje(ADMIN_WHATSAPP, $mensajeAdmin, 'nueva_orden_wompi');
             
-            error_log("[WOMPI-WEBHOOK] ✅ WhatsApp enviado para orden #$id_orden");
+            wompi_log("WhatsApp enviado para orden #$id_orden");
         }
     } catch (Exception $e) {
-        error_log("[WOMPI-WEBHOOK] ❌ Error al enviar WhatsApp: " . $e->getMessage());
+        wompi_log("Error al enviar WhatsApp: " . $e->getMessage());
     }
     
-    error_log("[WOMPI-WEBHOOK] 🎉 Orden #$id_orden procesada completamente");
+    wompi_log("Orden #$id_orden procesada completamente");
 }
 
 /**
  * Procesar transacción declinada
  */
 function procesarTransaccionDeclinada($transactionData, $conn) {
-    error_log("Transacción declinada: " . json_encode($transactionData));
+    wompi_log("Transacción declinada: " . json_encode($transactionData));
     procesarActualizacionTransaccion($transactionData, $conn);
 }
 ?>
