@@ -9,14 +9,25 @@
 session_start();
 include 'conexion.php';
 
-error_log("[WOMPI-RESPONSE-FAVORITOS] 🔄 Usuario redirigido desde Wompi");
+$LOG_FILE = __DIR__ . '/../../logs/wompi_flow.log';
+if (!file_exists(dirname($LOG_FILE))) {
+    @mkdir(dirname($LOG_FILE), 0775, true);
+}
+
+function wompi_response_favoritos_log($message) {
+    global $LOG_FILE;
+    $timestamp = date('Y-m-d H:i:s');
+    error_log("[$timestamp] $message\n", 3, $LOG_FILE);
+}
+
+wompi_response_favoritos_log('[WOMPI-RESPONSE-FAVORITOS] Usuario redirigido desde Wompi');
 
 // Obtener parámetros de la URL
 $transaction_id = $_GET['id'] ?? '';
 $reference = $_GET['reference'] ?? '';
 $status = $_GET['status'] ?? '';
 
-error_log("[WOMPI-RESPONSE-FAVORITOS] Params - ID: $transaction_id, Ref: $reference, Status: $status");
+wompi_response_favoritos_log("[WOMPI-RESPONSE-FAVORITOS] Params - ID: $transaction_id, Ref: $reference, Status: $status");
 
 // Si no hay parámetros, mostrar mensaje genérico
 if (empty($reference)) {
@@ -31,26 +42,29 @@ if (empty($reference)) {
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: radial-gradient(circle at top, #1b1b1b 0%, #000 55%, #050505 100%);
                 min-height: 100vh;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 padding: 20px;
+                color: #f5f5f5;
             }
             .container {
-                background: white;
-                border-radius: 20px;
+                background: linear-gradient(160deg, #0c0c0c 0%, #161616 55%, #111 100%);
+                border-radius: 18px;
                 padding: 40px;
-                max-width: 500px;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                max-width: 520px;
+                width: 100%;
+                box-shadow: 0 25px 70px rgba(0,0,0,0.55);
                 text-align: center;
+                border: 1px solid rgba(212,175,55,0.35);
             }
             .spinner {
                 width: 60px;
                 height: 60px;
-                border: 5px solid #f3f3f3;
-                border-top: 5px solid #667eea;
+                border: 5px solid rgba(212,175,55,0.2);
+                border-top: 5px solid #d4af37;
                 border-radius: 50%;
                 animation: spin 1s linear infinite;
                 margin: 0 auto 30px;
@@ -59,11 +73,11 @@ if (empty($reference)) {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
-            h1 { color: #333; margin-bottom: 20px; font-size: 28px; }
-            p { color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
+            h1 { color: #f7dfa6; margin-bottom: 20px; font-size: 28px; letter-spacing: 0.5px; }
+            p { color: #d7d7d7; font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
             .btn {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
+                background: linear-gradient(135deg, #f1d27a 0%, #d4af37 100%);
+                color: #000;
                 padding: 15px 40px;
                 border: none;
                 border-radius: 50px;
@@ -71,9 +85,11 @@ if (empty($reference)) {
                 cursor: pointer;
                 text-decoration: none;
                 display: inline-block;
-                transition: transform 0.3s ease;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                font-weight: 600;
+                box-shadow: 0 10px 25px rgba(212,175,55,0.25);
             }
-            .btn:hover { transform: translateY(-2px); }
+            .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(212,175,55,0.35); }
         </style>
     </head>
     <body>

@@ -9,14 +9,25 @@
 session_start();
 include 'conexion.php';
 
-error_log("[WOMPI-RESPONSE-CARRITO] 🔄 Usuario redirigido desde Wompi");
+$LOG_FILE = __DIR__ . '/../../logs/wompi_flow.log';
+if (!file_exists(dirname($LOG_FILE))) {
+    @mkdir(dirname($LOG_FILE), 0775, true);
+}
+
+function wompi_response_carrito_log($message) {
+    global $LOG_FILE;
+    $timestamp = date('Y-m-d H:i:s');
+    error_log("[$timestamp] $message\n", 3, $LOG_FILE);
+}
+
+wompi_response_carrito_log('[WOMPI-RESPONSE-CARRITO] Usuario redirigido desde Wompi');
 
 // Obtener parámetros de la URL
 $transaction_id = $_GET['id'] ?? '';
 $reference = $_GET['reference'] ?? '';
 $status = $_GET['status'] ?? '';
 
-error_log("[WOMPI-RESPONSE-CARRITO] Params - ID: $transaction_id, Ref: $reference, Status: $status");
+wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] Params - ID: $transaction_id, Ref: $reference, Status: $status");
 
 // Si no hay parámetros, mostrar mensaje genérico
 if (empty($reference)) {
@@ -31,26 +42,29 @@ if (empty($reference)) {
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: radial-gradient(circle at top, #1b1b1b 0%, #000 55%, #050505 100%);
                 min-height: 100vh;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 padding: 20px;
+                color: #f5f5f5;
             }
             .container {
-                background: white;
-                border-radius: 20px;
+                background: linear-gradient(160deg, #0c0c0c 0%, #161616 55%, #111 100%);
+                border-radius: 18px;
                 padding: 40px;
-                max-width: 500px;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                max-width: 520px;
+                width: 100%;
+                box-shadow: 0 25px 70px rgba(0,0,0,0.55);
                 text-align: center;
+                border: 1px solid rgba(212,175,55,0.35);
             }
             .spinner {
                 width: 60px;
                 height: 60px;
-                border: 5px solid #f3f3f3;
-                border-top: 5px solid #667eea;
+                border: 5px solid rgba(212,175,55,0.2);
+                border-top: 5px solid #d4af37;
                 border-radius: 50%;
                 animation: spin 1s linear infinite;
                 margin: 0 auto 30px;
@@ -59,11 +73,11 @@ if (empty($reference)) {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
-            h1 { color: #333; margin-bottom: 20px; font-size: 28px; }
-            p { color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
+            h1 { color: #f7dfa6; margin-bottom: 20px; font-size: 28px; letter-spacing: 0.5px; }
+            p { color: #d7d7d7; font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
             .btn {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
+                background: linear-gradient(135deg, #f1d27a 0%, #d4af37 100%);
+                color: #000;
                 padding: 15px 40px;
                 border: none;
                 border-radius: 50px;
@@ -71,9 +85,11 @@ if (empty($reference)) {
                 cursor: pointer;
                 text-decoration: none;
                 display: inline-block;
-                transition: transform 0.3s ease;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                font-weight: 600;
+                box-shadow: 0 10px 25px rgba(212,175,55,0.25);
             }
-            .btn:hover { transform: translateY(-2px); }
+            .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(212,175,55,0.35); }
         </style>
     </head>
     <body>
@@ -120,7 +136,7 @@ if ($result->num_rows > 0) {
     $cantidad_relojes = $orden['cantidad_relojes'] ?? 0;
     $token = $orden['token_verificacion'];
     
-    error_log("[WOMPI-RESPONSE-CARRITO] ✅ Orden encontrada: #$id_orden con $cantidad_relojes relojes");
+    wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] ✅ Orden encontrada: #$id_orden con $cantidad_relojes relojes");
 
         // Limpiar datos de sesión
         unset($_SESSION['wompi_carrito_data']);
@@ -137,82 +153,92 @@ if ($result->num_rows > 0) {
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: radial-gradient(circle at top, #1b1b1b 0%, #000 55%, #050505 100%);
                 min-height: 100vh;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 padding: 20px;
+                color: #f5f5f5;
             }
             .container {
-                background: white;
-                border-radius: 20px;
+                background: linear-gradient(155deg, #0c0c0c 0%, #161616 60%, #0b0b0b 100%);
+                border-radius: 18px;
                 padding: 40px;
-                max-width: 600px;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                max-width: 640px;
+                width: 100%;
+                box-shadow: 0 30px 80px rgba(0,0,0,0.6);
                 text-align: center;
+                border: 1px solid rgba(212,175,55,0.35);
             }
             .success-icon {
                 font-size: 80px;
                 margin-bottom: 20px;
-                animation: scaleIn 0.5s ease-out;
+                animation: scaleIn 0.6s ease-out;
+                color: #f1d27a;
+                text-shadow: 0 0 15px rgba(212,175,55,0.4);
             }
             @keyframes scaleIn {
-                0% { transform: scale(0); }
-                50% { transform: scale(1.2); }
-                100% { transform: scale(1); }
+                0% { transform: scale(0); opacity: 0; }
+                50% { transform: scale(1.2); opacity: 0.9; }
+                100% { transform: scale(1); opacity: 1; }
             }
             h1 {
-                color: #333;
-                margin-bottom: 15px;
+                color: #f7dfa6;
+                margin-bottom: 12px;
                 font-size: 32px;
+                letter-spacing: 0.5px;
             }
             .subtitle {
-                color: #666;
+                color: #dcdcdc;
                 font-size: 18px;
                 margin-bottom: 30px;
             }
             .order-details {
-                background: #f8f9fa;
+                background: rgba(255, 215, 141, 0.05);
                 border-radius: 15px;
                 padding: 25px;
                 margin: 30px 0;
                 text-align: left;
+                border: 1px solid rgba(212,175,55,0.25);
             }
             .detail-row {
                 display: flex;
                 justify-content: space-between;
                 padding: 10px 0;
-                border-bottom: 1px solid #e0e0e0;
+                border-bottom: 1px solid rgba(212,175,55,0.15);
             }
             .detail-row:last-child {
                 border-bottom: none;
-                font-weight: bold;
+                font-weight: 700;
                 font-size: 18px;
-                color: #667eea;
+                color: #f1d27a;
             }
-            .label { color: #666; }
-            .value { color: #333; font-weight: 600; }
+            .label { color: #c7c7c7; }
+            .value { color: #f5f5f5; font-weight: 600; }
             .productos-list {
-                background: #fff;
+                background: rgba(0, 0, 0, 0.45);
                 padding: 15px;
                 border-radius: 10px;
                 margin-top: 10px;
                 font-size: 14px;
-                color: #555;
+                color: #ebebeb;
+                border: 1px solid rgba(212,175,55,0.2);
             }
             .alert-box {
-                background: #d4edda;
-                border: 1px solid #c3e6cb;
-                border-radius: 10px;
-                padding: 20px;
-                margin: 20px 0;
-                color: #155724;
+                background: rgba(241, 210, 122, 0.1);
+                border: 1px solid rgba(212,175,55,0.35);
+                border-radius: 12px;
+                padding: 22px;
+                margin: 25px 0;
+                color: #f1d27a;
+                font-weight: 600;
+                text-align: center;
             }
             .btn {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                padding: 15px 40px;
+                background: linear-gradient(135deg, #f1d27a 0%, #d4af37 100%);
+                color: #000;
+                padding: 15px 42px;
                 border: none;
                 border-radius: 50px;
                 font-size: 16px;
@@ -220,11 +246,19 @@ if ($result->num_rows > 0) {
                 text-decoration: none;
                 display: inline-block;
                 margin: 10px;
-                transition: transform 0.3s ease;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                font-weight: 600;
+                box-shadow: 0 12px 28px rgba(212,175,55,0.3);
             }
-            .btn:hover { transform: translateY(-2px); }
+            .btn:hover { transform: translateY(-2px); box-shadow: 0 18px 35px rgba(212,175,55,0.4); }
             .btn-secondary {
-                background: #6c757d;
+                background: rgba(245,245,245,0.12);
+                color: #f5f5f5;
+                border: 1px solid rgba(212,175,55,0.35);
+                box-shadow: none;
+            }
+            .btn-secondary:hover {
+                box-shadow: 0 15px 30px rgba(212,175,55,0.25);
             }
         </style>
     </head>
@@ -272,7 +306,7 @@ if ($result->num_rows > 0) {
 
 } else {
     // Orden no encontrada (el webhook aún no procesó)
-    error_log("[WOMPI-RESPONSE-CARRITO] ⏳ Orden no encontrada aún, webhook puede estar procesando");
+    wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] ⏳ Orden no encontrada aún, webhook puede estar procesando");
     ?>
     <!DOCTYPE html>
     <html lang="es">
@@ -284,26 +318,29 @@ if ($result->num_rows > 0) {
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: radial-gradient(circle at top, #1b1b1b 0%, #000 55%, #050505 100%);
                 min-height: 100vh;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 padding: 20px;
+                color: #f5f5f5;
             }
             .container {
-                background: white;
-                border-radius: 20px;
+                background: linear-gradient(160deg, #0c0c0c 0%, #161616 55%, #111 100%);
+                border-radius: 18px;
                 padding: 40px;
-                max-width: 500px;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                max-width: 520px;
+                width: 100%;
+                box-shadow: 0 25px 70px rgba(0,0,0,0.55);
                 text-align: center;
+                border: 1px solid rgba(212,175,55,0.35);
             }
             .spinner {
                 width: 60px;
                 height: 60px;
-                border: 5px solid #f3f3f3;
-                border-top: 5px solid #667eea;
+                border: 5px solid rgba(212,175,55,0.2);
+                border-top: 5px solid #d4af37;
                 border-radius: 50%;
                 animation: spin 1s linear infinite;
                 margin: 0 auto 30px;
@@ -312,11 +349,11 @@ if ($result->num_rows > 0) {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
-            h1 { color: #333; margin-bottom: 20px; font-size: 28px; }
-            p { color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 15px; }
+            h1 { color: #f7dfa6; margin-bottom: 20px; font-size: 28px; letter-spacing: 0.5px; }
+            p { color: #d7d7d7; font-size: 16px; line-height: 1.6; margin-bottom: 15px; }
             .btn {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
+                background: linear-gradient(135deg, #f1d27a 0%, #d4af37 100%);
+                color: #000;
                 padding: 15px 40px;
                 border: none;
                 border-radius: 50px;
@@ -325,9 +362,11 @@ if ($result->num_rows > 0) {
                 text-decoration: none;
                 display: inline-block;
                 margin-top: 20px;
-                transition: transform 0.3s ease;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                font-weight: 600;
+                box-shadow: 0 10px 25px rgba(212,175,55,0.25);
             }
-            .btn:hover { transform: translateY(-2px); }
+            .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(212,175,55,0.35); }
         </style>
     </head>
     <body>
