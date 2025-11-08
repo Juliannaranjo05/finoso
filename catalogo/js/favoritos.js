@@ -4,6 +4,70 @@
  * Objetivo: Captar leads y convertir visitantes anónimos en compradores
  */
 
+const entornoFavoritos = (() => {
+    let currentScript = document.currentScript;
+
+    if (!currentScript || !currentScript.src) {
+        const scripts = document.getElementsByTagName('script');
+        for (let i = scripts.length - 1; i >= 0; i--) {
+            const script = scripts[i];
+            if (script.src && script.src.indexOf('favoritos.js') !== -1) {
+                currentScript = script;
+                break;
+            }
+        }
+    }
+
+    let baseUrl;
+
+    if (currentScript && currentScript.src) {
+        const scriptUrl = new URL(currentScript.src, window.location.href);
+        let basePathRaw;
+
+        if (scriptUrl.pathname.includes('/catalogo/js/')) {
+            [basePathRaw] = scriptUrl.pathname.split('/catalogo/js/');
+        } else {
+            const segments = scriptUrl.pathname.split('/').filter(Boolean);
+            segments.pop(); // remove file name
+
+            if (segments[segments.length - 1] === 'js') {
+                segments.pop();
+            }
+
+            basePathRaw = segments.length ? `/${segments.join('/')}` : '';
+        }
+
+        const normalizedBasePath = basePathRaw.endsWith('/')
+            ? basePathRaw
+            : `${basePathRaw}/`;
+        baseUrl = `${scriptUrl.origin}${normalizedBasePath || '/'}`;
+    } else {
+        baseUrl = `${window.location.origin}/`;
+    }
+
+    const buildUrl = (relativePath = '') => {
+        const sanitizedPath = (relativePath || '').replace(/^\/+/, '');
+        return new URL(sanitizedPath, baseUrl).href;
+    };
+
+    return {
+        baseUrl,
+        buildUrl
+    };
+})();
+
+function buildApiUrl(relativePath) {
+    return entornoFavoritos.buildUrl(relativePath);
+}
+
+function buildAssetUrl(assetPath) {
+    if (!assetPath) return '';
+    if (/^https?:\/\//i.test(assetPath)) {
+        return assetPath;
+    }
+    return entornoFavoritos.buildUrl(assetPath);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('⭐ Sistema de favoritos cargando...');
     
@@ -40,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function verificarSesionYMostrarFavoritos() {
     // Verificar si hay sesión en el servidor
-    fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php')
+    fetch(buildApiUrl('login/php/verificar_sesion.php'))
         .then(response => response.json())
         .then(data => {
             const iconoFavoritos = document.getElementById('iconoFavoritos');
@@ -191,19 +255,20 @@ async function cargarFavoritos() {
     // Cargar información de cada reloj favorito
     for (const idReloj of favoritos) {
         try {
-            const response = await fetch(`http://127.0.0.1/finoso/informacion/php/obtener_reloj.php?id_reloj=${idReloj}`);
+            const response = await fetch(buildApiUrl(`informacion/php/obtener_reloj.php?id_reloj=${idReloj}`));
             const data = await response.json();
             
             // El PHP retorna el reloj directamente, no en data.reloj
             if (data && data.id_reloj) {
                 const reloj = data;
                 total += parseInt(reloj.precio);
+                const relojImgUrl = buildAssetUrl(reloj.img);
                 
                 // Crear elemento HTML para el favorito
                 const favoritoHTML = `
                     <div class="cuadro-info-reloj-carrito" data-id="${reloj.id_reloj}">
                         <div class="img-reloj-carrito">
-                            <img src="http://127.0.0.1/finoso/${reloj.img}" alt="${reloj.nombre}">
+                            <img src="${relojImgUrl}" alt="${reloj.nombre}">
                         </div>
                         <div class="nombre-precio-carrito">
                             <div class="nombre-carrito">
