@@ -57,29 +57,45 @@ try {
     $result = $stmt->get_result();
     
     $ordenes = [];
+    $ordenesUnicas = [];
+
     while ($row = $result->fetch_assoc()) {
-        // Formatear imagen - simplemente pasar el path relativo limpio
         if ($row['imagen'] && !empty($row['imagen'])) {
-            // Asegurar que el path sea relativo desde la raíz del proyecto
-            // Las imágenes están en /img/nombre.png
             $row['imagen'] = $row['imagen'];
         }
-        
+
         $ordenes[] = $row;
+
+        $idOrden = $row['id_orden'];
+        if (!isset($ordenesUnicas[$idOrden])) {
+            $ordenesUnicas[$idOrden] = [
+                'estado' => strtolower($row['estado']),
+                'total' => is_null($row['total']) ? 0 : (float) $row['total'],
+                'monto_pagado' => is_null($row['monto_pagado']) ? null : (float) $row['monto_pagado']
+            ];
+        }
     }
     
     $stmt->close();
-    
-    // Calcular estadísticas
-    // NOTA: Solo se cuentan las órdenes ENTREGADAS (completadas exitosamente)
+
+    $estadosCompletados = ['pagado', 'aprobado', 'enviado', 'entregado'];
+    $totalRelojes = 0;
+    $totalGastado = 0;
+
+    foreach ($ordenesUnicas as $orden) {
+        if (in_array($orden['estado'], $estadosCompletados, true)) {
+            $totalRelojes++;
+            $monto = isset($orden['monto_pagado']) && $orden['monto_pagado'] > 0
+                ? $orden['monto_pagado']
+                : $orden['total'];
+            $totalGastado += $monto;
+        }
+    }
+
     $stats = [
-        'total_ordenes' => count($ordenes),
-        'total_relojes' => count(array_filter($ordenes, function($o) {
-            return $o['estado'] === 'entregado'; // Solo relojes entregados
-        })),
-        'total_gastado' => array_sum(array_map(function($o) {
-            return $o['estado'] === 'entregado' ? $o['total'] : 0; // Solo órdenes entregadas
-        }, $ordenes))
+        'total_ordenes' => count($ordenesUnicas),
+        'total_relojes' => $totalRelojes,
+        'total_gastado' => $totalGastado
     ];
     
     echo json_encode([
