@@ -110,6 +110,11 @@ nav {
     font-weight: bold;
     display: none; /* oculto si no hay productos */
 }
+.iconos-menu .icono-carrito .contador-carrito {
+    background: #FF3B30;
+    color: #FFFFFF;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+}
 .icono-carrito svg {
     width: 50px;
     object-fit: cover;

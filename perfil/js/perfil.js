@@ -3,17 +3,76 @@
  * Gestión del perfil y historial de compras
  */
 
+const entornoPerfil = (() => {
+    let currentScript = document.currentScript;
+
+    if (!currentScript || !currentScript.src) {
+        const scripts = document.getElementsByTagName('script');
+        for (let i = scripts.length - 1; i >= 0; i--) {
+            const script = scripts[i];
+            if (script.src && script.src.indexOf('perfil.js') !== -1) {
+                currentScript = script;
+                break;
+            }
+        }
+    }
+
+    let baseUrl;
+
+    if (currentScript && currentScript.src) {
+        const scriptUrl = new URL(currentScript.src, window.location.href);
+        let basePathRaw;
+
+        if (scriptUrl.pathname.includes('/perfil/js/')) {
+            [basePathRaw] = scriptUrl.pathname.split('/perfil/js/');
+        } else {
+            const segments = scriptUrl.pathname.split('/').filter(Boolean);
+            segments.pop();
+
+            if (segments[segments.length - 1] === 'js') {
+                segments.pop();
+            }
+
+            basePathRaw = segments.length ? `/${segments.join('/')}` : '';
+        }
+
+        const normalizedBasePath = basePathRaw.endsWith('/')
+            ? basePathRaw
+            : `${basePathRaw}/`;
+        baseUrl = `${scriptUrl.origin}${normalizedBasePath || '/'}`;
+    } else {
+        baseUrl = `${window.location.origin}/`;
+    }
+
+    const buildUrl = (relativePath = '') => {
+        const sanitizedPath = (relativePath || '').replace(/^\/+/, '');
+        return new URL(sanitizedPath, baseUrl).href;
+    };
+
+    return {
+        buildUrl
+    };
+})();
+
+const buildAssetUrlPerfil = (assetPath) => {
+    if (!assetPath) return '';
+    if (/^https?:\/\//i.test(assetPath)) {
+        return assetPath;
+    }
+    return entornoPerfil.buildUrl(assetPath);
+};
+
 // Variable global para almacenar los datos del usuario
 let datosUsuario = {};
 
 document.addEventListener('DOMContentLoaded', function() {
     // Verificar sesión activa
-    fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php')
+    fetch(entornoPerfil.buildUrl('login/php/verificar_sesion.php'))
         .then(res => res.json())
         .then(data => {
             if (!data.logged_in) {
                 // Si no hay sesión, redirigir al login
-                window.location.href = 'http://127.0.0.1/finoso/login/login.html';
+                window.location.href = entornoPerfil.buildUrl('login/login.html');
             } else {
                 // Guardar datos del usuario
                 datosUsuario = data;
@@ -29,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error al verificar sesión:', error);
-            window.location.href = 'http://127.0.0.1/finoso/login/login.html';
+            window.location.href = entornoPerfil.buildUrl('login/login.html');
         });
     
     // Cerrar sesión
@@ -37,9 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (cerrarSesionBtn) {
         cerrarSesionBtn.addEventListener('click', function() {
             if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
-                fetch('http://127.0.0.1/finoso/login/php/logout.php')
+                fetch(entornoPerfil.buildUrl('login/php/logout.php'))
                     .then(() => {
-                        window.location.href = 'http://127.0.0.1/finoso/index.html';
+                        window.location.href = entornoPerfil.buildUrl('index.html');
                     });
             }
         });
@@ -57,7 +116,7 @@ async function cargarHistorialCompras() {
     lista.innerHTML = '';
     
     try {
-        const response = await fetch('http://127.0.0.1/finoso/login/php/obtener_historial_usuario.php');
+        const response = await fetch(entornoPerfil.buildUrl('login/php/obtener_historial_usuario.php'));
         const data = await response.json();
         
         loading.style.display = 'none';
@@ -103,17 +162,17 @@ function crearCardOrden(orden) {
             </div>
             
             <div class="orden-body">
-                <div class="orden-reloj">
-                    ${orden.imagen ? `
-                        <img src="http://127.0.0.1/finoso/${orden.imagen}" alt="${orden.nombre_reloj}" class="reloj-img" onerror="this.parentElement.innerHTML='<div class=\\'reloj-img-placeholder\\'><svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\' fill=\\'currentColor\\'><circle cx=\\'12\\' cy=\\'12\\' r=\\'10\\' stroke=\\'currentColor\\' stroke-width=\\'2\\' fill=\\'none\\'/><path d=\\'M12 6v6l4 2\\'/></svg></div>';">
-                    ` : `
-                        <div class="reloj-img-placeholder">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
-                                <path d="M12 6v6l4 2"/>
-                            </svg>
-                        </div>
-                    `}
+                    <div class="orden-reloj">
+                        ${orden.imagen ? `
+                            <img src="${buildAssetUrlPerfil(orden.imagen)}" alt="${orden.nombre_reloj}" class="reloj-img" onerror="this.parentElement.innerHTML='<div class=\\'reloj-img-placeholder\\'><svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\' fill=\\'currentColor\\'><circle cx=\\'12\\' cy=\\'12\\' r=\\'10\\' stroke=\\'currentColor\\' stroke-width=\\'2\\' fill=\\'none\\'/><path d=\\'M12 6v6l4 2\\'/></svg></div>';">
+                        ` : `
+                            <div class="reloj-img-placeholder">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                            </div>
+                        `}
                     <div class="reloj-info">
                         <p class="reloj-nombre">${orden.nombre_reloj || 'Reloj FINOSO'}</p>
                         ${orden.marca ? `<p class="reloj-marca">${orden.marca}</p>` : ''}

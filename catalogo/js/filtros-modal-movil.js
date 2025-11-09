@@ -12,6 +12,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalFiltrosBody = document.querySelector('.modal-filtros-body');
     const filtrosRow = document.querySelector('.filtros-row');
     
+    function clonarFiltrosAlModal() {
+        if (!modalFiltrosBody || !filtrosRow) return;
+
+        modalFiltrosBody.innerHTML = '';
+
+        const filtros = filtrosRow.querySelectorAll('.filtro-group');
+        filtros.forEach(filtro => {
+            const clon = filtro.cloneNode(true);
+            const selectOriginal = filtro.querySelector('select');
+            const selectClon = clon.querySelector('select');
+
+            if (selectClon) {
+                if (selectClon.hasAttribute('id')) {
+                    selectClon.setAttribute('data-original-id', selectClon.id);
+                    selectClon.removeAttribute('id');
+                }
+
+                if (selectOriginal) {
+                    selectClon.innerHTML = selectOriginal.innerHTML;
+                    selectClon.value = selectOriginal.value;
+                }
+            }
+
+            modalFiltrosBody.appendChild(clon);
+        });
+    }
+
     // Detectar si es móvil
     function esMobil() {
         return window.innerWidth <= 768;
@@ -26,17 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Clonar filtros al modal si no están ya
-            if (modalFiltrosBody && filtrosRow && modalFiltrosBody.children.length === 0) {
-                const filtros = filtrosRow.querySelectorAll('.filtro-group');
-                filtros.forEach(filtro => {
-                    const clon = filtro.cloneNode(true);
-                    // Mantener los IDs para que funcionen los event listeners
-                    modalFiltrosBody.appendChild(clon);
-                });
-                
-                // Sincronizar valores iniciales
-                sincronizarFiltros();
-            }
+            clonarFiltrosAlModal();
+            sincronizarFiltros();
         } else {
             // DESKTOP: Ocultar botón y modal, mostrar filtros inline
             if (btnAbrirFiltros) {
@@ -56,11 +74,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sincronizar valores entre filtros originales y modal
     function sincronizarFiltros() {
         const filtrosOriginales = filtrosRow.querySelectorAll('select');
-        const filtrosModal = modalFiltrosBody.querySelectorAll('select');
-        
-        filtrosOriginales.forEach((selectOriginal, index) => {
-            if (filtrosModal[index]) {
-                filtrosModal[index].value = selectOriginal.value;
+        const filtrosModal = modalFiltrosBody.querySelectorAll('select[data-original-id]');
+
+        filtrosModal.forEach((selectModal) => {
+            const originalId = selectModal.getAttribute('data-original-id');
+            if (!originalId) return;
+            const selectOriginal = Array.from(filtrosOriginales).find(sel => sel.id === originalId);
+            if (selectOriginal) {
+                selectModal.innerHTML = selectOriginal.innerHTML;
+                selectModal.value = selectOriginal.value;
             }
         });
     }
@@ -69,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnAbrirFiltros) {
         btnAbrirFiltros.addEventListener('click', () => {
             if (modalFiltros) {
+                clonarFiltrosAlModal();
                 sincronizarFiltros();
                 modalFiltros.classList.add('activo');
                 document.body.style.overflow = 'hidden'; // Evitar scroll del body
@@ -101,15 +124,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnAplicarFiltros) {
         btnAplicarFiltros.addEventListener('click', () => {
             // Copiar valores del modal a los filtros originales
-            const filtrosOriginales = filtrosRow.querySelectorAll('select');
-            const filtrosModal = modalFiltrosBody.querySelectorAll('select');
+            const filtrosModal = modalFiltrosBody.querySelectorAll('select[data-original-id]');
             
-            filtrosModal.forEach((selectModal, index) => {
-                if (filtrosOriginales[index]) {
-                    filtrosOriginales[index].value = selectModal.value;
+            filtrosModal.forEach((selectModal) => {
+                const originalId = selectModal.getAttribute('data-original-id');
+                if (!originalId) return;
+                const selectOriginal = filtrosRow.querySelector(`#${originalId}`);
+                if (selectOriginal) {
+                    selectOriginal.value = selectModal.value;
                     // Disparar evento change para que se apliquen los filtros
                     const event = new Event('change', { bubbles: true });
-                    filtrosOriginales[index].dispatchEvent(event);
+                    selectOriginal.dispatchEvent(event);
                 }
             });
             
@@ -120,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Limpiar filtros en modal
     if (btnLimpiarFiltrosModal) {
         btnLimpiarFiltrosModal.addEventListener('click', () => {
-            const filtrosModal = modalFiltrosBody.querySelectorAll('select');
+            const filtrosModal = modalFiltrosBody.querySelectorAll('select[data-original-id]');
             filtrosModal.forEach(select => {
                 select.value = '';
             });

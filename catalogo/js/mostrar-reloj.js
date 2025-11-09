@@ -1,3 +1,61 @@
+const entornoCatalogo = (() => {
+    let currentScript = document.currentScript;
+
+    if (!currentScript || !currentScript.src) {
+        const scripts = document.getElementsByTagName('script');
+        for (let i = scripts.length - 1; i >= 0; i--) {
+            const script = scripts[i];
+            if (script.src && script.src.indexOf('mostrar-reloj.js') !== -1) {
+                currentScript = script;
+                break;
+            }
+        }
+    }
+
+    let baseUrl = `${window.location.origin}/`;
+
+    if (currentScript && currentScript.src) {
+        const scriptUrl = new URL(currentScript.src, window.location.href);
+        let basePathRaw = '';
+
+        if (scriptUrl.pathname.includes('/catalogo/js/')) {
+            [basePathRaw] = scriptUrl.pathname.split('/catalogo/js/');
+        } else {
+            const segments = scriptUrl.pathname.split('/').filter(Boolean);
+            segments.pop();
+
+            if (segments[segments.length - 1] === 'js') {
+                segments.pop();
+            }
+
+            basePathRaw = segments.length ? `/${segments.join('/')}` : '';
+        }
+
+        const normalizedBasePath = basePathRaw.endsWith('/')
+            ? basePathRaw
+            : `${basePathRaw}/`;
+
+        baseUrl = `${scriptUrl.origin}${normalizedBasePath}`;
+    }
+
+    const buildUrl = (relativePath = '') => {
+        const sanitizedPath = (relativePath || '').replace(/^\/+/, '');
+        return new URL(sanitizedPath, baseUrl).href;
+    };
+
+    return {
+        buildUrl
+    };
+})();
+
+const buildAssetUrlCatalogo = (assetPath) => {
+    if (!assetPath) return '';
+    if (/^https?:\/\//i.test(assetPath)) {
+        return assetPath;
+    }
+    return entornoCatalogo.buildUrl(assetPath);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Cargar marcas primero, luego relojes
     cargarMarcas().then(() => {
@@ -19,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function cargarMarcas() {
     console.log('🔍 Cargando marcas...');
-    return fetch('http://127.0.0.1/finoso/admin/php/obtener_marcas.php')
+    return fetch(entornoCatalogo.buildUrl('admin/php/obtener_marcas.php'))
         .then(response => {
             console.log('📡 Respuesta de marcas:', response);
             return response.json();
@@ -121,7 +179,7 @@ function cargarPulseras() {
 
 function cargarRelojes() {
     console.log('🕐 Cargando relojes...');
-    fetch('http://127.0.0.1/finoso/catalogo/php/mostrar_relojes.php')
+    fetch(entornoCatalogo.buildUrl('catalogo/php/mostrar_relojes.php'))
         .then(response => {
             if (!response.ok) throw new Error('Error al cargar los relojes');
             return response.text();
@@ -595,7 +653,7 @@ function agregarAlCarrito(idReloj) {
     console.log('🛒 Agregando reloj al carrito:', idReloj);
     
     // Verificar sesión primero
-    fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php')
+    fetch(entornoCatalogo.buildUrl('login/php/verificar_sesion.php'))
         .then(res => res.json())
         .then(data => {
             if (!data.logged_in) {
@@ -605,7 +663,7 @@ function agregarAlCarrito(idReloj) {
             }
 
             // Si hay sesión, proceder a añadir al carrito
-            fetch('http://127.0.0.1/finoso/informacion/php/añadir_al_carrito.php', {
+            fetch(entornoCatalogo.buildUrl('informacion/php/añadir_al_carrito.php'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -680,13 +738,13 @@ function mostrarNotificacion(mensaje) {
 function actualizarContadorCarrito() {
     console.log('🔍 DEBUG mostrar-reloj.js - actualizarContadorCarrito() iniciada');
     // Verificar sesión primero
-    fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php')
+    fetch(entornoCatalogo.buildUrl('login/php/verificar_sesion.php'))
         .then(res => res.json())
         .then(data => {
             console.log('🔍 DEBUG mostrar-reloj.js - Verificación de sesión:', data);
             if (data.logged_in) {
                 // Obtener el contador del carrito desde la base de datos
-                fetch('http://127.0.0.1/finoso/php/contar_carrito.php')
+                fetch(entornoCatalogo.buildUrl('php/contar_carrito.php'))
                     .then(res => res.json())
                     .then(carritoData => {
                         console.log('🔍 DEBUG mostrar-reloj.js - Datos del carrito:', carritoData);
