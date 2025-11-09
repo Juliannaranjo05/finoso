@@ -775,6 +775,22 @@ select {
     background: #0000;
     
 }
+select {
+    background: rgba(17, 17, 17, 0.85);
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 207, 102, 0.4);
+    box-shadow: 0 0 12px rgba(255, 207, 102, 0.18);
+    backdrop-filter: blur(2px);
+}
+select:focus {
+    border-color: rgba(255, 207, 102, 0.85);
+    outline: none;
+    box-shadow: 0 0 15px rgba(255, 207, 102, 0.35);
+}
+select option {
+    background-color: #111111;
+    color: #FFFFFF;
+}
 .envio-total-info {
   margin-top: 10px;
   font-size: 0.95rem;
