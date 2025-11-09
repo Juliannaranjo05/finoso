@@ -71,9 +71,43 @@ try {
             $ordenesUnicas[$idOrden] = [
                 'estado' => strtolower($row['estado']),
                 'total' => is_null($row['total']) ? 0 : (float) $row['total'],
-                'monto_pagado' => is_null($row['monto_pagado']) ? null : (float) $row['monto_pagado']
+                'monto_pagado' => is_null($row['monto_pagado']) ? null : (float) $row['monto_pagado'],
+                'costo_envio' => is_null($row['costo_envio']) ? 0 : (float) $row['costo_envio'],
+                'total_productos' => 0
             ];
+        } else {
+            // Mantener el estado más avanzado si llega información diferente
+            $estadoActual = $ordenesUnicas[$idOrden]['estado'];
+            $nuevoEstado = strtolower($row['estado']);
+            $prioridadEstados = [
+                'pendiente' => 1,
+                'pendiente_verificacion' => 2,
+                'rechazado' => 0,
+                'pagado' => 3,
+                'aprobado' => 4,
+                'enviado' => 5,
+                'entregado' => 6,
+                'cancelado' => -1
+            ];
+            $prioridadActual = $prioridadEstados[$estadoActual] ?? 0;
+            $prioridadNueva = $prioridadEstados[$nuevoEstado] ?? 0;
+            if ($prioridadNueva > $prioridadActual) {
+                $ordenesUnicas[$idOrden]['estado'] = $nuevoEstado;
+            }
+
+            // Actualizar totales si llegan valores no nulos
+            if (!is_null($row['total']) && (float) $row['total'] > 0) {
+                $ordenesUnicas[$idOrden]['total'] = (float) $row['total'];
+            }
+            if (!is_null($row['monto_pagado']) && (float) $row['monto_pagado'] > 0) {
+                $ordenesUnicas[$idOrden]['monto_pagado'] = (float) $row['monto_pagado'];
+            }
+            if (!is_null($row['costo_envio']) && (float) $row['costo_envio'] > 0) {
+                $ordenesUnicas[$idOrden]['costo_envio'] = (float) $row['costo_envio'];
+            }
         }
+
+        $ordenesUnicas[$idOrden]['total_productos'] += is_null($row['precio_producto']) ? 0 : (float) $row['precio_producto'];
     }
     
     $stmt->close();
@@ -85,9 +119,16 @@ try {
     foreach ($ordenesUnicas as $orden) {
         if (in_array($orden['estado'], $estadosCompletados, true)) {
             $totalRelojes++;
-            $monto = isset($orden['monto_pagado']) && $orden['monto_pagado'] > 0
-                ? $orden['monto_pagado']
-                : $orden['total'];
+            $monto = $orden['monto_pagado'];
+
+            if (is_null($monto) || $monto <= 0) {
+                if ($orden['total'] > 0) {
+                    $monto = $orden['total'];
+                } else {
+                    $monto = $orden['total_productos'] + $orden['costo_envio'];
+                }
+            }
+
             $totalGastado += $monto;
         }
     }
