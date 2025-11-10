@@ -267,6 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const ciudad = document.getElementById("ciudad");
         const metodoPago = document.getElementById("metodo-pago");
         const correo = document.getElementById("correo");
+        const referenciasInput = document.getElementById("referencias");
         
         console.log("🔍 DEBUG validaciones-compra.js - Elementos encontrados:");
         console.log("- Nombre:", nombre, "Valor:", nombre ? nombre.value : "NO ENCONTRADO");
@@ -296,6 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const ciudadVal = ciudad.value;
         const metodoPagoVal = metodoPago.value;
         const correoVal = correo ? correo.value.trim() : "";
+        const referenciasVal = referenciasInput ? referenciasInput.value.trim() : "";
         
         console.log("🔍 DEBUG validaciones-compra.js - Valores del formulario:");
         console.log("- Nombre:", nombreVal);
@@ -307,6 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("- Ciudad:", ciudadVal);
         console.log("- Método de pago:", metodoPagoVal);
         console.log("- Correo:", correoVal);
+        console.log("- Referencias:", referenciasVal);
         
         // Validaciones básicas
         if (!nombreVal || !cedulaVal || !celularVal || !direccionVal || !barrioVal || !departamentoVal || !ciudadVal || !metodoPagoVal) {
@@ -388,80 +391,102 @@ document.addEventListener("DOMContentLoaded", function () {
                                     console.log("🔍 DEBUG validaciones-compra.js - Ciudad no encontrada, usando costo por defecto");
                                     console.log("🔍 DEBUG validaciones-compra.js - Ciudades disponibles:", ciudadesData.ciudades.map(c => c.ciudad));
                                 }
-                            } else {
-                                console.log("🔍 DEBUG validaciones-compra.js - Error en datos de ciudades o no hay ciudades");
-                            }
-                            
-                            // Preparar datos para el pago
-                            const datosPago = {
-                                productos: data.relojes.map(reloj => ({
-                                    id: reloj.id_reloj,
-                                    nombre: reloj.nombre,
-                                    precio: reloj.precio_final,
-                                    precio_original: reloj.precio,
-                                    imagen: reloj.img,
-                                    cantidad: 1
-                                })),
-                                total: data.total,
-                                costo_envio: costoEnvio,
-                                datos_cliente: {
-                                    nombre: nombreVal,
-                                    cedula: cedulaVal,
-                                    celular: celularVal,
-                                    direccion: direccionVal,
-                                    barrio: barrioVal,
-                                    departamento: departamentoVal,
-                                    ciudad: ciudadVal,
-                                    correo: correoVal
-                                }
-                            };
-                            
-                            console.log("🔍 DEBUG validaciones-compra.js - Datos preparados:", datosPago);
-                            console.log("🔍 DEBUG validaciones-compra.js - Costo de envío final:", costoEnvio);
-                            
-                            // Guardar en localStorage
-                            localStorage.setItem("nequi_datos_pago", JSON.stringify(datosPago));
-                            console.log("🔍 DEBUG validaciones-compra.js - Datos guardados en localStorage");
-                            console.log("🔍 DEBUG validaciones-compra.js - Verificación localStorage:", JSON.parse(localStorage.getItem("nequi_datos_pago")));
-                            console.log("🔍 DEBUG validaciones-compra.js - Costo de envío en localStorage:", JSON.parse(localStorage.getItem("nequi_datos_pago")).costo_envio);
-                            
-                            // Redirigir según el método de pago
-                            if (metodoPagoVal === "nequi") {
-                                console.log("🔍 DEBUG validaciones-compra.js - Redirigiendo a pago_nequi-carrito.html");
-                                window.location.href = "pago_nequi-carrito.html";
-                            } else if (metodoPagoVal === "wompi") {
-                                console.log("🔍 DEBUG validaciones-compra.js - Procesando pago con Wompi");
-                                procesarPagoWompi(data);
-                            } else {
-                                console.log("🔍 DEBUG validaciones-compra.js - Método de pago no reconocido:", metodoPagoVal);
-                                alert("Método de pago no válido");
-                            }
+                              } else {
+                                  console.log("🔍 DEBUG validaciones-compra.js - Error en datos de ciudades o no hay ciudades");
+                              }
+                              
+                              // Preparar datos para el pago
+                              const datosPago = {
+                                  productos: data.relojes.map(reloj => ({
+                                      id: reloj.id_reloj,
+                                      id_reloj: reloj.id_reloj,
+                                      nombre: reloj.nombre,
+                                      precio: reloj.precio_final,
+                                      precio_original: reloj.precio,
+                                      imagen: reloj.img,
+                                      cantidad: 1
+                                  })),
+                                  total: data.total,
+                                  costo_envio: costoEnvio,
+                                  datos_cliente: {
+                                      nombre: nombreVal,
+                                      cedula: cedulaVal,
+                                      celular: celularVal,
+                                      direccion: direccionVal,
+                                      barrio: barrioVal,
+                                      departamento: departamentoVal,
+                                      ciudad: ciudadVal,
+                                      correo: correoVal,
+                                      referencias: referenciasVal
+                                  }
+                              };
+                              
+                              console.log("🔍 DEBUG validaciones-compra.js - Datos preparados:", datosPago);
+                              console.log("🔍 DEBUG validaciones-compra.js - Costo de envío final:", costoEnvio);
+                              
+                              // Guardar en localStorage
+                              localStorage.setItem("nequi_datos_pago", JSON.stringify(datosPago));
+                              console.log("🔍 DEBUG validaciones-compra.js - Datos guardados en localStorage");
+                              console.log("🔍 DEBUG validaciones-compra.js - Verificación localStorage:", JSON.parse(localStorage.getItem("nequi_datos_pago")));
+                              console.log("🔍 DEBUG validaciones-compra.js - Costo de envío en localStorage:", JSON.parse(localStorage.getItem("nequi_datos_pago")).costo_envio);
+                              
+                              // Redirigir según el método de pago
+                              if (metodoPagoVal === "nequi") {
+                                  console.log("🔍 DEBUG validaciones-compra.js - Redirigiendo a pago_nequi-carrito.html");
+                                  window.location.href = "pago_nequi-carrito.html";
+                              } else if (metodoPagoVal === "wompi") {
+                                  console.log("🔍 DEBUG validaciones-compra.js - Procesando pago con Wompi");
+                                  const payloadWompi = {
+                                      productos: datosPago.productos.map(producto => ({
+                                          id_reloj: producto.id_reloj,
+                                          precio: producto.precio,
+                                          cantidad: producto.cantidad
+                                      })),
+                                      costo_envio: costoEnvio,
+                                      nombre: nombreVal,
+                                      cedula: cedulaVal,
+                                      celular: celularVal,
+                                      direccion: direccionVal,
+                                      barrio: barrioVal,
+                                      departamento: departamentoVal,
+                                      ciudad: ciudadVal,
+                                      referencias: referenciasVal,
+                                      correo: correoVal,
+                                      metodo_pago: metodoPagoVal
+                                  };
+                                  procesarPagoWompi(payloadWompi);
+                              } else {
+                                  console.log("🔍 DEBUG validaciones-compra.js - Método de pago no reconocido:", metodoPagoVal);
+                                  alert("Método de pago no válido");
+                              }
                         })
                         .catch(error => {
                             console.error("🔍 DEBUG validaciones-compra.js - Error obteniendo costo de envío:", error);
                             // En caso de error, usar costo 0
-                            const datosPago = {
-                                productos: data.relojes.map(reloj => ({
-                                    id: reloj.id_reloj,
-                                    nombre: reloj.nombre,
-                                    precio: reloj.precio_final,
-                                    precio_original: reloj.precio,
-                                    imagen: reloj.img,
-                                    cantidad: 1
-                                })),
-                                total: data.total,
-                                costo_envio: 0,
-                                datos_cliente: {
-                                    nombre: nombreVal,
-                                    cedula: cedulaVal,
-                                    celular: celularVal,
-                                    direccion: direccionVal,
-                                    barrio: barrioVal,
-                                    departamento: departamentoVal,
-                                    ciudad: ciudadVal,
-                                    correo: correoVal
-                                }
-                            };
+                              const datosPago = {
+                                  productos: data.relojes.map(reloj => ({
+                                      id: reloj.id_reloj,
+                                      id_reloj: reloj.id_reloj,
+                                      nombre: reloj.nombre,
+                                      precio: reloj.precio_final,
+                                      precio_original: reloj.precio,
+                                      imagen: reloj.img,
+                                      cantidad: 1
+                                  })),
+                                  total: data.total,
+                                  costo_envio: 0,
+                                  datos_cliente: {
+                                      nombre: nombreVal,
+                                      cedula: cedulaVal,
+                                      celular: celularVal,
+                                      direccion: direccionVal,
+                                      barrio: barrioVal,
+                                      departamento: departamentoVal,
+                                      ciudad: ciudadVal,
+                                      correo: correoVal,
+                                      referencias: referenciasVal
+                                  }
+                              };
                             
                             localStorage.setItem("nequi_datos_pago", JSON.stringify(datosPago));
                             
