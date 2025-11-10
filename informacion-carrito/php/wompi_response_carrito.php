@@ -8,6 +8,7 @@
 
 session_start();
 include 'conexion.php';
+include '../../informacion/php/wompi_config.php';
 
 $LOG_FILE = __DIR__ . '/../../logs/wompi_flow.log';
 if (!file_exists(dirname($LOG_FILE))) {
@@ -28,6 +29,42 @@ $reference = $_GET['reference'] ?? '';
 $status = $_GET['status'] ?? '';
 
 wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] Params - ID: $transaction_id, Ref: $reference, Status: $status");
+
+// Fallback: usar referencia guardada en sesión (generada antes del checkout)
+if (empty($reference) && !empty($_SESSION['wompi_carrito_data']['referencia'])) {
+    $reference = $_SESSION['wompi_carrito_data']['referencia'];
+    wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] Referencia recuperada desde sesión: $reference");
+}
+
+// Fallback adicional: consultar a Wompi por transaction_id para obtener la referencia
+if (empty($reference) && !empty($transaction_id)) {
+    $transactionUrl = rtrim(getWompiBaseUrl(), '/') . '/transactions/' . urlencode($transaction_id);
+    wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] Buscando referencia via API: $transactionUrl");
+
+    $ch = curl_init($transactionUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer ' . WOMPI_PRIVATE_KEY,
+        'Accept: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+    $apiResponse = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    if ($apiResponse && $httpCode === 200) {
+        $decoded = json_decode($apiResponse, true);
+        $apiReference = $decoded['data']['reference'] ?? '';
+        wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] API reference: $apiReference");
+        if (!empty($apiReference)) {
+            $reference = $apiReference;
+        }
+    } else {
+        wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] Error consultando API de Wompi (HTTP $httpCode): $curlError");
+    }
+}
 
 // Si no hay parámetros, mostrar mensaje genérico
 if (empty($reference)) {
