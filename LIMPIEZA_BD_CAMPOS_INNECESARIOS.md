@@ -158,7 +158,7 @@ DROP TABLE IF EXISTS auditoria_pagos;
 
 **Para ejecutar:**
 ```
-http://127.0.0.1/finoso/database/ejecutar_eliminar_auditoria.php
+https://finoso.store/database/ejecutar_eliminar_auditoria.php
 ```
 
 ---
@@ -254,7 +254,7 @@ http://127.0.0.1/finoso/database/ejecutar_eliminar_auditoria.php
 3. Confirmar que la orden se cree correctamente
 
 ### Test 3: Ejecutar script de limpieza
-1. Acceder a `http://127.0.0.1/finoso/database/ejecutar_eliminar_auditoria.php`
+1. Acceder a `https://finoso.store/database/ejecutar_eliminar_auditoria.php`
 2. Verificar que la tabla `auditoria_pagos` se elimine
 3. Confirmar que `admin/debug_bd.php` funcione sin errores
 
@@ -435,7 +435,7 @@ DROP TABLE IF EXISTS auditoria_pagos;
 
 **Para ejecutar:**
 ```
-http://127.0.0.1/finoso/database/ejecutar_eliminar_auditoria.php
+https://finoso.store/database/ejecutar_eliminar_auditoria.php
 ```
 
 ---
@@ -531,7 +531,7 @@ http://127.0.0.1/finoso/database/ejecutar_eliminar_auditoria.php
 3. Confirmar que la orden se cree correctamente
 
 ### Test 3: Ejecutar script de limpieza
-1. Acceder a `http://127.0.0.1/finoso/database/ejecutar_eliminar_auditoria.php`
+1. Acceder a `https://finoso.store/database/ejecutar_eliminar_auditoria.php`
 2. Verificar que la tabla `auditoria_pagos` se elimine
 3. Confirmar que `admin/debug_bd.php` funcione sin errores
 

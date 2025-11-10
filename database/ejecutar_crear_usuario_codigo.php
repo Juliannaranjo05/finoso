@@ -4,7 +4,7 @@
  * Ejecuta las queries para crear la tabla de relación usuarios-códigos
  * 
  * IMPORTANTE: Ejecutar solo UNA VEZ
- * URL: http://127.0.0.1/finoso/database/ejecutar_crear_usuario_codigo.php
+ * URL: https://finoso.store/database/ejecutar_crear_usuario_codigo.php
  */
 
 error_reporting(E_ALL);

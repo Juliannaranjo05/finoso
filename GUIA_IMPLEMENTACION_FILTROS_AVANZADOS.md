@@ -16,7 +16,7 @@
 Para agregar datos específicos a los **primeros 4 relojes**:
 
 ```
-📍 URL: http://127.0.0.1/finoso/admin/agregar_datos_filtros_relojes.php
+📍 URL: https://finoso.store/admin/agregar_datos_filtros_relojes.php
 ```
 
 **Datos que agregará:**
@@ -38,7 +38,7 @@ Para agregar datos específicos a los **primeros 4 relojes**:
 Para agregar datos aleatorios a **TODOS los relojes**:
 
 ```
-📍 URL: http://127.0.0.1/finoso/admin/generar_datos_relojes_automatico.php
+📍 URL: https://finoso.store/admin/generar_datos_relojes_automatico.php
 ```
 
 **Configuración:**
@@ -67,7 +67,7 @@ Para agregar datos aleatorios a **TODOS los relojes**:
 Después de agregar datos, **verifica que se guardaron correctamente**:
 
 ```
-📍 URL: http://127.0.0.1/finoso/admin/verificar_campos_filtros.php
+📍 URL: https://finoso.store/admin/verificar_campos_filtros.php
 ```
 
 **Deberías ver algo como:**
@@ -412,7 +412,7 @@ cargarResistencias();
 
 ### **Test 1: Verificar que aparecen los filtros**
 ```
-1. Abre: http://127.0.0.1/finoso/catalogo/catalogo.html
+1. Abre: https://finoso.store/catalogo/catalogo.html
 2. Verifica que ves 5 filtros + botón "Limpiar Filtros"
 3. Abre cada filtro y verifica que tiene opciones
 ```

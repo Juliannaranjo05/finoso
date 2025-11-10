@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function cargarDepartamentos() {
         console.log("🔍 DEBUG validaciones-compra.js - Iniciando carga de departamentos");
         try {
-            const url = 'http://127.0.0.1/finoso/informacion/php/obtener_ciudades.php?action=departamentos';
+            const url = 'https://finoso.store/informacion/php/obtener_ciudades.php?action=departamentos';
             console.log("🔍 DEBUG validaciones-compra.js - URL:", url);
             
             const response = await fetch(url);
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            const url = `http://127.0.0.1/finoso/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${encodeURIComponent(departamento)}`;
+            const url = `https://finoso.store/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${encodeURIComponent(departamento)}`;
             console.log("🔍 DEBUG validaciones-compra.js - URL ciudades:", url);
             
             const response = await fetch(url);
@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("💰 Total:", totalPago);
             
             // Obtener costo de envío basado en la ciudad seleccionada
-            fetch(`http://127.0.0.1/finoso/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${departamentoVal}`)
+            fetch(`https://finoso.store/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${departamentoVal}`)
                 .then(response => response.json())
                 .then(ciudadesData => {
                     let costoEnvio = 0;
@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("🛒 Cargando desde CARRITO (base de datos)");
             
             // Obtener datos del carrito desde la base de datos
-            fetch('http://127.0.0.1/finoso/php/mostrar_carrito.php')
+            fetch('https://finoso.store/php/mostrar_carrito.php')
                 .then(response => response.json())
                 .then(data => {
                     console.log("🛒 Datos del carrito:", data);
@@ -825,7 +825,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (metodoPagoInput.value === "wompi") {
             procesarPagoWompi(data);
         } else if (metodoPagoInput.value === "mercado_pago") {
-            fetch("http://127.0.0.1/finoso/informacion/php/crear_preferencia.php", {
+            fetch("https://finoso.store/informacion/php/crear_preferencia.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
@@ -920,7 +920,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("✅ Subtotal redondeado:", data.subtotal);
 
 
-                    return fetch("http://127.0.0.1/finoso/informacion-carrito/php/crear_pago_nequi.php", {
+                    return fetch("https://finoso.store/informacion-carrito/php/crear_pago_nequi.php", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(data)
@@ -971,7 +971,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("🔍 DEBUG validaciones-compra.js - Iniciando pago con Wompi para carrito");
         
         // Crear transacción con Wompi
-        fetch("http://127.0.0.1/finoso/informacion-carrito/php/crear_transaccion_wompi_carrito.php", {
+        fetch("https://finoso.store/informacion-carrito/php/crear_transaccion_wompi_carrito.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
@@ -1021,13 +1021,13 @@ document.addEventListener("DOMContentLoaded", function () {
 // (permite compras anónimas desde favoritos)
 /*
 function verificarSesion() {
-    fetch("http://127.0.0.1/finoso/login/php/verificar_sesion.php")
+    fetch("https://finoso.store/login/php/verificar_sesion.php")
         .then(res => res.json())
         .then(data => {
             if (!data.logged_in) {
                 // Si no hay sesión, redirigir al login
                 alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
-                window.location.href = 'http://127.0.0.1/finoso/login/login.html';
+                window.location.href = 'https://finoso.store/login/login.html';
                 return;
             }
             console.log("🔍 DEBUG validaciones-compra.js - Sesión verificada correctamente");
@@ -1035,7 +1035,7 @@ function verificarSesion() {
         .catch(err => {
             console.error('Error al verificar sesión:', err);
             // En caso de error, redirigir al login por seguridad
-            window.location.href = 'http://127.0.0.1/finoso/login/login.html';
+            window.location.href = 'https://finoso.store/login/login.html';
         });
 }
 */

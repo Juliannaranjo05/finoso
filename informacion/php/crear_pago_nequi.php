@@ -33,7 +33,7 @@ $nombre_reloj = $row['nombre'];
 $precio_original = floatval($row['precio']);
 $descuento_bd = floatval($row['descuento']);
 $marca = $row['marca'];
-$img = 'http://127.0.0.1/finoso/' . ltrim($row['img'], '/');
+$img = 'https://finoso.store/' . ltrim($row['img'], '/');
 
 // 🔎 Depuración de precio antes de corrección
 error_log("💰 Precio original leído de BD: {$precio_original}");

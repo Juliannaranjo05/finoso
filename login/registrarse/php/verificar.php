@@ -6,7 +6,7 @@ include 'conexion.php';
 <head>
     <meta charset="UTF-8">
     <title>Verificación de Cuenta</title>
-    <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
+    <link rel="icon" href="https://finoso.store/img/finoso_logo.png" type="image/x-icon">
     <style>
         body {
             background-color: #090909;
@@ -42,7 +42,7 @@ include 'conexion.php';
             mysqli_query($conn, $update);
             ?>
             <div class="gif-container">
-                <img src="http://127.0.0.1/finoso/img/check.gif" alt="Verificado">
+                <img src="https://finoso.store/img/check.gif" alt="Verificado">
                 <div class="mensaje">¡Tu cuenta ha sido verificada!</div>
             </div>
             <?php

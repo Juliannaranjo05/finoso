@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const params = new URLSearchParams(window.location.search);
         const idReloj = params.get('id_reloj');
 
-        fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php')
+        fetch('https://finoso.store/login/php/verificar_sesion.php')
             .then(res => res.json())
             .then(data => {
                 if (!data.logged_in) {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                fetch('http://127.0.0.1/finoso/informacion/php/añadir_al_carrito.php', {
+                fetch('https://finoso.store/informacion/php/añadir_al_carrito.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

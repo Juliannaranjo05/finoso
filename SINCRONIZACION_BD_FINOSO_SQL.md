@@ -23,7 +23,7 @@ Se crearon **3 herramientas** para facilitarte la comparación y sincronización
 
 **Cómo usarlo:**
 ```
-http://127.0.0.1/finoso/database/comparar_estructura_bd.php
+https://finoso.store/database/comparar_estructura_bd.php
 ```
 
 **Salida:** Página HTML detallada con toda la estructura
@@ -42,7 +42,7 @@ http://127.0.0.1/finoso/database/comparar_estructura_bd.php
 
 **Cómo usarlo:**
 ```
-http://127.0.0.1/finoso/database/exportar_estructura_sql.php
+https://finoso.store/database/exportar_estructura_sql.php
 ```
 
 **Salida:** Archivo SQL descargable + Preview en pantalla
@@ -54,7 +54,7 @@ http://127.0.0.1/finoso/database/exportar_estructura_sql.php
 
 **Cómo acceder:**
 ```
-http://127.0.0.1/finoso/database/
+https://finoso.store/database/
 ```
 
 **Incluye:**
@@ -71,7 +71,7 @@ http://127.0.0.1/finoso/database/
 
 Accede a:
 ```
-http://127.0.0.1/finoso/database/comparar_estructura_bd.php
+https://finoso.store/database/comparar_estructura_bd.php
 ```
 
 **Qué revisar:**
@@ -87,7 +87,7 @@ http://127.0.0.1/finoso/database/comparar_estructura_bd.php
 
 Accede a:
 ```
-http://127.0.0.1/finoso/database/exportar_estructura_sql.php
+https://finoso.store/database/exportar_estructura_sql.php
 ```
 
 1. Click en **"⬇️ Descargar estructura_actual_[timestamp].sql"**
@@ -250,7 +250,7 @@ AFTER comprobante_verificado;
 
 2. **Ejecutar cada script:**
    ```
-   http://127.0.0.1/finoso/database/ejecutar_[nombre_script].php
+   https://finoso.store/database/ejecutar_[nombre_script].php
    ```
 
 3. **Verificar resultado:**
@@ -265,7 +265,7 @@ Una vez que tu BD actual esté **correcta y limpia**:
 
 1. Exporta la estructura final:
    ```
-   http://127.0.0.1/finoso/database/exportar_estructura_sql.php
+   https://finoso.store/database/exportar_estructura_sql.php
    ```
 
 2. Descarga el archivo generado
@@ -402,7 +402,7 @@ Usa este checklist para asegurar que todo esté correcto:
 
 **Paso 1:**
 ```
-http://127.0.0.1/finoso/database/
+https://finoso.store/database/
 ```
 
 **Paso 2:**
@@ -443,7 +443,7 @@ Se crearon **3 herramientas** para facilitarte la comparación y sincronización
 
 **Cómo usarlo:**
 ```
-http://127.0.0.1/finoso/database/comparar_estructura_bd.php
+https://finoso.store/database/comparar_estructura_bd.php
 ```
 
 **Salida:** Página HTML detallada con toda la estructura
@@ -462,7 +462,7 @@ http://127.0.0.1/finoso/database/comparar_estructura_bd.php
 
 **Cómo usarlo:**
 ```
-http://127.0.0.1/finoso/database/exportar_estructura_sql.php
+https://finoso.store/database/exportar_estructura_sql.php
 ```
 
 **Salida:** Archivo SQL descargable + Preview en pantalla
@@ -474,7 +474,7 @@ http://127.0.0.1/finoso/database/exportar_estructura_sql.php
 
 **Cómo acceder:**
 ```
-http://127.0.0.1/finoso/database/
+https://finoso.store/database/
 ```
 
 **Incluye:**
@@ -491,7 +491,7 @@ http://127.0.0.1/finoso/database/
 
 Accede a:
 ```
-http://127.0.0.1/finoso/database/comparar_estructura_bd.php
+https://finoso.store/database/comparar_estructura_bd.php
 ```
 
 **Qué revisar:**
@@ -507,7 +507,7 @@ http://127.0.0.1/finoso/database/comparar_estructura_bd.php
 
 Accede a:
 ```
-http://127.0.0.1/finoso/database/exportar_estructura_sql.php
+https://finoso.store/database/exportar_estructura_sql.php
 ```
 
 1. Click en **"⬇️ Descargar estructura_actual_[timestamp].sql"**
@@ -670,7 +670,7 @@ AFTER comprobante_verificado;
 
 2. **Ejecutar cada script:**
    ```
-   http://127.0.0.1/finoso/database/ejecutar_[nombre_script].php
+   https://finoso.store/database/ejecutar_[nombre_script].php
    ```
 
 3. **Verificar resultado:**
@@ -685,7 +685,7 @@ Una vez que tu BD actual esté **correcta y limpia**:
 
 1. Exporta la estructura final:
    ```
-   http://127.0.0.1/finoso/database/exportar_estructura_sql.php
+   https://finoso.store/database/exportar_estructura_sql.php
    ```
 
 2. Descarga el archivo generado
@@ -822,7 +822,7 @@ Usa este checklist para asegurar que todo esté correcto:
 
 **Paso 1:**
 ```
-http://127.0.0.1/finoso/database/
+https://finoso.store/database/
 ```
 
 **Paso 2:**

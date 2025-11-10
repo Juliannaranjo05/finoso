@@ -69,7 +69,7 @@ https://finoso.com/catalogo/catalogo.html
 Ejecuta este script **UNA SOLA VEZ**:
 
 ```
-http://127.0.0.1/finoso/database/ejecutar_add_recordatorio.php
+https://finoso.store/database/ejecutar_add_recordatorio.php
 ```
 
 Esto agregará la columna `recordatorio_enviado` a la tabla `orden`.
@@ -81,7 +81,7 @@ Esto agregará la columna `recordatorio_enviado` a la tabla `orden`.
 Antes de automatizar, prueba que funcione:
 
 ```
-http://127.0.0.1/finoso/admin/test_recordatorio_rechazada.html
+https://finoso.store/admin/test_recordatorio_rechazada.html
 ```
 
 **Para probar necesitas:**
@@ -153,7 +153,7 @@ WHERE id_orden = 3;
 
 ### **Enviar recordatorio:**
 ```
-http://127.0.0.1/finoso/admin/test_recordatorio_rechazada.html
+https://finoso.store/admin/test_recordatorio_rechazada.html
 → Clic en "Enviar Recordatorios Ahora"
 ```
 

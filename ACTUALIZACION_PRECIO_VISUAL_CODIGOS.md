@@ -149,7 +149,7 @@ Este documento
 ### **PASO 1: Crear la tabla en BD**
 
 ```
-http://127.0.0.1/finoso/database/ejecutar_crear_descuentos_aplicados.php
+https://finoso.store/database/ejecutar_crear_descuentos_aplicados.php
 ```
 
 Deberías ver: ✅ "Instalación Exitosa"
@@ -280,7 +280,7 @@ WHERE expira_en < NOW()
 
 ### **Ver logs:**
 ```
-http://127.0.0.1/finoso/admin/ver_logs_debug.php
+https://finoso.store/admin/ver_logs_debug.php
 ```
 
 ### **Buscar:**

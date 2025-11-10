@@ -14,7 +14,7 @@ Se creó un **sistema de logs propio** dentro del proyecto que escribe directame
 
 Abre en tu navegador:
 ```
-http://127.0.0.1/finoso/admin/test_logger.php
+https://finoso.store/admin/test_logger.php
 ```
 
 **¿Qué deberías ver?**
@@ -32,7 +32,7 @@ http://127.0.0.1/finoso/admin/test_logger.php
 
 Abre:
 ```
-http://127.0.0.1/finoso/database/ejecutar_crear_usuario_codigo.php
+https://finoso.store/database/ejecutar_crear_usuario_codigo.php
 ```
 
 **¿Qué deberías ver?**
@@ -48,7 +48,7 @@ http://127.0.0.1/finoso/database/ejecutar_crear_usuario_codigo.php
 
 Abre:
 ```
-http://127.0.0.1/finoso/database/resetear_relojes_prueba.php
+https://finoso.store/database/resetear_relojes_prueba.php
 ```
 
 **¿Qué hace?**
@@ -63,7 +63,7 @@ http://127.0.0.1/finoso/database/resetear_relojes_prueba.php
 
 Abre en otra pestaña (déjala abierta):
 ```
-http://127.0.0.1/finoso/admin/ver_logs_debug.php
+https://finoso.store/admin/ver_logs_debug.php
 ```
 
 **Características:**
@@ -77,7 +77,7 @@ http://127.0.0.1/finoso/admin/ver_logs_debug.php
 ### 5️⃣ **HACER LA COMPRA DE PRUEBA**
 
 1. **Inicia sesión** en tu sitio con un usuario
-2. **Ve al catálogo**: http://127.0.0.1/finoso/catalogo/catalogo.html
+2. **Ve al catálogo**: https://finoso.store/catalogo/catalogo.html
 3. **Verifica que aparezcan los 4 relojes** disponibles
 4. **Agrega uno al carrito**
 5. **Completa la compra con Nequi**
@@ -87,7 +87,7 @@ http://127.0.0.1/finoso/admin/ver_logs_debug.php
 
 ### 6️⃣ **APROBAR LA ORDEN**
 
-1. **Ve al panel admin**: http://127.0.0.1/finoso/admin/panel.php
+1. **Ve al panel admin**: https://finoso.store/admin/panel.php
 2. **Busca la orden pendiente**
 3. **Haz clic en "Aprobar"**
 
@@ -99,7 +99,7 @@ http://127.0.0.1/finoso/admin/ver_logs_debug.php
 
 **Ve al visor de logs** (que dejaste abierto):
 ```
-http://127.0.0.1/finoso/admin/ver_logs_debug.php
+https://finoso.store/admin/ver_logs_debug.php
 ```
 
 **🔍 BUSCA ESTAS LÍNEAS:**
@@ -149,7 +149,7 @@ http://127.0.0.1/finoso/admin/ver_logs_debug.php
 
 ### 8️⃣ **VERIFICAR EN EL PERFIL DEL USUARIO**
 
-1. **Ve al perfil**: http://127.0.0.1/finoso/perfil/perfil.html
+1. **Ve al perfil**: https://finoso.store/perfil/perfil.html
 2. **Busca la sección**: "🎟️ Mis Códigos de Descuento"
 3. **Deberías ver**:
    - El código generado (ej: FINAB12CD)
@@ -203,7 +203,7 @@ icacls logs /grant Everyone:F
 **Mensaje:** `Table 'usuario_codigo_descuento' doesn't exist`
 
 **Solución:**
-Ejecuta de nuevo: http://127.0.0.1/finoso/database/ejecutar_crear_usuario_codigo.php
+Ejecuta de nuevo: https://finoso.store/database/ejecutar_crear_usuario_codigo.php
 
 ---
 

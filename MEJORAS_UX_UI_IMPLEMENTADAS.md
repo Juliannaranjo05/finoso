@@ -139,7 +139,7 @@ copy catalogo\php\mostrar_relojes.php.backup catalogo\php\mostrar_relojes.php /Y
 
 ### **1. Abre el catálogo:**
 ```
-http://127.0.0.1/finoso/catalogo/catalogo.html
+https://finoso.store/catalogo/catalogo.html
 ```
 
 ### **2. Verifica Grid:**

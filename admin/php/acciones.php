@@ -346,7 +346,7 @@ try {
                             $total = $orden_correo['total'];
                             $diferencia = $total - $monto_pagado;
                             $token_orden = $orden_correo['token_verificacion'];
-                            $urlRecuperacion = "http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden={$id_orden}&token={$token_orden}";
+                            $urlRecuperacion = "https://finoso.store/informacion/recuperar_pago.html?orden={$id_orden}&token={$token_orden}";
                             
                             $body = '<div style="font-family: Arial, sans-serif; color:#222; max-width: 600px; margin: 0 auto;">'
                                   . '<div style="background: linear-gradient(135deg, #FFCF66 0%, #FFB84D 100%); padding: 20px; border-radius: 12px 12px 0 0;">'
@@ -437,7 +437,7 @@ try {
                                 $diferencia = $orden_data['total'] - $monto_pagado;
                                 $datosWhatsApp['monto_pagado'] = $monto_pagado;
                                 $datosWhatsApp['diferencia'] = $diferencia;
-                                $datosWhatsApp['url_recuperacion'] = "http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden={$id_orden}&token={$orden_data['token_verificacion']}";
+                                $datosWhatsApp['url_recuperacion'] = "https://finoso.store/informacion/recuperar_pago.html?orden={$id_orden}&token={$orden_data['token_verificacion']}";
                             }
                             
                             $mensaje = WhatsAppTemplates::ordenRechazada($datosWhatsApp);

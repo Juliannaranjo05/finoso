@@ -16,7 +16,7 @@ document.getElementById("olvidarForm").addEventListener("submit", async function
     mensaje.innerText = "";
     mensaje.style.display = "none";
 
-    const response = await fetch("http://127.0.0.1/finoso/login/php/enviar_reset_password.php", {
+    const response = await fetch("https://finoso.store/login/php/enviar_reset_password.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

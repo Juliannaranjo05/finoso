@@ -56,19 +56,19 @@ document.addEventListener('DOMContentLoaded', function() {
 // (permite compras anónimas desde favoritos)
 /*
 function verificarSesion() {
-    fetch("http://127.0.0.1/finoso/login/php/verificar_sesion.php")
+    fetch("https://finoso.store/login/php/verificar_sesion.php")
         .then(res => res.json())
         .then(data => {
             if (!data.logged_in) {
                 alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
-                window.location.href = 'http://127.0.0.1/finoso/login/login.html';
+                window.location.href = 'https://finoso.store/login/login.html';
                 return;
             }
             console.log("Sesión verificada correctamente");
         })
         .catch(err => {
             console.error('Error al verificar sesión:', err);
-            window.location.href = 'http://127.0.0.1/finoso/login/login.html';
+            window.location.href = 'https://finoso.store/login/login.html';
         });
 }
 */
@@ -115,11 +115,11 @@ function verificarSesion() {
 ## 🧪 PRUEBA COMPLETA
 
 1. **Cerrar todas las sesiones activas:**
-   - Ir a: `http://127.0.0.1/finoso/login/php/cerrar_sesion.php`
+   - Ir a: `https://finoso.store/login/php/cerrar_sesion.php`
    - O abrir en modo incógnito
 
 2. **Agregar favoritos:**
-   - Ir a: `http://127.0.0.1/finoso/catalogo/catalogo.html`
+   - Ir a: `https://finoso.store/catalogo/catalogo.html`
    - Clic en ⭐ en 2-3 relojes
    - Verificar que el contador sube
 

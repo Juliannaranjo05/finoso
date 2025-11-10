@@ -167,7 +167,7 @@ class WhatsAppTemplates {
         $mensaje .= "💬 ¿Necesitas ayuda?\n" .
                    "Responde este mensaje y te asistimos 😊\n\n" .
                    "🛒 Volver a comprar:\n" .
-                   "http://127.0.0.1/finoso/catalogo/catalogo.html";
+                   "https://finoso.store/catalogo/catalogo.html";
         
         return $mensaje;
     }

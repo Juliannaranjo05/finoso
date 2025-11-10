@@ -20,7 +20,7 @@ El formulario de pago Nequi en `informacion-favoritos/pago_nequi-carrito.html` e
 
 ```html
 <!-- ❌ ANTES (INCORRECTO) -->
-<form action="http://127.0.0.1/finoso/informacion-carrito/php/subir_comprobante-carrito.php">
+<form action="https://finoso.store/informacion-carrito/php/subir_comprobante-carrito.php">
 ```
 
 Esto causaba que:
@@ -31,7 +31,7 @@ Esto causaba que:
 
 ```html
 <!-- ✅ AHORA (CORRECTO) -->
-<form action="http://127.0.0.1/finoso/informacion-favoritos/php/subir_comprobante-carrito.php">
+<form action="https://finoso.store/informacion-favoritos/php/subir_comprobante-carrito.php">
 ```
 
 ### Error #2: Clave de Array Incorrecta
@@ -150,7 +150,7 @@ El formulario de pago Nequi en `informacion-favoritos/pago_nequi-carrito.html` e
 
 ```html
 <!-- ❌ ANTES (INCORRECTO) -->
-<form action="http://127.0.0.1/finoso/informacion-carrito/php/subir_comprobante-carrito.php">
+<form action="https://finoso.store/informacion-carrito/php/subir_comprobante-carrito.php">
 ```
 
 Esto causaba que:
@@ -161,7 +161,7 @@ Esto causaba que:
 
 ```html
 <!-- ✅ AHORA (CORRECTO) -->
-<form action="http://127.0.0.1/finoso/informacion-favoritos/php/subir_comprobante-carrito.php">
+<form action="https://finoso.store/informacion-favoritos/php/subir_comprobante-carrito.php">
 ```
 
 ### Error #2: Clave de Array Incorrecta

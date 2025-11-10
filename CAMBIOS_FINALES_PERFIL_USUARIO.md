@@ -187,7 +187,7 @@ Completa el pago
 ## 🧪 Cómo Probar
 
 ### 1. Orden Rechazada
-1. Ve a tu perfil: `http://127.0.0.1/finoso/perfil/perfil.html`
+1. Ve a tu perfil: `https://finoso.store/perfil/perfil.html`
 2. Tab "Mis Compras"
 3. Busca orden rechazada (ej: #7)
 

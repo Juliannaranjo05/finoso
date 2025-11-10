@@ -70,8 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Enviar petición fetch con datos JSON
-        console.log("🚀 Enviando petición a:", 'http://127.0.0.1/finoso/login/php/login.php');
-        fetch('http://127.0.0.1/finoso/login/php/login.php', {
+        console.log("🚀 Enviando petición a:", 'https://finoso.store/login/php/login.php');
+        fetch('https://finoso.store/login/php/login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

@@ -164,13 +164,13 @@ informacion/php/
 ### **Preparación:**
 ```bash
 1. Ctrl+F5 (limpiar cache)
-2. Cerrar sesión: http://127.0.0.1/finoso/login/php/cerrar_sesion.php
+2. Cerrar sesión: https://finoso.store/login/php/cerrar_sesion.php
 3. O usar ventana de incógnito
 ```
 
 ### **Prueba paso a paso:**
 ```bash
-1. Ir a: http://127.0.0.1/finoso/catalogo/catalogo.html
+1. Ir a: https://finoso.store/catalogo/catalogo.html
 2. ✅ Verificar que aparece ⭐ en el nav (solo sin sesión)
 3. ✅ Agregar 2-3 relojes a favoritos (clic en ⭐ de cada tarjeta)
 4. ✅ Contador debe subir: ⭐ 3

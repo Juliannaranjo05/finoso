@@ -56,7 +56,7 @@ MARTES 22 OCT - 2:00 PM
 ## 🛠️ **CÓMO FUNCIONA EL SISTEMA**
 
 ### **1. Admin Rechaza Orden**
-- Va a: `http://127.0.0.1/finoso/admin/panel.php`
+- Va a: `https://finoso.store/admin/panel.php`
 - Busca la orden pendiente
 - Clic en **"❌ Rechazar"**
 - Escribe el motivo (ej: "Monto incorrecto en comprobante")
@@ -230,7 +230,7 @@ VALUES ('Test User', 'test@test.com', '3001234567', 100000, 'rechazado', 'Prueba
 
 **Ejecutar script manualmente:**
 ```
-http://127.0.0.1/finoso/admin/test_recordatorio_rechazada.html
+https://finoso.store/admin/test_recordatorio_rechazada.html
 ```
 
 **Verificar:**

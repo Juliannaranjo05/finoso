@@ -169,7 +169,7 @@ El icono de favoritos (⭐) no coincidía exactamente en tamaño y borde con los
 
 ### **1. Verificar ajustes de diseño:**
 ```bash
-1. Ir a: http://127.0.0.1/finoso/catalogo/catalogo.html
+1. Ir a: https://finoso.store/catalogo/catalogo.html
 2. Sin sesión
 3. Ver iconos en nav: 👤 ⭐ 🛒
 4. ✅ Los 3 iconos deben tener tamaño similar
@@ -179,7 +179,7 @@ El icono de favoritos (⭐) no coincidía exactamente en tamaño y borde con los
 
 ### **2. Probar en index.html:**
 ```bash
-1. Ir a: http://127.0.0.1/finoso/index.html
+1. Ir a: https://finoso.store/index.html
 2. Sin sesión
 3. ✅ Icono ⭐ visible en nav
 4. Agregar favoritos desde catálogo

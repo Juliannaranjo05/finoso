@@ -44,7 +44,7 @@ if (origenCompra === 'favoritos') {
 // 3️⃣ SI ES CARRITO NORMAL
 else {
     // ✅ Fetch a la base de datos como siempre
-    fetch('http://127.0.0.1/finoso/php/mostrar_carrito.php')
+    fetch('https://finoso.store/php/mostrar_carrito.php')
         .then(...)
 }
 ```
@@ -110,7 +110,7 @@ else {
 **Antes:**
 ```javascript
 // ❌ Siempre consultaba la base de datos
-fetch('http://127.0.0.1/finoso/php/mostrar_carrito.php')
+fetch('https://finoso.store/php/mostrar_carrito.php')
     .then(...)
 ```
 

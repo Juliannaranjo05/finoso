@@ -280,7 +280,7 @@ if (!haySession()) {
 ### **Detección de Sesión:**
 ```javascript
 // Verifica con el servidor
-fetch('http://127.0.0.1/finoso/admin/check_session.php')
+fetch('https://finoso.store/admin/check_session.php')
     .then(res => res.json())
     .then(data => {
         if (data.logged_in) {
@@ -295,7 +295,7 @@ fetch('http://127.0.0.1/finoso/admin/check_session.php')
 ```javascript
 // Para cada ID, fetch individual
 const productosPromises = idsRelojes.map(idReloj => 
-    fetch(`http://127.0.0.1/finoso/admin/php/obtener_reloj.php?id=${idReloj}`)
+    fetch(`https://finoso.store/admin/php/obtener_reloj.php?id=${idReloj}`)
 );
 
 const relojes = await Promise.all(productosPromises);

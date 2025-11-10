@@ -20,7 +20,7 @@
 
 Abre en tu navegador:
 ```
-http://127.0.0.1/finoso/database/ejecutar_agregar_monto_pagado.php
+https://finoso.store/database/ejecutar_agregar_monto_pagado.php
 ```
 
 Esto agregará automáticamente las columnas:
@@ -41,7 +41,7 @@ Esto agregará automáticamente las columnas:
 
 1. **Abrir perfil de usuario:**
    ```
-   http://127.0.0.1/finoso/perfil/perfil.html
+   https://finoso.store/perfil/perfil.html
    ```
 
 2. **Ya NO debe aparecer:**

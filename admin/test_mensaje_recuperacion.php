@@ -90,7 +90,7 @@ $datosConRecuperacion = [
     'motivo_rechazo' => 'El monto del comprobante no coincide con el total del pedido. Pagaste $15.000 pero el total es $117.000',
     'monto_pagado' => 15000,
     'diferencia' => 102000,
-    'url_recuperacion' => 'http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden=6'
+    'url_recuperacion' => 'https://finoso.store/informacion/recuperar_pago.html?orden=6'
 ];
 
 $mensajeConRecuperacion = WhatsAppTemplates::ordenRechazada($datosConRecuperacion);
@@ -170,7 +170,7 @@ echo "<h1>🧪 Cómo Probar en Tiempo Real</h1>";
 echo "<div class='info'>";
 echo "<h3>Paso 1: Rechaza una orden con monto pagado</h3>";
 echo "<ol>";
-echo "<li>Ve al panel de admin: <a href='http://127.0.0.1/finoso/admin/panel.php' target='_blank'>panel.php</a></li>";
+echo "<li>Ve al panel de admin: <a href='https://finoso.store/admin/panel.php' target='_blank'>panel.php</a></li>";
 echo "<li>Busca una orden pendiente (ej: orden #6)</li>";
 echo "<li>Click en 'Rechazar'</li>";
 echo "<li>Selecciona: <strong>'El monto del comprobante no coincide...'</strong></li>";
@@ -208,9 +208,9 @@ echo "</div>";
 echo "<div class='container'>";
 echo "<h1>🔗 Enlaces Útiles</h1>";
 echo "<ul>";
-echo "<li><a href='http://127.0.0.1/finoso/admin/panel.php'>Panel de Admin</a></li>";
-echo "<li><a href='http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden=6'>Página de Recuperación (ejemplo orden #6)</a></li>";
-echo "<li><a href='http://127.0.0.1/finoso/perfil/perfil.html'>Perfil de Usuario</a></li>";
+echo "<li><a href='https://finoso.store/admin/panel.php'>Panel de Admin</a></li>";
+echo "<li><a href='https://finoso.store/informacion/recuperar_pago.html?orden=6'>Página de Recuperación (ejemplo orden #6)</a></li>";
+echo "<li><a href='https://finoso.store/perfil/perfil.html'>Perfil de Usuario</a></li>";
 echo "</ul>";
 echo "</div>";
 

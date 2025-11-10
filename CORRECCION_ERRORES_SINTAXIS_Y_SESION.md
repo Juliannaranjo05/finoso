@@ -72,7 +72,7 @@ function generateParticles() {
 ```javascript
 // Si el método es Nequi, verificar si hay sesión
 if (img.dataset.metodo === "nequi") {
-    fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+    fetch("https://finoso.store/informacion/php/verificar_sesion.php")
         .then(res => res.json())
         .then(respuesta => {
             if (respuesta.logged_in) {
@@ -105,7 +105,7 @@ if (img.dataset.metodo === "nequi") {
 ```javascript
 // Si el método es Nequi, verificar si hay sesión
 if (img.dataset.metodo === "nequi") {
-    fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+    fetch("https://finoso.store/informacion/php/verificar_sesion.php")
         .then(res => res.json())
         .then(respuesta => {
             if (respuesta.logged_in) {
@@ -137,7 +137,7 @@ if (img.dataset.metodo === "nequi") {
 **Antes:**
 ```javascript
 // Verificamos sesión para saber si ya tenemos el correo del usuario
-fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+fetch("https://finoso.store/informacion/php/verificar_sesion.php")
     .then(res => res.json())
     .then(sesion => {
         if (sesion.logged_in && sesion.correo) {

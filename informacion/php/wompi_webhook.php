@@ -311,7 +311,7 @@ function procesarTransaccionAprobada($transactionData, $conn) {
                         </div>
                         
                         <p style='text-align: center; margin-top: 30px;'>
-                            <a href='http://127.0.0.1/finoso/perfil/perfil.html' style='background: linear-gradient(135deg, #FFCF66 0%, #FFB84D 100%); color: #000; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>Ver Mi Perfil</a>
+                            <a href='https://finoso.store/perfil/perfil.html' style='background: linear-gradient(135deg, #FFCF66 0%, #FFB84D 100%); color: #000; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>Ver Mi Perfil</a>
                         </p>
                         
                         <p style='color: #999; font-size: 12px; text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;'>
@@ -346,7 +346,7 @@ function procesarTransaccionAprobada($transactionData, $conn) {
                             <h3 style='color: #856404; margin: 0 0 10px 0; font-size: 18px;'>💡 ¿Sabías que?</h3>
                             <p style='color: #856404; margin: 0;'>Al crear una cuenta, recibes <strong>códigos de descuento</strong> en cada compra. ¡Regístrate ahora!</p>
                             <p style='text-align: center; margin-top: 15px;'>
-                                <a href='http://127.0.0.1/finoso/login/registrarse/registrarse.html' style='background: #ffc107; color: #000; padding: 12px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>Crear Cuenta Gratis</a>
+                                <a href='https://finoso.store/login/registrarse/registrarse.html' style='background: #ffc107; color: #000; padding: 12px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;'>Crear Cuenta Gratis</a>
                             </p>
                         </div>
                         

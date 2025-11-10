@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    fetch(`http://127.0.0.1/finoso/informacion/php/obtener_reloj.php?id_reloj=${relojId}`)
+    fetch(`https://finoso.store/informacion/php/obtener_reloj.php?id_reloj=${relojId}`)
         .then(res => {
             if (!res.ok) {
                 throw new Error(`Error HTTP: ${res.status} - ${res.statusText}`);
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.contenedor-general-informacion').innerHTML = "<p>Error al cargar la información del reloj.</p>";
         });
 
-        fetch(`http://127.0.0.1/finoso/informacion/php/obtener_relacionados.php?id_reloj=${relojId}`)
+        fetch(`https://finoso.store/informacion/php/obtener_relacionados.php?id_reloj=${relojId}`)
             .then(res => {
                 if (!res.ok) {
                     throw new Error(`Error HTTP: ${res.status} - ${res.statusText}`);

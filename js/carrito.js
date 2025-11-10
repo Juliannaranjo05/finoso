@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función para verificar sesión
     function verificarSesion() {
-        return fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php')
+        return fetch('https://finoso.store/login/php/verificar_sesion.php')
             .then(res => res.json())
             .then(data => {
                 sesionIniciada = data.logged_in;
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         iconoCarrito.addEventListener('click', () => {
             if (!sesionIniciada) {
                 alert('No has iniciado sesión');
-                window.location.href = 'http://127.0.0.1/finoso/login/login.html';
+                window.location.href = 'https://finoso.store/login/login.html';
                 return;
             }
             cuadroCarrito.style.display = 'grid';
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function cargarCarrito() {
         console.log('🔍 DEBUG carrito.js - Iniciando cargarCarrito()');
         console.log('🔍 DEBUG carrito.js - URL:', window.location.href);
-        fetch('http://127.0.0.1/finoso/php/mostrar_carrito.php', {
+        fetch('https://finoso.store/php/mostrar_carrito.php', {
             credentials: 'include'
         })
             .then(res => {
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         contenedor.innerHTML += `
                             <div class="cuadro-info-reloj-carrito">
                                 <div class="img-reloj-carrito">
-                                    <img src="http://127.0.0.1/finoso/${reloj.img}" alt="">
+                                    <img src="https://finoso.store/${reloj.img}" alt="">
                                 </div>
                                 <div class="nombre-precio-carrito">
                                     <div class="nombre-carrito">
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     contenedor.querySelectorAll('.boton-eliminar button').forEach(button => {
                         button.addEventListener('click', () => {
                             const id = button.getAttribute('data-id');
-                            fetch('http://127.0.0.1/finoso/php/eliminar_del_carrito.php', {
+                            fetch('https://finoso.store/php/eliminar_del_carrito.php', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                                 body: `id_reloj=${id}`,
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Validar disponibilidad de todos los relojes del carrito
-            const response = await fetch('http://127.0.0.1/finoso/php/validar_disponibilidad_carrito.php');
+            const response = await fetch('https://finoso.store/php/validar_disponibilidad_carrito.php');
             const data = await response.json();
 
             if (!data.success && data.relojes_vendidos && data.relojes_vendidos.length > 0) {
@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Todo OK, continuar a finalizar compra
-            window.location.href = 'http://127.0.0.1/finoso/informacion-carrito/informacion-carrito.html';
+            window.location.href = 'https://finoso.store/informacion-carrito/informacion-carrito.html';
             
         } catch (error) {
             console.error('Error al validar disponibilidad:', error);

@@ -682,6 +682,6 @@ Mejor conversión de visitas a ventas
 
 **¿Listo para implementar?** 🚀
 
-Ejecuta primero: `http://127.0.0.1/finoso/admin/verificar_campos_filtros.php`  
+Ejecuta primero: `https://finoso.store/admin/verificar_campos_filtros.php`  
 Para ver qué datos hay disponibles y decidir qué filtros implementar.
 

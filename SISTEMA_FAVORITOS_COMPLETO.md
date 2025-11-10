@@ -116,7 +116,7 @@ PASO 1: Cerrar sesión (si existe)
   - Ir a perfil → Cerrar sesión
 
 PASO 2: Ir al catálogo
-  - URL: http://127.0.0.1/finoso/catalogo/catalogo.html
+  - URL: https://finoso.store/catalogo/catalogo.html
 
 PASO 3: Verificar icono ⭐
   ✅ Debe aparecer entre icono de user y carrito

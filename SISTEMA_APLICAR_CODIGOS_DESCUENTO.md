@@ -133,7 +133,7 @@ Si el usuario:
 #### **1. Preparación:**
 ```
 1. Resetea relojes:
-   http://127.0.0.1/finoso/database/resetear_relojes_prueba.php
+   https://finoso.store/database/resetear_relojes_prueba.php
 
 2. Limpia localStorage del navegador:
    F12 → Console → localStorage.clear()
@@ -256,7 +256,7 @@ LIMIT 1;
 
 ### **Ver logs del sistema:**
 ```
-http://127.0.0.1/finoso/admin/ver_logs_debug.php
+https://finoso.store/admin/ver_logs_debug.php
 ```
 
 ### **Buscar en logs:**

@@ -196,7 +196,7 @@ button.addEventListener('click', async () => {
 
 2. **Resetea relojes:**
    ```
-   http://127.0.0.1/finoso/database/resetear_relojes_prueba.php
+   https://finoso.store/database/resetear_relojes_prueba.php
    ```
 
 ### **Prueba Completa:**

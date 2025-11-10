@@ -76,7 +76,7 @@ try {
                         $diferencia = $orden['total'] - $monto_pagado;
                         $datosWhatsApp['monto_pagado'] = $monto_pagado;
                         $datosWhatsApp['diferencia'] = $diferencia;
-                        $datosWhatsApp['url_recuperacion'] = "http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden={$orden['id_orden']}&token={$orden['token_verificacion']}";
+                        $datosWhatsApp['url_recuperacion'] = "https://finoso.store/informacion/recuperar_pago.html?orden={$orden['id_orden']}&token={$orden['token_verificacion']}";
                     }
                     
                     // Enviar WhatsApp

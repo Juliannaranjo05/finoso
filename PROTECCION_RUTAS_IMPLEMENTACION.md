@@ -85,12 +85,12 @@ Agregar al final del HTML, justo antes de `</body>`:
 ### **Test 1: Protección de Login (SIN sesión)**
 
 1. **SIN sesión:**
-   - Ve a: `http://127.0.0.1/finoso/login/login.html`
+   - Ve a: `https://finoso.store/login/login.html`
    - ✅ Debería permitir acceso (mostrar login)
 
 2. **CON sesión:**
    - Inicia sesión
-   - Intenta acceder a: `http://127.0.0.1/finoso/login/login.html`
+   - Intenta acceder a: `https://finoso.store/login/login.html`
    - ✅ Debería redirigir automáticamente a `/finoso/index.html`
 
 ---
@@ -99,12 +99,12 @@ Agregar al final del HTML, justo antes de `</body>`:
 
 1. **SIN sesión:**
    - Cierra sesión o usa navegación privada
-   - Intenta acceder a: `http://127.0.0.1/finoso/perfil/perfil.php`
+   - Intenta acceder a: `https://finoso.store/perfil/perfil.php`
    - ✅ Debería redirigir a `/finoso/login/login.html`
 
 2. **CON sesión:**
    - Inicia sesión
-   - Ve a: `http://127.0.0.1/finoso/perfil/perfil.php`
+   - Ve a: `https://finoso.store/perfil/perfil.php`
    - ✅ Debería permitir acceso (mostrar perfil)
 
 ---
