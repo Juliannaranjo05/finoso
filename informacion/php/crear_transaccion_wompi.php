@@ -249,6 +249,7 @@ try {
             'metodo_pago' => 'wompi'
         ]
     ];
+    session_write_close();
     
     // Respuesta para el frontend
     echo json_encode([
