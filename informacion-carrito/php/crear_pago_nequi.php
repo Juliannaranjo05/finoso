@@ -75,7 +75,7 @@ foreach ($productos as $producto) {
         'id' => $id,
         'nombre' => $row['nombre'],
         'marca' => $row['marca'],
-        'img' => 'http://127.0.0.1/finoso/' . ltrim($row['img'], '/'),
+        'img' => 'https://finoso.store/' . ltrim($row['img'], '/'),
         'precio' => $precio,
         'cantidad' => $cantidad
     ];

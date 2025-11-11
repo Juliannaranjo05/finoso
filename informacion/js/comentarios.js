@@ -66,7 +66,7 @@ class SistemaComentarios {
         
         try {
             // Verificar sesión usando el endpoint PHP
-            const response = await fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php');
+            const response = await fetch('https://finoso.store/login/php/verificar_sesion.php');
             const data = await response.json();
             
             console.log('Respuesta de verificación de sesión:', data);
@@ -409,7 +409,7 @@ class SistemaComentarios {
         
         // Si no hay datos en localStorage, verificar sesión PHP
         try {
-            const response = await fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php');
+            const response = await fetch('https://finoso.store/login/php/verificar_sesion.php');
             const data = await response.json();
             
             if (data.logged_in && data.nombre) {

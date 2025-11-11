@@ -10,10 +10,10 @@ Los relojes no se mostraban en `informacion-favoritos.html`, solo aparecía "Car
 ### **1. Parámetro incorrecto en la URL del fetch**
 ```javascript
 // ❌ ANTES:
-fetch(`http://127.0.0.1/finoso/informacion/php/obtener_reloj.php?id=${idReloj}`)
+fetch(`https://finoso.store/informacion/php/obtener_reloj.php?id=${idReloj}`)
 
 // ✅ AHORA:
-fetch(`http://127.0.0.1/finoso/informacion/php/obtener_reloj.php?id_reloj=${idReloj}`)
+fetch(`https://finoso.store/informacion/php/obtener_reloj.php?id_reloj=${idReloj}`)
 ```
 **Razón:** El script PHP `obtener_reloj.php` espera el parámetro `id_reloj`, no `id`.
 
@@ -52,7 +52,7 @@ img: reloj.img,
 ### **Líneas 75-88:**
 ```javascript
 const productosPromises = idsRelojes.map(idReloj => 
-    fetch(`http://127.0.0.1/finoso/informacion/php/obtener_reloj.php?id_reloj=${idReloj}`)
+    fetch(`https://finoso.store/informacion/php/obtener_reloj.php?id_reloj=${idReloj}`)
         .then(res => res.json())
         .then(data => {
             console.log(`⭐ Reloj ${idReloj} cargado:`, data);
@@ -84,12 +84,12 @@ const productosPromises = idsRelojes.map(idReloj =>
 
 2. **Sin sesión (incógnito o cerrar sesión):**
    ```
-   http://127.0.0.1/finoso/login/php/cerrar_sesion.php
+   https://finoso.store/login/php/cerrar_sesion.php
    ```
 
 3. **Ir al catálogo:**
    ```
-   http://127.0.0.1/finoso/catalogo/catalogo.html
+   https://finoso.store/catalogo/catalogo.html
    ```
 
 4. **Agregar 2-3 favoritos:**

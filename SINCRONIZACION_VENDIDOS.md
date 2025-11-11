@@ -43,7 +43,7 @@ El reloj asociado se marca **automáticamente** como `vendido = 1`.
 Para **actualizar los relojes que ya tienen órdenes pagadas**:
 
 ```
-http://127.0.0.1/finoso/admin/sincronizar_vendidos.php
+https://finoso.store/admin/sincronizar_vendidos.php
 ```
 
 Este script:
@@ -80,8 +80,8 @@ Reporte: $390.000 (correcto!)
 
 ## 🚀 PRÓXIMOS PASOS
 
-1. **Ejecuta:** `http://127.0.0.1/finoso/admin/sincronizar_vendidos.php`
-2. **Verifica:** `http://127.0.0.1/finoso/admin/debug_bd.php`
+1. **Ejecuta:** `https://finoso.store/admin/sincronizar_vendidos.php`
+2. **Verifica:** `https://finoso.store/admin/debug_bd.php`
 3. **Genera el reporte de nuevo** y verifica que `Q&Q` aparece correctamente
 
 ---

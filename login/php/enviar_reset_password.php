@@ -90,7 +90,7 @@ try {
                                 <table role="presentation" style="margin: 0 auto;">
                                     <tr>
                                         <td style="border-radius: 50px; background: linear-gradient(135deg, #FFCF66 0%, #d4a537 100%); box-shadow: 0 5px 25px rgba(255, 207, 102, 0.4);">
-                                            <a href="http://127.0.0.1/finoso/login/olvidar-contraseña/reset_password.html?token=' . $token . '" 
+                                            <a href="https://finoso.store/login/olvidar-contraseña/reset_password.html?token=' . $token . '" 
                                                style="display: inline-block; padding: 18px 50px; color: #0a0a0a; text-decoration: none; font-size: 18px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">
                                                 Restablecer Contraseña
                                             </a>
@@ -145,7 +145,7 @@ try {
     ';
     
     // Versión texto plano (para clientes que no soportan HTML)
-    $mail->AltBody = "Recupera tu contraseña - FINOSO\n\nRecibimos una solicitud para restablecer tu contraseña.\n\nPara crear una nueva contraseña, copia y pega este enlace en tu navegador:\n\nhttp://127.0.0.1/finoso/login/olvidar-contraseña/reset_password.html?token=" . $token . "\n\nEste enlace es válido por 1 hora.\n\nSi no solicitaste este cambio, puedes ignorar este correo de forma segura.\n\n© 2025 FINOSO - Relojes de Lujo";
+    $mail->AltBody = "Recupera tu contraseña - FINOSO\n\nRecibimos una solicitud para restablecer tu contraseña.\n\nPara crear una nueva contraseña, copia y pega este enlace en tu navegador:\n\nhttps://finoso.store/login/olvidar-contraseña/reset_password.html?token=" . $token . "\n\nEste enlace es válido por 1 hora.\n\nSi no solicitaste este cambio, puedes ignorar este correo de forma segura.\n\n© 2025 FINOSO - Relojes de Lujo";
 
     $mail->send();
     echo "Correo de recuperación enviado.";

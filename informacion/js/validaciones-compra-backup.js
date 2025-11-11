@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Cargar departamentos desde la base de datos al iniciar
     async function cargarDepartamentos() {
         try {
-            const response = await fetch('http://127.0.0.1/finoso/informacion/php/obtener_ciudades.php?action=departamentos');
+            const response = await fetch('https://finoso.store/informacion/php/obtener_ciudades.php?action=departamentos');
             const data = await response.json();
             
             if (data.success && data.departamentos) {
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1/finoso/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${encodeURIComponent(departamento)}`);
+            const response = await fetch(`https://finoso.store/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${encodeURIComponent(departamento)}`);
             const data = await response.json();
             
             if (data.success && data.ciudades) {
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function calcularEnvio(ciudad, departamento) {
         try {
-            const res = await fetch('http://127.0.0.1/finoso/informacion/php/consultar_precio_envio.php?ciudad=' + ciudad + '&departamento=' + departamento);
+            const res = await fetch('https://finoso.store/informacion/php/consultar_precio_envio.php?ciudad=' + ciudad + '&departamento=' + departamento);
             const data = await res.json();
 
             if (data.status === "ok") {
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Si el método es Nequi, verificar si hay sesión
                     if (metodo === "nequi") {
-                        fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+                        fetch("https://finoso.store/informacion/php/verificar_sesion.php")
                             .then(res => res.json())
                             .then(respuesta => {
                                 if (respuesta.logged_in) {
@@ -422,7 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let porcentajeDescuento = 0;
 
             // Verificamos sesión para saber si ya tenemos el correo del usuario
-            fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+            fetch("https://finoso.store/informacion/php/verificar_sesion.php")
                 .then(res => {
                     if (!res.ok) throw new Error("Fallo en la verificación de sesión");
                     return res.json();
@@ -494,7 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     console.log("📦 Datos a enviar a crear_pago_nequi.php:", data);
 
-                    return fetch("http://127.0.0.1/finoso/informacion/php/crear_pago_nequi.php", {
+                    return fetch("https://finoso.store/informacion/php/crear_pago_nequi.php", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(data)
@@ -547,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function enviarFormulario(data) {
         if (data.metodo_pago === "wompi") {
             // Crear transacción con Wompi
-            fetch("http://127.0.0.1/finoso/informacion/php/crear_transaccion_wompi.php", {
+            fetch("https://finoso.store/informacion/php/crear_transaccion_wompi.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)

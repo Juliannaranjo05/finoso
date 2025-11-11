@@ -67,12 +67,12 @@ elseif (isset($_SESSION['correo']) && $orden['correo'] === $_SESSION['correo']) 
 
 **Antes:**
 ```php
-$urlRecuperacion = "http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden={$id_orden}";
+$urlRecuperacion = "https://finoso.store/informacion/recuperar_pago.html?orden={$id_orden}";
 ```
 
 **Ahora:**
 ```php
-$urlRecuperacion = "http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden={$id_orden}&token={$token_orden}";
+$urlRecuperacion = "https://finoso.store/informacion/recuperar_pago.html?orden={$id_orden}&token={$token_orden}";
 ```
 
 ---
@@ -90,7 +90,7 @@ $urlRecuperacion = "http://127.0.0.1/finoso/informacion/recuperar_pago.html?orde
 2. **Admin rechaza la orden** por monto incorrecto
 3. **Usuario recibe email/WhatsApp** con enlace:
    ```
-   http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden=12&token=abc123xyz...
+   https://finoso.store/informacion/recuperar_pago.html?orden=12&token=abc123xyz...
    ```
 4. **Usuario hace click** en el enlace
 5. ✅ **Acceso concedido por token** (sin necesidad de login)

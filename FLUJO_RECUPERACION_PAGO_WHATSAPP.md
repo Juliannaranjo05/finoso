@@ -43,7 +43,7 @@ Sistema implementado para permitir que clientes con órdenes rechazadas por **mo
        ├─ "✅ Ya pagaste: $15.000"
        ├─ "❌ Falta pagar: $102.000"
        ├─ "🎯 COMPLETA TU PAGO AQUÍ"
-       └─ Link: http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden=6
+       └─ Link: https://finoso.store/informacion/recuperar_pago.html?orden=6
         ↓
 5. CLIENTE HACE CLICK EN ENLACE
    └─> Abre recuperar_pago.html?orden=6
@@ -93,7 +93,7 @@ El monto del comprobante no coincide con el total del pedido
 ❌ Falta pagar: $102.000
 
 🎯 ¡COMPLETA TU PAGO AQUÍ!
-http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden=6
+https://finoso.store/informacion/recuperar_pago.html?orden=6
 
 📱 Paga solo lo que falta y recupera tu orden
 ⏰ Link válido por 48 horas
@@ -102,7 +102,7 @@ http://127.0.0.1/finoso/informacion/recuperar_pago.html?orden=6
 Responde este mensaje y te asistimos 😊
 
 🛒 Volver a comprar:
-http://127.0.0.1/finoso/catalogo/catalogo.html
+https://finoso.store/catalogo/catalogo.html
 ```
 
 ### WHATSAPP - Mensaje SIN Recuperación (sin monto_pagado)
@@ -126,7 +126,7 @@ Puedes hacer una nueva compra o contactarnos para ayudarte.
 Responde este mensaje y te asistimos 😊
 
 🛒 Volver a comprar:
-http://127.0.0.1/finoso/catalogo/catalogo.html
+https://finoso.store/catalogo/catalogo.html
 ```
 
 ### 📧 EMAIL - Mensaje CON Recuperación (monto_pagado > 0)
@@ -145,7 +145,7 @@ Email HTML con diseño premium que incluye:
   - "⏰ Link válido por 48 horas"
 - **Footer con link alternativo** (por si el botón no funciona)
 
-**Preview:** `http://127.0.0.1/finoso/admin/test_email_recuperacion.html`
+**Preview:** `https://finoso.store/admin/test_email_recuperacion.html`
 
 ### 📧 EMAIL - Mensaje SIN Recuperación (sin monto_pagado)
 
@@ -224,7 +224,7 @@ Email simple con:
 
 **WhatsApp:**
 ```
-http://127.0.0.1/finoso/admin/test_mensaje_recuperacion.php
+https://finoso.store/admin/test_mensaje_recuperacion.php
 ```
 - Muestra los 3 casos de uso
 - Comparación lado a lado
@@ -232,14 +232,14 @@ http://127.0.0.1/finoso/admin/test_mensaje_recuperacion.php
 
 **Email:**
 ```
-http://127.0.0.1/finoso/admin/test_email_recuperacion.html
+https://finoso.store/admin/test_email_recuperacion.html
 ```
 - Preview de ambos tipos de correos
 - Diseño HTML completo
 - Comparación lado a lado
 
 ### 2. Rechazar Orden con Monto Incorrecto
-1. Ir a `http://127.0.0.1/finoso/admin/panel.php`
+1. Ir a `https://finoso.store/admin/panel.php`
 2. Buscar orden pendiente (ej: #6)
 3. Click "Rechazar"
 4. Seleccionar: "El monto del comprobante no coincide..."

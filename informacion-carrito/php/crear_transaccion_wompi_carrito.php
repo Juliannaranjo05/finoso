@@ -214,9 +214,9 @@ try {
 
     wompi_log(sprintf('✅ (Carrito) Orden #%d creada (ref=%s, total=%s, costo_envio=%s, usuario=%s)', $id_orden, $referencia, number_format($total_decimal, 2, '.', ''), number_format($costo_envio_decimal, 2, '.', ''), $id_usuario_db !== null ? $id_usuario_db : 'NULL'));
 
-    wompi_log(sprintf('Carrito productos: %s', json_encode($productos_validos)));
+      wompi_log(sprintf('Carrito productos: %s', json_encode($productos_validos)));
 
-    // Generar firma de integridad para producción
+      // Generar firma de integridad para producción
     // Formato correcto: referencia + amount_in_cents + currency + events_secret
     $signature_string = $referencia . $amount_in_cents . 'COP' . WOMPI_EVENTS_SECRET;
     $signature = hash('sha256', $signature_string);
@@ -242,29 +242,30 @@ try {
     wompi_log('Reference: ' . $referencia);
 
     // Guardar datos del formulario en sesión para usar después del pago
-    $_SESSION['wompi_carrito_data'] = [
-        'id_usuario' => $id_usuario,
-        'id_orden' => $id_orden,
-        'productos' => $productos_validos,
-        'total_relojes' => $total_relojes,
-        'costo_envio' => $costo_envio,
-        'total' => $total_con_envio,
-        'referencia' => $referencia,
-        'datos_cliente' => [
-            'nombre' => $nombre,
-            'cedula' => $cedula,
-            'celular' => $celular,
-            'departamento' => $departamento,
-            'ciudad' => $ciudad,
-            'direccion' => $direccion,
-            'barrio' => $barrio,
-            'referencias' => $referencias,
-            'correo' => $correo,
-            'metodo_pago' => 'wompi'
-        ]
-    ];
+      $_SESSION['wompi_carrito_data'] = [
+          'id_usuario' => $id_usuario,
+          'id_orden' => $id_orden,
+          'productos' => $productos_validos,
+          'total_relojes' => $total_relojes,
+          'costo_envio' => $costo_envio,
+          'total' => $total_con_envio,
+          'referencia' => $referencia,
+          'datos_cliente' => [
+              'nombre' => $nombre,
+              'cedula' => $cedula,
+              'celular' => $celular,
+              'departamento' => $departamento,
+              'ciudad' => $ciudad,
+              'direccion' => $direccion,
+              'barrio' => $barrio,
+              'referencias' => $referencias,
+              'correo' => $correo,
+              'metodo_pago' => 'wompi'
+          ]
+      ];
+      session_write_close();
 
-    echo json_encode([
+      echo json_encode([
         'success' => true,
         'reference' => $referencia,
         'amount' => $total_con_envio,

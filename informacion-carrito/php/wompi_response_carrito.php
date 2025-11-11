@@ -8,6 +8,7 @@
 
 session_start();
 include 'conexion.php';
+include '../../informacion/php/wompi_config.php';
 
 $LOG_FILE = __DIR__ . '/../../logs/wompi_flow.log';
 if (!file_exists(dirname($LOG_FILE))) {
@@ -26,8 +27,45 @@ wompi_response_carrito_log('[WOMPI-RESPONSE-CARRITO] Usuario redirigido desde Wo
 $transaction_id = $_GET['id'] ?? '';
 $reference = $_GET['reference'] ?? '';
 $status = $_GET['status'] ?? '';
+$retry = isset($_GET['retry']) ? max(0, intval($_GET['retry'])) : 0;
 
 wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] Params - ID: $transaction_id, Ref: $reference, Status: $status");
+
+// Fallback: usar referencia guardada en sesión (generada antes del checkout)
+if (empty($reference) && !empty($_SESSION['wompi_carrito_data']['referencia'])) {
+    $reference = $_SESSION['wompi_carrito_data']['referencia'];
+    wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] Referencia recuperada desde sesión: $reference");
+}
+
+// Fallback adicional: consultar a Wompi por transaction_id para obtener la referencia
+if (empty($reference) && !empty($transaction_id)) {
+    $transactionUrl = rtrim(getWompiBaseUrl(), '/') . '/transactions/' . urlencode($transaction_id);
+    wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] Buscando referencia via API: $transactionUrl");
+
+    $ch = curl_init($transactionUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer ' . WOMPI_PRIVATE_KEY,
+        'Accept: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+
+    $apiResponse = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    if ($apiResponse && $httpCode === 200) {
+        $decoded = json_decode($apiResponse, true);
+        $apiReference = $decoded['data']['reference'] ?? '';
+        wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] API reference: $apiReference");
+        if (!empty($apiReference)) {
+            $reference = $apiReference;
+        }
+    } else {
+        wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] Error consultando API de Wompi (HTTP $httpCode): $curlError");
+    }
+}
 
 // Si no hay parámetros, mostrar mensaje genérico
 if (empty($reference)) {
@@ -305,88 +343,306 @@ if ($result->num_rows > 0) {
     <?php
 
 } else {
-    // Orden no encontrada (el webhook aún no procesó)
-    wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] ⏳ Orden no encontrada aún, webhook puede estar procesando");
-    ?>
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Procesando... - FINOSO</title>
-        <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: radial-gradient(circle at top, #1b1b1b 0%, #000 55%, #050505 100%);
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-                color: #f5f5f5;
+    $sessionFallback = $_SESSION['wompi_carrito_data'] ?? null;
+    if ($sessionFallback) {
+        wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] ⚠️ Orden no encontrada pero hay datos en sesión. Mostrando fallback.");
+        $fallbackIdOrden = $sessionFallback['id_orden'] ?? null;
+        $fallbackTotal = $sessionFallback['total'] ?? 0;
+        $fallbackProductos = $sessionFallback['productos'] ?? [];
+        $fallbackCantidad = is_array($fallbackProductos) ? count($fallbackProductos) : 0;
+        $fallbackNombres = [];
+        if (is_array($fallbackProductos)) {
+            foreach ($fallbackProductos as $producto) {
+                if (isset($producto['reloj']['nombre'])) {
+                    $fallbackNombres[] = $producto['reloj']['nombre'];
+                } elseif (isset($producto['nombre'])) {
+                    $fallbackNombres[] = $producto['nombre'];
+                } elseif (isset($producto['id_reloj'])) {
+                    $fallbackNombres[] = 'Reloj #' . $producto['id_reloj'];
+                }
             }
-            .container {
-                background: linear-gradient(160deg, #0c0c0c 0%, #161616 55%, #111 100%);
-                border-radius: 18px;
-                padding: 40px;
-                max-width: 520px;
-                width: 100%;
-                box-shadow: 0 25px 70px rgba(0,0,0,0.55);
-                text-align: center;
-                border: 1px solid rgba(212,175,55,0.35);
-            }
-            .spinner {
-                width: 60px;
-                height: 60px;
-                border: 5px solid rgba(212,175,55,0.2);
-                border-top: 5px solid #d4af37;
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-                margin: 0 auto 30px;
-            }
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-            h1 { color: #f7dfa6; margin-bottom: 20px; font-size: 28px; letter-spacing: 0.5px; }
-            p { color: #d7d7d7; font-size: 16px; line-height: 1.6; margin-bottom: 15px; }
-            .btn {
-                background: linear-gradient(135deg, #f1d27a 0%, #d4af37 100%);
-                color: #000;
-                padding: 15px 40px;
-                border: none;
-                border-radius: 50px;
-                font-size: 16px;
-                cursor: pointer;
-                text-decoration: none;
-                display: inline-block;
-                margin-top: 20px;
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                font-weight: 600;
-                box-shadow: 0 10px 25px rgba(212,175,55,0.25);
-            }
-            .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(212,175,55,0.35); }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="spinner"></div>
-            <h1>⏳ Procesando tu Pago...</h1>
-            <p>Tu pago está siendo verificado por Wompi.</p>
-            <p><strong>Recibirás un email de confirmación en los próximos minutos.</strong></p>
-            <p style="font-size: 14px; color: #999;">Si tienes dudas, contacta a soporte con tu número de referencia.</p>
-            <a href="https://finoso.store/" class="btn">Volver al Inicio</a>
-        </div>
-        <script>
-            // Recargar después de 3 segundos por si el webhook ya procesó
-            setTimeout(() => {
-                window.location.reload();
-            }, 3000);
-        </script>
-    </body>
-    </html>
-    <?php
+        }
+        $fallbackNombresTexto = !empty($fallbackNombres) ? implode(', ', $fallbackNombres) : 'Productos del carrito';
+        ?>
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Pago recibido - FINOSO</title>
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    background: radial-gradient(circle at top, #1b1b1b 0%, #000 55%, #050505 100%);
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    color: #f5f5f5;
+                }
+                .container {
+                    background: linear-gradient(155deg, #0c0c0c 0%, #161616 60%, #0b0b0b 100%);
+                    border-radius: 18px;
+                    padding: 40px;
+                    max-width: 640px;
+                    width: 100%;
+                    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+                    text-align: center;
+                    border: 1px solid rgba(212,175,55,0.35);
+                }
+                .success-icon {
+                    font-size: 70px;
+                    margin-bottom: 20px;
+                    color: #f1d27a;
+                    text-shadow: 0 0 15px rgba(212,175,55,0.4);
+                }
+                h1 {
+                    color: #f7dfa6;
+                    margin-bottom: 12px;
+                    font-size: 30px;
+                    letter-spacing: 0.5px;
+                }
+                .subtitle {
+                    color: #dcdcdc;
+                    font-size: 17px;
+                    margin-bottom: 28px;
+                }
+                .order-details {
+                    background: rgba(255, 215, 141, 0.05);
+                    border-radius: 15px;
+                    padding: 25px;
+                    margin: 30px 0;
+                    text-align: left;
+                    border: 1px solid rgba(212,175,55,0.25);
+                }
+                .detail-row {
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 10px 0;
+                    border-bottom: 1px solid rgba(212,175,55,0.15);
+                }
+                .detail-row:last-child {
+                    border-bottom: none;
+                    font-weight: 700;
+                    font-size: 18px;
+                    color: #f1d27a;
+                }
+                .label { color: #c7c7c7; }
+                .value { color: #f5f5f5; font-weight: 600; }
+                .productos-list {
+                    background: rgba(0, 0, 0, 0.45);
+                    padding: 15px;
+                    border-radius: 10px;
+                    margin-top: 10px;
+                    font-size: 14px;
+                    color: #ebebeb;
+                    border: 1px solid rgba(212,175,55,0.2);
+                }
+                .alert-box {
+                    background: rgba(241, 210, 122, 0.1);
+                    border: 1px solid rgba(212,175,55,0.35);
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin: 20px 0;
+                    color: #f1d27a;
+                    font-weight: 600;
+                    text-align: center;
+                }
+                .btn {
+                    background: linear-gradient(135deg, #f1d27a 0%, #d4af37 100%);
+                    color: #000;
+                    padding: 15px 42px;
+                    border: none;
+                    border-radius: 50px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    text-decoration: none;
+                    display: inline-block;
+                    margin: 10px;
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    font-weight: 600;
+                    box-shadow: 0 12px 28px rgba(212,175,55,0.3);
+                }
+                .btn:hover { transform: translateY(-2px); box-shadow: 0 18px 35px rgba(212,175,55,0.4); }
+                .btn-secondary {
+                    background: rgba(245,245,245,0.12);
+                    color: #f5f5f5;
+                    border: 1px solid rgba(212,175,55,0.35);
+                    box-shadow: none;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="success-icon">🕒</div>
+                <h1>Pago recibido, estamos validando tu orden</h1>
+                <p class="subtitle">Tu pago fue confirmado por Wompi. Estamos registrando la orden en nuestra base de datos.</p>
+
+                <div class="order-details">
+                    <div class="detail-row">
+                        <span class="label">📦 Orden (temporal):</span>
+                        <span class="value"><?php echo $fallbackIdOrden !== null ? '#' . $fallbackIdOrden : 'En registro'; ?></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">🕐 Productos:</span>
+                        <span class="value"><?php echo $fallbackCantidad; ?> reloj<?php echo $fallbackCantidad === 1 ? '' : 'es'; ?></span>
+                    </div>
+                    <div class="productos-list">
+                        <?php echo htmlspecialchars($fallbackNombresTexto); ?>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">💳 Método:</span>
+                        <span class="value">Wompi</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">💰 Total:</span>
+                        <span class="value">$<?php echo number_format($fallbackTotal, 0, ',', '.'); ?> COP</span>
+                    </div>
+                </div>
+
+                <div class="alert-box">
+                    <strong>⏳ Estamos sincronizando tu orden.</strong><br>
+                    Este proceso puede tardar unos segundos. Puedes actualizar la página o revisar tu perfil en un momento.
+                </div>
+
+                <div>
+                    <a href="https://finoso.store/" class="btn">Volver al Inicio</a>
+                    <a href="https://finoso.store/perfil/perfil.html" class="btn btn-secondary">Ver Mi Perfil</a>
+                </div>
+            </div>
+        </body>
+        </html>
+        <?php
+    } elseif ($retry < 3) {
+        wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] ⏳ Orden no encontrada aún, reintentando (retry={$retry}).");
+        ?>
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Procesando... - FINOSO</title>
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    background: radial-gradient(circle at top, #1b1b1b 0%, #000 55%, #050505 100%);
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    color: #f5f5f5;
+                }
+                .container {
+                    background: linear-gradient(160deg, #0c0c0c 0%, #161616 55%, #111 100%);
+                    border-radius: 18px;
+                    padding: 40px;
+                    max-width: 520px;
+                    width: 100%;
+                    box-shadow: 0 25px 70px rgba(0,0,0,0.55);
+                    text-align: center;
+                    border: 1px solid rgba(212,175,55,0.35);
+                }
+                .spinner {
+                    width: 60px;
+                    height: 60px;
+                    border: 5px solid rgba(212,175,55,0.2);
+                    border-top: 5px solid #d4af37;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin: 0 auto 30px;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                h1 { color: #f7dfa6; margin-bottom: 20px; font-size: 28px; letter-spacing: 0.5px; }
+                p { color: #d7d7d7; font-size: 16px; line-height: 1.6; margin-bottom: 15px; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="spinner"></div>
+                <h1>⏳ Procesando tu Pago...</h1>
+                <p>Estamos confirmando la información con Wompi.</p>
+                <p>Esto puede tardar unos segundos.</p>
+            </div>
+            <script>
+                setTimeout(() => {
+                    const url = new URL(window.location.href);
+                    const currentRetry = parseInt(url.searchParams.get('retry') || '0', 10) + 1;
+                    url.searchParams.set('retry', currentRetry);
+                    window.location.href = url.toString();
+                }, 3000);
+            </script>
+        </body>
+        </html>
+        <?php
+    } else {
+        wompi_response_carrito_log("[WOMPI-RESPONSE-CARRITO] ❌ Orden no encontrada tras múltiples intentos.");
+        ?>
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Pago recibido - Confirmación manual</title>
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body {
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    background: radial-gradient(circle at top, #1b1b1b 0%, #000 55%, #050505 100%);
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    color: #f5f5f5;
+                }
+                .container {
+                    background: linear-gradient(160deg, #0c0c0c 0%, #161616 55%, #111 100%);
+                    border-radius: 18px;
+                    padding: 40px;
+                    max-width: 520px;
+                    width: 100%;
+                    box-shadow: 0 25px 70px rgba(0,0,0,0.55);
+                    text-align: center;
+                    border: 1px solid rgba(212,175,55,0.35);
+                }
+                h1 { color: #f7dfa6; margin-bottom: 20px; font-size: 28px; letter-spacing: 0.5px; }
+                p { color: #d7d7d7; font-size: 16px; line-height: 1.6; margin-bottom: 15px; }
+                .btn {
+                    background: linear-gradient(135deg, #f1d27a 0%, #d4af37 100%);
+                    color: #000;
+                    padding: 15px 40px;
+                    border: none;
+                    border-radius: 50px;
+                    font-size: 16px;
+                    cursor: pointer;
+                    text-decoration: none;
+                    display: inline-block;
+                    margin-top: 20px;
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    font-weight: 600;
+                    box-shadow: 0 10px 25px rgba(212,175,55,0.25);
+                }
+                .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(212,175,55,0.35); }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Pago recibido</h1>
+                <p>No pudimos confirmar automáticamente tu orden. Nuestro equipo la revisará manualmente.</p>
+                <p>Por favor contáctanos con el comprobante de pago o revisa tu correo para más instrucciones.</p>
+                <a href="https://finoso.store/" class="btn">Volver al Inicio</a>
+            </div>
+        </body>
+        </html>
+        <?php
+    }
 }
 
 $stmt->close();

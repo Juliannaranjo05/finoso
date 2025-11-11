@@ -271,7 +271,7 @@ ALTER TABLE orden MODIFY COLUMN monto_pagado decimal(10,2) DEFAULT NULL;
 Después de los cambios, volver a exportar y comparar:
 
 ```
-http://127.0.0.1/finoso/database/exportar_estructura_sql.php
+https://finoso.store/database/exportar_estructura_sql.php
 ```
 
 ---
@@ -584,7 +584,7 @@ ALTER TABLE orden MODIFY COLUMN monto_pagado decimal(10,2) DEFAULT NULL;
 Después de los cambios, volver a exportar y comparar:
 
 ```
-http://127.0.0.1/finoso/database/exportar_estructura_sql.php
+https://finoso.store/database/exportar_estructura_sql.php
 ```
 
 ---

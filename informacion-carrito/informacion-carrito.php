@@ -8,7 +8,7 @@ require_once 'check_session.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Informacion</title>
-    <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
+    <link rel="icon" href="https://finoso.store/img/finoso_logo.png" type="image/x-icon">
     <link rel="stylesheet" href="css/informacion-carrito.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -257,7 +257,7 @@ require_once 'check_session.php';
             <p class="username" id="nombreUsuario">Juan Perez</p>
             <button class="logout-btn" id="cerrarSesionBtn">Cerrar sesión</button>
         </div>
-    <script src="http://127.0.0.1/finoso/login/js/sesion.js"></script>
+    <script src="https://finoso.store/login/js/sesion.js"></script>
     <script src="js/productos.js?v=<?php echo time(); ?>"></script>
     <script src="js/validaciones-compra.js?v=<?php echo time(); ?>"></script>
     <script src="js/lupa.js"></script>

@@ -54,7 +54,7 @@ informacion-carrito.html → informacion-favoritos.html
 ```javascript
 document.addEventListener('DOMContentLoaded', () => {
     // Verificar si hay sesión activa
-    fetch('http://127.0.0.1/finoso/login/php/verificar_sesion.php')
+    fetch('https://finoso.store/login/php/verificar_sesion.php')
         .then(res => res.json())
         .then(data => {
             if (!data.logged_in) {
@@ -224,7 +224,7 @@ Ambos sistemas (`informacion-carrito` e `informacion-favoritos`) usan la misma b
 **Causa:** Ruta incorrecta a `obtener_reloj.php`  
 **Solución:** Verificar en productos.js línea 90:
 ```javascript
-fetch(`http://127.0.0.1/finoso/informacion/php/obtener_reloj.php?id_reloj=${idReloj}`)
+fetch(`https://finoso.store/informacion/php/obtener_reloj.php?id_reloj=${idReloj}`)
 ```
 
 ### **Error 3: "Cannot read property 'img' of undefined"**
@@ -293,7 +293,7 @@ Ofrecer descuentos exclusivos para usuarios que compren desde favoritos.
 Abre el catálogo sin sesión, agrega favoritos, y haz clic en "Cumplir mis Deseos ✨"
 
 **Ruta esperada:**  
-`http://127.0.0.1/finoso/informacion-favoritos/informacion-favoritos.html`
+`https://finoso.store/informacion-favoritos/informacion-favoritos.html`
 
 **¡No debería pedir login!** 🎯
 

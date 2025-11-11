@@ -248,6 +248,7 @@ try {
             'metodo_pago' => 'wompi'
         ]
     ];
+    session_write_close();
 
     echo json_encode([
         'success' => true,

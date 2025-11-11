@@ -67,7 +67,7 @@ function applyTransforms(transforms) {
 
 // Función para cargar las imágenes destacadas
 function cargarImagenesDestacadas() {
-    return fetch('http://127.0.0.1/finoso/php/obtener_cuatro_destacados.php')
+    return fetch('https://finoso.store/php/obtener_cuatro_destacados.php')
         .then(res => res.json())
         .then(imagenes => {
             if (!Array.isArray(imagenes) || imagenes.length === 0) {
@@ -88,7 +88,7 @@ function cargarImagenesDestacadas() {
 
                 contenedor.innerHTML += `
                     <div class="img-coleccion">
-                        <a href="http://127.0.0.1/finoso/informacion/informacion.html?id_reloj=${img.id_reloj}">
+                        <a href="https://finoso.store/informacion/informacion.html?id_reloj=${img.id_reloj}">
                             <img src="${img.img}" alt="Reloj colección" ${isMostExpensive ? 'id="insertar-img" style="display: none;"' : ''}>
                         </a>
                     </div>

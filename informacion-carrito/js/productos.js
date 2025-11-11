@@ -83,7 +83,7 @@ async function cargarDesdeFavoritos(products, formatPrice, redondearAMiles) {
     
     // Cargar cada reloj individualmente
     const productosPromises = idsRelojes.map(idReloj => 
-        fetch(`http://127.0.0.1/finoso/informacion/php/obtener_reloj.php?id=${idReloj}`)
+        fetch(`https://finoso.store/informacion/php/obtener_reloj.php?id=${idReloj}`)
             .then(res => res.json())
             .then(data => {
                 if (data.success && data.reloj) {
@@ -119,7 +119,7 @@ async function cargarDesdeFavoritos(products, formatPrice, redondearAMiles) {
  */
 function cargarDesdeCarrito(products, formatPrice, redondearAMiles) {
         console.log("🔍 DEBUG productos.js - Iniciando fetch de carrito");
-        fetch('http://127.0.0.1/finoso/php/mostrar_carrito.php')
+        fetch('https://finoso.store/php/mostrar_carrito.php')
             .then(res => {
                 console.log("🔍 DEBUG productos.js - Respuesta recibida:", res);
                 return res.json().then(data => {
@@ -198,7 +198,7 @@ function renderizarProductos(products, formatPrice, redondearAMiles) {
         const productoHTML = `
             <div class="cuadro-info-reloj-carrito">
                 <div class="img-reloj-carrito">
-                    <img src="http://127.0.0.1/finoso/${reloj.img}" alt="${reloj.nombre}">
+                    <img src="https://finoso.store/${reloj.img}" alt="${reloj.nombre}">
                 </div>
                 <div class="nombre-precio-carrito">
                     <div class="nombre-carrito">
@@ -283,7 +283,7 @@ let currentIndex = 0;
                     return;
                 }
 
-                imgElement.src = `http://127.0.0.1/finoso/${product.img}`;
+                imgElement.src = `https://finoso.store/${product.img}`;
                 nameElement.textContent = product.nombre;
                 console.log("✅ Imagen y nombre actualizados");
 
@@ -328,7 +328,7 @@ let currentIndex = 0;
             products.forEach((product, index) => {
                 const thumbnail = document.createElement('img');
                 thumbnail.className = `thumbnail ${index === currentIndex ? 'active' : ''}`;
-                thumbnail.src = `http://127.0.0.1/finoso/${product.img}`;
+                thumbnail.src = `https://finoso.store/${product.img}`;
                 thumbnail.alt = product.nombre;
                 thumbnail.onclick = () => goToProduct(index);
                 thumbnailsContainer.appendChild(thumbnail);

@@ -100,10 +100,10 @@ try {
             error_log("Sesión iniciada: " . print_r($_SESSION, true));
 
             // Determinar redirección basada en el rol
-            $redirect_url = 'http://127.0.0.1/finoso/index.html'; // Por defecto para usuarios
+            $redirect_url = 'https://finoso.store/index.html'; // Por defecto para usuarios
             
             if (isset($row['rol']) && $row['rol'] === 'administrador') {
-                $redirect_url = 'http://127.0.0.1/finoso/admin/panel.php';
+                $redirect_url = 'https://finoso.store/admin/panel.php';
                 error_log("Usuario es administrador, redirigiendo a panel");
             } else {
                 error_log("Usuario normal, redirigiendo a index");

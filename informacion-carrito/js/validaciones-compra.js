@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     async function cargarDepartamentos() {
         console.log("🔍 DEBUG validaciones-compra.js - Iniciando carga de departamentos");
         try {
-            const url = 'http://127.0.0.1/finoso/informacion/php/obtener_ciudades.php?action=departamentos';
+            const url = 'https://finoso.store/informacion/php/obtener_ciudades.php?action=departamentos';
             console.log("🔍 DEBUG validaciones-compra.js - URL:", url);
             
             const response = await fetch(url);
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            const url = `http://127.0.0.1/finoso/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${encodeURIComponent(departamento)}`;
+            const url = `https://finoso.store/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${encodeURIComponent(departamento)}`;
             console.log("🔍 DEBUG validaciones-compra.js - URL ciudades:", url);
             
             const response = await fetch(url);
@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Si el método es Nequi, verificar si hay sesión
             if (img.dataset.metodo === "nequi") {
                 console.log("🔍 DEBUG validaciones-compra.js - Verificando sesión para Nequi");
-                fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+                fetch("https://finoso.store/informacion/php/verificar_sesion.php")
                     .then(res => res.json())
                     .then(respuesta => {
                         console.log("🔍 DEBUG validaciones-compra.js - Respuesta sesión:", respuesta);
@@ -267,6 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const ciudad = document.getElementById("ciudad");
         const metodoPago = document.getElementById("metodo-pago");
         const correo = document.getElementById("correo");
+        const referenciasInput = document.getElementById("referencias");
         
         console.log("🔍 DEBUG validaciones-compra.js - Elementos encontrados:");
         console.log("- Nombre:", nombre, "Valor:", nombre ? nombre.value : "NO ENCONTRADO");
@@ -296,6 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const ciudadVal = ciudad.value;
         const metodoPagoVal = metodoPago.value;
         const correoVal = correo ? correo.value.trim() : "";
+        const referenciasVal = referenciasInput ? referenciasInput.value.trim() : "";
         
         console.log("🔍 DEBUG validaciones-compra.js - Valores del formulario:");
         console.log("- Nombre:", nombreVal);
@@ -307,6 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("- Ciudad:", ciudadVal);
         console.log("- Método de pago:", metodoPagoVal);
         console.log("- Correo:", correoVal);
+        console.log("- Referencias:", referenciasVal);
         
         // Validaciones básicas
         if (!nombreVal || !cedulaVal || !celularVal || !direccionVal || !barrioVal || !departamentoVal || !ciudadVal || !metodoPagoVal) {
@@ -346,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Obtener datos del carrito
         console.log("🔍 DEBUG validaciones-compra.js - Obteniendo datos del carrito...");
-        fetch('http://127.0.0.1/finoso/php/mostrar_carrito.php')
+        fetch('https://finoso.store/php/mostrar_carrito.php')
             .then(response => response.json())
             .then(data => {
                 console.log("🔍 DEBUG validaciones-compra.js - Datos del carrito recibidos:", data);
@@ -359,9 +362,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Obtener costo de envío basado en la ciudad seleccionada
                     console.log("🔍 DEBUG validaciones-compra.js - Obteniendo costo de envío para ciudad:", ciudadVal);
                     console.log("🔍 DEBUG validaciones-compra.js - Departamento:", departamentoVal);
-                    console.log("🔍 DEBUG validaciones-compra.js - URL de consulta:", `http://127.0.0.1/finoso/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${departamentoVal}`);
+                    console.log("🔍 DEBUG validaciones-compra.js - URL de consulta:", `https://finoso.store/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${departamentoVal}`);
                     
-                    fetch(`http://127.0.0.1/finoso/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${departamentoVal}`)
+                    fetch(`https://finoso.store/informacion/php/obtener_ciudades.php?action=ciudades&departamento=${departamentoVal}`)
                         .then(response => {
                             console.log("🔍 DEBUG validaciones-compra.js - Respuesta de ciudades recibida:", response);
                             return response.json();
@@ -388,80 +391,102 @@ document.addEventListener("DOMContentLoaded", function () {
                                     console.log("🔍 DEBUG validaciones-compra.js - Ciudad no encontrada, usando costo por defecto");
                                     console.log("🔍 DEBUG validaciones-compra.js - Ciudades disponibles:", ciudadesData.ciudades.map(c => c.ciudad));
                                 }
-                            } else {
-                                console.log("🔍 DEBUG validaciones-compra.js - Error en datos de ciudades o no hay ciudades");
-                            }
-                            
-                            // Preparar datos para el pago
-                            const datosPago = {
-                                productos: data.relojes.map(reloj => ({
-                                    id: reloj.id_reloj,
-                                    nombre: reloj.nombre,
-                                    precio: reloj.precio_final,
-                                    precio_original: reloj.precio,
-                                    imagen: reloj.img,
-                                    cantidad: 1
-                                })),
-                                total: data.total,
-                                costo_envio: costoEnvio,
-                                datos_cliente: {
-                                    nombre: nombreVal,
-                                    cedula: cedulaVal,
-                                    celular: celularVal,
-                                    direccion: direccionVal,
-                                    barrio: barrioVal,
-                                    departamento: departamentoVal,
-                                    ciudad: ciudadVal,
-                                    correo: correoVal
-                                }
-                            };
-                            
-                            console.log("🔍 DEBUG validaciones-compra.js - Datos preparados:", datosPago);
-                            console.log("🔍 DEBUG validaciones-compra.js - Costo de envío final:", costoEnvio);
-                            
-                            // Guardar en localStorage
-                            localStorage.setItem("nequi_datos_pago", JSON.stringify(datosPago));
-                            console.log("🔍 DEBUG validaciones-compra.js - Datos guardados en localStorage");
-                            console.log("🔍 DEBUG validaciones-compra.js - Verificación localStorage:", JSON.parse(localStorage.getItem("nequi_datos_pago")));
-                            console.log("🔍 DEBUG validaciones-compra.js - Costo de envío en localStorage:", JSON.parse(localStorage.getItem("nequi_datos_pago")).costo_envio);
-                            
-                            // Redirigir según el método de pago
-                            if (metodoPagoVal === "nequi") {
-                                console.log("🔍 DEBUG validaciones-compra.js - Redirigiendo a pago_nequi-carrito.html");
-                                window.location.href = "pago_nequi-carrito.html";
-                            } else if (metodoPagoVal === "wompi") {
-                                console.log("🔍 DEBUG validaciones-compra.js - Procesando pago con Wompi");
-                                procesarPagoWompi(data);
-                            } else {
-                                console.log("🔍 DEBUG validaciones-compra.js - Método de pago no reconocido:", metodoPagoVal);
-                                alert("Método de pago no válido");
-                            }
+                              } else {
+                                  console.log("🔍 DEBUG validaciones-compra.js - Error en datos de ciudades o no hay ciudades");
+                              }
+                              
+                              // Preparar datos para el pago
+                              const datosPago = {
+                                  productos: data.relojes.map(reloj => ({
+                                      id: reloj.id_reloj,
+                                      id_reloj: reloj.id_reloj,
+                                      nombre: reloj.nombre,
+                                      precio: reloj.precio_final,
+                                      precio_original: reloj.precio,
+                                      imagen: reloj.img,
+                                      cantidad: 1
+                                  })),
+                                  total: data.total,
+                                  costo_envio: costoEnvio,
+                                  datos_cliente: {
+                                      nombre: nombreVal,
+                                      cedula: cedulaVal,
+                                      celular: celularVal,
+                                      direccion: direccionVal,
+                                      barrio: barrioVal,
+                                      departamento: departamentoVal,
+                                      ciudad: ciudadVal,
+                                      correo: correoVal,
+                                      referencias: referenciasVal
+                                  }
+                              };
+                              
+                              console.log("🔍 DEBUG validaciones-compra.js - Datos preparados:", datosPago);
+                              console.log("🔍 DEBUG validaciones-compra.js - Costo de envío final:", costoEnvio);
+                              
+                              // Guardar en localStorage
+                              localStorage.setItem("nequi_datos_pago", JSON.stringify(datosPago));
+                              console.log("🔍 DEBUG validaciones-compra.js - Datos guardados en localStorage");
+                              console.log("🔍 DEBUG validaciones-compra.js - Verificación localStorage:", JSON.parse(localStorage.getItem("nequi_datos_pago")));
+                              console.log("🔍 DEBUG validaciones-compra.js - Costo de envío en localStorage:", JSON.parse(localStorage.getItem("nequi_datos_pago")).costo_envio);
+                              
+                              // Redirigir según el método de pago
+                              if (metodoPagoVal === "nequi") {
+                                  console.log("🔍 DEBUG validaciones-compra.js - Redirigiendo a pago_nequi-carrito.html");
+                                  window.location.href = "pago_nequi-carrito.html";
+                              } else if (metodoPagoVal === "wompi") {
+                                  console.log("🔍 DEBUG validaciones-compra.js - Procesando pago con Wompi");
+                                  const payloadWompi = {
+                                      productos: datosPago.productos.map(producto => ({
+                                          id_reloj: producto.id_reloj,
+                                          precio: producto.precio,
+                                          cantidad: producto.cantidad
+                                      })),
+                                      costo_envio: costoEnvio,
+                                      nombre: nombreVal,
+                                      cedula: cedulaVal,
+                                      celular: celularVal,
+                                      direccion: direccionVal,
+                                      barrio: barrioVal,
+                                      departamento: departamentoVal,
+                                      ciudad: ciudadVal,
+                                      referencias: referenciasVal,
+                                      correo: correoVal,
+                                      metodo_pago: metodoPagoVal
+                                  };
+                                  procesarPagoWompi(payloadWompi);
+                              } else {
+                                  console.log("🔍 DEBUG validaciones-compra.js - Método de pago no reconocido:", metodoPagoVal);
+                                  alert("Método de pago no válido");
+                              }
                         })
                         .catch(error => {
                             console.error("🔍 DEBUG validaciones-compra.js - Error obteniendo costo de envío:", error);
                             // En caso de error, usar costo 0
-                            const datosPago = {
-                                productos: data.relojes.map(reloj => ({
-                                    id: reloj.id_reloj,
-                                    nombre: reloj.nombre,
-                                    precio: reloj.precio_final,
-                                    precio_original: reloj.precio,
-                                    imagen: reloj.img,
-                                    cantidad: 1
-                                })),
-                                total: data.total,
-                                costo_envio: 0,
-                                datos_cliente: {
-                                    nombre: nombreVal,
-                                    cedula: cedulaVal,
-                                    celular: celularVal,
-                                    direccion: direccionVal,
-                                    barrio: barrioVal,
-                                    departamento: departamentoVal,
-                                    ciudad: ciudadVal,
-                                    correo: correoVal
-                                }
-                            };
+                              const datosPago = {
+                                  productos: data.relojes.map(reloj => ({
+                                      id: reloj.id_reloj,
+                                      id_reloj: reloj.id_reloj,
+                                      nombre: reloj.nombre,
+                                      precio: reloj.precio_final,
+                                      precio_original: reloj.precio,
+                                      imagen: reloj.img,
+                                      cantidad: 1
+                                  })),
+                                  total: data.total,
+                                  costo_envio: 0,
+                                  datos_cliente: {
+                                      nombre: nombreVal,
+                                      cedula: cedulaVal,
+                                      celular: celularVal,
+                                      direccion: direccionVal,
+                                      barrio: barrioVal,
+                                      departamento: departamentoVal,
+                                      ciudad: ciudadVal,
+                                      correo: correoVal,
+                                      referencias: referenciasVal
+                                  }
+                              };
                             
                             localStorage.setItem("nequi_datos_pago", JSON.stringify(datosPago));
                             
@@ -711,7 +736,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Si el método es Nequi, verificar si hay sesión
             if (img.dataset.metodo === "nequi") {
-                fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+                fetch("https://finoso.store/informacion/php/verificar_sesion.php")
                     .then(res => res.json())
                     .then(respuesta => {
                         if (respuesta.logged_in) {
@@ -814,7 +839,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (metodoPagoInput.value === "wompi") {
             procesarPagoWompi(data);
         } else if (metodoPagoInput.value === "mercado_pago") {
-            fetch("http://127.0.0.1/finoso/informacion/php/crear_preferencia.php", {
+            fetch("https://finoso.store/informacion/php/crear_preferencia.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
@@ -880,7 +905,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("🟣 Iniciando flujo de pago con Nequi...");
 
             // Verificamos sesión para saber si ya tenemos el correo del usuario
-            fetch("http://127.0.0.1/finoso/informacion/php/verificar_sesion.php")
+            fetch("https://finoso.store/informacion/php/verificar_sesion.php")
                 .then(res => {
                     if (!res.ok) throw new Error("Fallo en la verificación de sesión");
                     return res.json();
@@ -915,7 +940,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("✅ Subtotal redondeado:", data.subtotal);
 
 
-                    return fetch("http://127.0.0.1/finoso/informacion-carrito/php/crear_pago_nequi.php", {
+                    return fetch("https://finoso.store/informacion-carrito/php/crear_pago_nequi.php", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(data)
@@ -966,7 +991,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("🔍 DEBUG validaciones-compra.js - Iniciando pago con Wompi para carrito");
         
         // Crear transacción con Wompi
-        fetch("http://127.0.0.1/finoso/informacion-carrito/php/crear_transaccion_wompi_carrito.php", {
+        fetch("https://finoso.store/informacion-carrito/php/crear_transaccion_wompi_carrito.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
@@ -1014,13 +1039,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Función para verificar sesión
 function verificarSesion() {
-    fetch("http://127.0.0.1/finoso/login/php/verificar_sesion.php")
+    fetch("https://finoso.store/login/php/verificar_sesion.php")
         .then(res => res.json())
         .then(data => {
             if (!data.logged_in) {
                 // Si no hay sesión, redirigir al login
                 alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
-                window.location.href = 'http://127.0.0.1/finoso/login/login.html';
+                window.location.href = 'https://finoso.store/login/login.html';
                 return;
             }
             console.log("🔍 DEBUG validaciones-compra.js - Sesión verificada correctamente");
@@ -1028,6 +1053,6 @@ function verificarSesion() {
         .catch(err => {
             console.error('Error al verificar sesión:', err);
             // En caso de error, redirigir al login por seguridad
-            window.location.href = 'http://127.0.0.1/finoso/login/login.html';
+            window.location.href = 'https://finoso.store/login/login.html';
         });
 }

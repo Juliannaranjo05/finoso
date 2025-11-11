@@ -5,7 +5,7 @@
 ### **1️⃣ PREPARACIÓN (30 segundos)**
 ```
 1. Resetear relojes:
-   http://127.0.0.1/finoso/database/resetear_relojes_prueba.php
+   https://finoso.store/database/resetear_relojes_prueba.php
 
 2. Iniciar sesión como cualquier usuario
 ```

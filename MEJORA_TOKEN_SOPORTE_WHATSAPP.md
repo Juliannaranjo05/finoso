@@ -194,7 +194,7 @@ El token se muestra **truncado** por legibilidad:
 ## 🧪 Cómo Probar
 
 ### 1. Desde Perfil de Usuario
-1. Ve a `http://127.0.0.1/finoso/perfil/perfil.html`
+1. Ve a `https://finoso.store/perfil/perfil.html`
 2. Busca una orden rechazada (ej: #7 o #8)
 3. Click en "Contactar Soporte"
 4. Verifica que el mensaje incluya:
@@ -204,7 +204,7 @@ El token se muestra **truncado** por legibilidad:
    - **🔑 Token: xxxxxxxxxxxxxxxx...**
 
 ### 2. Desde Modal del Catálogo
-1. Ve a `http://127.0.0.1/finoso/catalogo/catalogo.html`
+1. Ve a `https://finoso.store/catalogo/catalogo.html`
 2. Click en el ícono de usuario
 3. Tab "Mis Compras"
 4. Busca orden rechazada

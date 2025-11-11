@@ -54,7 +54,7 @@ iconoLogin.addEventListener('click', () => {
 **Después:**
 ```javascript
 iconoLogin.addEventListener('click', () => {
-    window.location.href = 'http://127.0.0.1/finoso/perfil/perfil.html'; // Redirige a perfil
+    window.location.href = 'https://finoso.store/perfil/perfil.html'; // Redirige a perfil
 });
 ```
 
@@ -142,7 +142,7 @@ Las rutas de imágenes no funcionaban porque el path relativo cambiaba según de
 1. **PHP** devuelve el path exacto de la BD: `img/reloj.png`
 2. **JavaScript** lo convierte a absoluto:
    ```javascript
-   <img src="http://127.0.0.1/finoso/${orden.imagen}" ... >
+   <img src="https://finoso.store/${orden.imagen}" ... >
    ```
 3. **Fallback** si la imagen no carga:
    ```javascript

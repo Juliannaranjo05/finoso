@@ -34,7 +34,7 @@
 
 ### **URL para probar:**
 ```
-http://127.0.0.1/finoso/catalogo/catalogo.html
+https://finoso.store/catalogo/catalogo.html
 ```
 
 ### **Test Rápido (2 minutos):**
@@ -314,7 +314,7 @@ limpiarFiltros()       // Resetea todos los filtros
 ### **Los filtros están vacíos:**
 ```
 ✓ Verifica que los datos se cargaron con:
-  http://127.0.0.1/finoso/admin/verificar_campos_filtros.php
+  https://finoso.store/admin/verificar_campos_filtros.php
 ✓ Abre consola y busca:
   "✅ Movimientos cargados: X"
   "✅ Pulseras cargadas: X"

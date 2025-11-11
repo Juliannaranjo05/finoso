@@ -126,14 +126,14 @@
 #### **Opción A: Móvil Real (Recomendado)**
 ```
 1. Abre Chrome/Safari en tu móvil
-2. Ve a: http://127.0.0.1/finoso/catalogo/catalogo.html
+2. Ve a: https://finoso.store/catalogo/catalogo.html
    (o tu IP local: http://192.168.X.X/finoso/catalogo/catalogo.html)
 3. Recarga con cache limpio
 ```
 
 #### **Opción B: DevTools (Para prueba rápida)**
 ```
-1. Abre: http://127.0.0.1/finoso/catalogo/catalogo.html
+1. Abre: https://finoso.store/catalogo/catalogo.html
 2. F12 > Toggle Device Toolbar (Ctrl+Shift+M)
 3. Selecciona: iPhone 12 Pro o Galaxy S21
 4. Recarga: Ctrl+F5

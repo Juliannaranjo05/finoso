@@ -8,7 +8,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pagar con Nequi</title>
-  <link rel="icon" href="http://127.0.0.1/finoso/img/finoso_logo.png" type="image/x-icon">
+  <link rel="icon" href="https://finoso.store/img/finoso_logo.png" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -464,7 +464,7 @@
       <p>O escanea este código QR</p>
       <img src="../img/QR.jpg" alt="Código QR de Nequi" class="floating">
     </div>
-    <form action="http://127.0.0.1/finoso/informacion-carrito/php/subir_comprobante-carrito.php" method="POST" enctype="multipart/form-data" id="form-comprobante">
+    <form action="https://finoso.store/informacion-carrito/php/subir_comprobante-carrito.php" method="POST" enctype="multipart/form-data" id="form-comprobante">
         <!-- Campos hidden individuales como backup -->
         <input type="hidden" name="id_reloj" id="id_reloj" />
         <input type="hidden" name="id_usuario" id="id_usuario_hidden" />
@@ -612,7 +612,7 @@
       const item = document.createElement("div");
       item.className = "producto";
       item.innerHTML = `
-        <img src="http://127.0.0.1/finoso/${producto.imagen}" alt="${producto.nombre}">
+        <img src="https://finoso.store/${producto.imagen}" alt="${producto.nombre}">
         <div class="producto-info">
           <h2>${producto.nombre}</h2>
           <p>Precio: <span>$${Number(producto.precio).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}.000</span></p>
